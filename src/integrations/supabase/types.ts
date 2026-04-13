@@ -14,16 +14,197 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      bookings: {
+        Row: {
+          created_at: string | null
+          id: string
+          messenger: Database["public"]["Enums"]["messenger_type"]
+          messenger_username: string | null
+          name: string
+          phone: string
+          references_text: string | null
+          status: Database["public"]["Enums"]["booking_status"] | null
+          style: string | null
+          tariff_id: string | null
+          updated_at: string | null
+          urgency: Database["public"]["Enums"]["booking_urgency"] | null
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          messenger?: Database["public"]["Enums"]["messenger_type"]
+          messenger_username?: string | null
+          name: string
+          phone: string
+          references_text?: string | null
+          status?: Database["public"]["Enums"]["booking_status"] | null
+          style?: string | null
+          tariff_id?: string | null
+          updated_at?: string | null
+          urgency?: Database["public"]["Enums"]["booking_urgency"] | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          messenger?: Database["public"]["Enums"]["messenger_type"]
+          messenger_username?: string | null
+          name?: string
+          phone?: string
+          references_text?: string | null
+          status?: Database["public"]["Enums"]["booking_status"] | null
+          style?: string | null
+          tariff_id?: string | null
+          updated_at?: string | null
+          urgency?: Database["public"]["Enums"]["booking_urgency"] | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bookings_tariff_id_fkey"
+            columns: ["tariff_id"]
+            isOneToOne: false
+            referencedRelation: "tariffs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      portfolio: {
+        Row: {
+          category: string | null
+          created_at: string | null
+          description: string | null
+          id: string
+          image_url: string
+          sort_order: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url: string
+          sort_order?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string | null
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          image_url?: string
+          sort_order?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          client_name: string
+          created_at: string | null
+          id: string
+          is_visible: boolean | null
+          photo_url: string | null
+          rating: number | null
+          sort_order: number | null
+          text: string
+        }
+        Insert: {
+          client_name: string
+          created_at?: string | null
+          id?: string
+          is_visible?: boolean | null
+          photo_url?: string | null
+          rating?: number | null
+          sort_order?: number | null
+          text: string
+        }
+        Update: {
+          client_name?: string
+          created_at?: string | null
+          id?: string
+          is_visible?: boolean | null
+          photo_url?: string | null
+          rating?: number | null
+          sort_order?: number | null
+          text?: string
+        }
+        Relationships: []
+      }
+      tariffs: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          features: Json | null
+          id: string
+          is_active: boolean | null
+          name: string
+          price: number
+          sort_order: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name: string
+          price: number
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          features?: Json | null
+          id?: string
+          is_active?: boolean | null
+          name?: string
+          price?: number
+          sort_order?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      booking_status: "new" | "in_progress" | "completed" | "cancelled"
+      booking_urgency: "normal" | "urgent"
+      messenger_type: "telegram" | "whatsapp" | "other"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +331,11 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      booking_status: ["new", "in_progress", "completed", "cancelled"],
+      booking_urgency: ["normal", "urgent"],
+      messenger_type: ["telegram", "whatsapp", "other"],
+    },
   },
 } as const
