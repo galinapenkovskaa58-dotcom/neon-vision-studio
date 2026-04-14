@@ -68,8 +68,7 @@ export default function Styles() {
                 }}>
                 {category}
               </h3>
-              <div className="glass-strong rounded-[2rem] p-6 md:p-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {items.map((style, i) => (
                     <motion.div
                       key={style.id}
@@ -79,40 +78,41 @@ export default function Styles() {
                       transition={{ delay: i * 0.1 }}
                       className="group"
                     >
-                      <div className="grid grid-cols-3 gap-2 mb-3">
-                        {[style.image_1, style.image_2, style.image_3].map((img, j) => {
-                          const imgKey = `${style.id}-${j}`;
-                          const isExpanded = expandedImg === imgKey;
-                          return (
-                            <div key={j} className="aspect-[3/4] rounded-2xl overflow-visible bg-muted/20 relative">
-                              {img ? (
-                                <motion.img
-                                  src={img}
-                                  alt=""
-                                  onClick={() => setExpandedImg(isExpanded ? null : imgKey)}
-                                  animate={{
-                                    scale: isExpanded ? 1.6 : 1,
-                                    zIndex: isExpanded ? 50 : 1,
-                                  }}
-                                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                                  className="w-full h-full object-cover rounded-2xl cursor-pointer relative hover:scale-[1.05] transition-shadow duration-300"
-                                  style={{
-                                    zIndex: isExpanded ? 50 : 1,
-                                    boxShadow: isExpanded ? '0 20px 60px rgba(0,0,0,0.6)' : 'none',
-                                  }}
-                                />
-                              ) : (
-                                <div className="w-full h-full" />
-                              )}
-                            </div>
-                          );
-                        })}
+                      <div className="rounded-2xl p-4 border border-neon-pink/20 bg-neon-pink/[0.06] hover:bg-neon-pink/[0.12] hover:border-neon-pink/40 transition-all duration-400">
+                        <div className="grid grid-cols-3 gap-2">
+                          {[style.image_1, style.image_2, style.image_3].map((img, j) => {
+                            const imgKey = `${style.id}-${j}`;
+                            const isExpanded = expandedImg === imgKey;
+                            return (
+                              <div key={j} className="aspect-[3/4] rounded-xl overflow-visible bg-muted/20 relative">
+                                {img ? (
+                                  <motion.img
+                                    src={img}
+                                    alt=""
+                                    onClick={() => setExpandedImg(isExpanded ? null : imgKey)}
+                                    animate={{
+                                      scale: isExpanded ? 1.6 : 1,
+                                      zIndex: isExpanded ? 50 : 1,
+                                    }}
+                                    transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                                    className="w-full h-full object-cover rounded-xl cursor-pointer relative hover:scale-[1.05] transition-shadow duration-300"
+                                    style={{
+                                      zIndex: isExpanded ? 50 : 1,
+                                      boxShadow: isExpanded ? '0 20px 60px rgba(0,0,0,0.6)' : 'none',
+                                    }}
+                                  />
+                                ) : (
+                                  <div className="w-full h-full" />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
-                      <h4 className="text-xl font-heading font-bold text-center">{style.title}</h4>
+                      <h4 className="text-lg font-heading font-bold text-center mt-3">{style.title}</h4>
                     </motion.div>
                   ))}
                 </div>
-              </div>
             </motion.div>
           ))}
         </div>
