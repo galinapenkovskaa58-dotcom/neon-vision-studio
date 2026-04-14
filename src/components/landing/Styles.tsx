@@ -1,9 +1,10 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 export default function Styles() {
+  const [expandedImg, setExpandedImg] = useState<string | null>(null);
   const { data: styles = [] } = useQuery({
     queryKey: ['styles'],
     queryFn: async () => {
@@ -79,19 +80,33 @@ export default function Styles() {
                       className="group"
                     >
                       <div className="grid grid-cols-3 gap-2 mb-3">
-                        {[style.image_1, style.image_2, style.image_3].map((img, j) => (
-                          <div key={j} className="aspect-[3/4] rounded-2xl overflow-hidden bg-muted/20">
-                            {img ? (
-                              <img
-                                src={img}
-                                alt=""
-                                className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-[1.15]"
-                              />
-                            ) : (
-                              <div className="w-full h-full" />
-                            )}
-                          </div>
-                        ))}
+                        {[style.image_1, style.image_2, style.image_3].map((img, j) => {
+                          const imgKey = `${style.id}-${j}`;
+                          const isExpanded = expandedImg === imgKey;
+                          return (
+                            <div key={j} className="aspect-[3/4] rounded-2xl overflow-visible bg-muted/20 relative">
+                              {img ? (
+                                <motion.img
+                                  src={img}
+                                  alt=""
+                                  onClick={() => setExpandedImg(isExpanded ? null : imgKey)}
+                                  animate={{
+                                    scale: isExpanded ? 1.6 : 1,
+                                    zIndex: isExpanded ? 50 : 1,
+                                  }}
+                                  transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+                                  className="w-full h-full object-cover rounded-2xl cursor-pointer relative hover:scale-[1.05] transition-shadow duration-300"
+                                  style={{
+                                    zIndex: isExpanded ? 50 : 1,
+                                    boxShadow: isExpanded ? '0 20px 60px rgba(0,0,0,0.6)' : 'none',
+                                  }}
+                                />
+                              ) : (
+                                <div className="w-full h-full" />
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                       <h4 className="text-xl font-heading font-bold text-center">{style.title}</h4>
                     </motion.div>
