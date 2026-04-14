@@ -118,7 +118,7 @@ export default function AdminStyles() {
       />
       {form[slot] ? (
         <div className="relative group">
-          <img src={form[slot]} alt="" className="w-full h-32 object-cover rounded-xl" />
+          <img src={form[slot]} alt="" className="w-full aspect-[9/16] object-cover rounded-xl" />
           <button
             onClick={() => setForm(prev => ({ ...prev, [slot]: '' }))}
             className="absolute top-1 right-1 bg-black/60 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -130,7 +130,7 @@ export default function AdminStyles() {
         <button
           onClick={() => fileRefs[index].current?.click()}
           disabled={uploading[slot]}
-          className="w-full h-32 border-2 border-dashed border-muted-foreground/30 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-primary/50 transition-colors"
+          className="w-full aspect-[9/16] border-2 border-dashed border-muted-foreground/30 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-primary/50 transition-colors"
         >
           <Upload size={20} className="text-muted-foreground" />
           <span className="text-xs text-muted-foreground">{uploading[slot] ? 'Загрузка...' : 'Фото'}</span>
