@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Shield } from 'lucide-react';
+import { useAdmin } from '@/hooks/useAdmin';
+import { useNavigate } from 'react-router-dom';
 
 const navItems = [
   { label: 'Портфолио', href: '#portfolio' },
@@ -12,6 +14,8 @@ const navItems = [
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { isAdmin } = useAdmin();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -56,6 +60,14 @@ export default function Header() {
           >
             Записаться
           </button>
+          {isAdmin && (
+            <button
+              onClick={() => navigate('/admin')}
+              className="flex items-center gap-1.5 text-xs font-semibold text-neon-purple border border-neon-purple/40 px-4 py-2 rounded-full hover:bg-neon-purple/10 transition-colors"
+            >
+              <Shield size={14} /> ADMIN
+            </button>
+          )}
         </nav>
 
         {/* Mobile toggle */}
@@ -89,6 +101,14 @@ export default function Header() {
               >
                 Записаться
               </button>
+              {isAdmin && (
+                <button
+                  onClick={() => { setMobileOpen(false); navigate('/admin'); }}
+                  className="flex items-center justify-center gap-1.5 text-xs font-semibold text-neon-purple border border-neon-purple/40 px-4 py-2.5 rounded-full hover:bg-neon-purple/10 transition-colors"
+                >
+                  <Shield size={14} /> ADMIN
+                </button>
+              )}
             </div>
           </motion.div>
         )}
