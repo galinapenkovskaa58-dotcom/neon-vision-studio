@@ -7,12 +7,14 @@ import AdminBookings from '@/components/admin/AdminBookings';
 import AdminPortfolio from '@/components/admin/AdminPortfolio';
 import AdminTariffs from '@/components/admin/AdminTariffs';
 import AdminReviews from '@/components/admin/AdminReviews';
-import { FileImage, CalendarCheck, Tags, MessageSquare, LogOut, Home } from 'lucide-react';
+import AdminStyles from '@/components/admin/AdminStyles';
+import { FileImage, CalendarCheck, Tags, MessageSquare, LogOut, Home, Palette } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const tabs = [
   { id: 'bookings', label: 'Заявки', icon: CalendarCheck },
   { id: 'portfolio', label: 'Портфолио', icon: FileImage },
+  { id: 'styles', label: 'Стили', icon: Palette },
   { id: 'tariffs', label: 'Тарифы', icon: Tags },
   { id: 'reviews', label: 'Отзывы', icon: MessageSquare },
 ];
@@ -89,6 +91,7 @@ export default function Admin() {
       <main className="flex-1 p-8 overflow-auto">
         {activeTab === 'bookings' && <AdminBookings />}
         {activeTab === 'portfolio' && <AdminPortfolio />}
+        {activeTab === 'styles' && <AdminStyles />}
         {activeTab === 'tariffs' && <AdminTariffs />}
         {activeTab === 'reviews' && <AdminReviews />}
       </main>
