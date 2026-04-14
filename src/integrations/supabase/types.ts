@@ -133,6 +133,45 @@ export type Database = {
         }
         Relationships: []
       }
+      styles: {
+        Row: {
+          color_from: string
+          color_to: string
+          created_at: string | null
+          description: string | null
+          icon: string | null
+          id: string
+          is_visible: boolean | null
+          sort_order: number | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          color_from?: string
+          color_to?: string
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_visible?: boolean | null
+          sort_order?: number | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          color_from?: string
+          color_to?: string
+          created_at?: string | null
+          description?: string | null
+          icon?: string | null
+          id?: string
+          is_visible?: boolean | null
+          sort_order?: number | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       tariffs: {
         Row: {
           created_at: string | null

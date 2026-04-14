@@ -1,33 +1,29 @@
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
 
-const styles = [
-  {
-    title: 'Киберпанк',
-    description: 'Неоновые огни, футуристические городские пейзажи и дерзкие образы в духе Blade Runner',
-    color: 'from-neon-blue to-neon-cyan',
-    glow: 'glow-blue',
-  },
-  {
-    title: 'Фэнтези',
-    description: 'Волшебные миры, эльфийские образы и сказочные пейзажи с магической атмосферой',
-    color: 'from-neon-purple to-neon-pink',
-    glow: 'glow-purple',
-  },
-  {
-    title: 'Ретрофутуризм',
-    description: 'Смешение винтажной эстетики 80-х с футуристическими элементами и синтвейв-стилистикой',
-    color: 'from-neon-pink to-neon-blue',
-    glow: 'glow-pink',
-  },
-  {
-    title: 'Сюрреализм',
-    description: 'Невозможные пространства, метаморфозы и визуальные иллюзии в духе Дали',
-    color: 'from-neon-cyan to-neon-purple',
-    glow: 'glow-cyan',
-  },
-];
+const glowMap: Record<string, string> = {
+  'neon-blue': 'glow-blue',
+  'neon-cyan': 'glow-cyan',
+  'neon-purple': 'glow-purple',
+  'neon-pink': 'glow-pink',
+};
 
 export default function Styles() {
+  const { data: styles = [] } = useQuery({
+    queryKey: ['styles'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('styles')
+        .select('*')
+        .eq('is_visible', true)
+        .order('sort_order');
+      return data || [];
+    },
+  });
+
+  if (styles.length === 0) return null;
+
   return (
     <section id="styles" className="py-24 relative">
       <div className="absolute inset-0 overflow-hidden">
@@ -53,18 +49,20 @@ export default function Styles() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {styles.map((style, i) => (
             <motion.div
-              key={style.title}
+              key={style.id}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
-              className={`glass rounded-3xl p-8 group hover:${style.glow} transition-all duration-500 cursor-default`}
+              className={`glass rounded-3xl p-8 group hover:${glowMap[style.color_from] || 'glow-blue'} transition-all duration-500 cursor-default`}
             >
-              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${style.color} flex items-center justify-center mb-6`}>
-                <span className="text-2xl">✦</span>
+              <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br from-${style.color_from} to-${style.color_to} flex items-center justify-center mb-6`}>
+                <span className="text-2xl">{style.icon || '✦'}</span>
               </div>
               <h3 className="text-2xl font-heading font-bold mb-3">{style.title}</h3>
-              <p className="text-muted-foreground leading-relaxed">{style.description}</p>
+              {style.description && (
+                <p className="text-muted-foreground leading-relaxed">{style.description}</p>
+              )}
             </motion.div>
           ))}
         </div>
