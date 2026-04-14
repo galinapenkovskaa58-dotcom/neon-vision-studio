@@ -134,8 +134,8 @@ export default function AdminStyles() {
           disabled={uploading[slot]}
           className="w-full aspect-[9/16] border border-dashed border-muted-foreground/30 rounded-lg flex flex-col items-center justify-center gap-1 hover:border-primary/50 transition-colors"
         >
-          <Upload size={20} className="text-muted-foreground" />
-          <span className="text-xs text-muted-foreground">{uploading[slot] ? 'Загрузка...' : 'Фото'}</span>
+          <Upload size={12} className="text-muted-foreground" />
+          <span className="text-[10px] text-muted-foreground">{uploading[slot] ? '...' : 'Фото'}</span>
         </button>
       )}
     </div>
@@ -156,7 +156,7 @@ export default function AdminStyles() {
           <Input placeholder="Название стиля *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="bg-muted/50 rounded-xl" />
           <div>
             <label className="block text-sm mb-2">Фотографии (3 шт.)</label>
-            <div className="grid grid-cols-6 gap-2 max-w-xs">
+            <div className="flex gap-2" style={{ maxWidth: '180px' }}>
               <ImageSlot slot="image_1" index={0} />
               <ImageSlot slot="image_2" index={1} />
               <ImageSlot slot="image_3" index={2} />
