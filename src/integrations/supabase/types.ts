@@ -141,6 +141,9 @@ export type Database = {
           description: string | null
           icon: string | null
           id: string
+          image_1: string | null
+          image_2: string | null
+          image_3: string | null
           is_visible: boolean | null
           sort_order: number | null
           title: string
@@ -153,6 +156,9 @@ export type Database = {
           description?: string | null
           icon?: string | null
           id?: string
+          image_1?: string | null
+          image_2?: string | null
+          image_3?: string | null
           is_visible?: boolean | null
           sort_order?: number | null
           title: string
@@ -165,6 +171,9 @@ export type Database = {
           description?: string | null
           icon?: string | null
           id?: string
+          image_1?: string | null
+          image_2?: string | null
+          image_3?: string | null
           is_visible?: boolean | null
           sort_order?: number | null
           title?: string
