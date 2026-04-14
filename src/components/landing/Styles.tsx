@@ -59,7 +59,12 @@ export default function Styles() {
               viewport={{ once: true }}
               transition={{ delay: catIdx * 0.1 }}
             >
-              <h3 className="text-2xl md:text-3xl font-heading font-bold gradient-text mb-6 text-center">
+              <h3 className="text-2xl md:text-3xl font-heading font-bold mb-6 text-center bg-clip-text text-transparent animate-shimmer"
+                style={{
+                  backgroundImage: 'linear-gradient(90deg, hsl(320 100% 65%), hsl(160 100% 50%), hsl(320 100% 65%))',
+                  backgroundSize: '200% auto',
+                  animation: 'shimmer 3s linear infinite',
+                }}>
                 {category}
               </h3>
               <div className="glass-strong rounded-[2rem] p-6 md:p-8">
