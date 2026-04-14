@@ -135,6 +135,7 @@ export type Database = {
       }
       styles: {
         Row: {
+          category: string
           color_from: string
           color_to: string
           created_at: string | null
@@ -150,6 +151,7 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          category?: string
           color_from?: string
           color_to?: string
           created_at?: string | null
@@ -165,6 +167,7 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          category?: string
           color_from?: string
           color_to?: string
           created_at?: string | null

@@ -11,7 +11,7 @@ export default function AdminStyles() {
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<any>(null);
-  const [form, setForm] = useState({ title: '', image_1: '', image_2: '', image_3: '', is_visible: true });
+  const [form, setForm] = useState({ category: '', title: '', image_1: '', image_2: '', image_3: '', is_visible: true });
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
   const fileRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
 
@@ -41,6 +41,7 @@ export default function AdminStyles() {
   const save = useMutation({
     mutationFn: async () => {
       const payload = {
+        category: form.category,
         title: form.title,
         image_1: form.image_1 || null,
         image_2: form.image_2 || null,
@@ -89,12 +90,13 @@ export default function AdminStyles() {
   const resetForm = () => {
     setShowForm(false);
     setEditing(null);
-    setForm({ title: '', image_1: '', image_2: '', image_3: '', is_visible: true });
+    setForm({ category: '', title: '', image_1: '', image_2: '', image_3: '', is_visible: true });
   };
 
   const startEdit = (item: any) => {
     setEditing(item);
     setForm({
+      category: item.category || '',
       title: item.title,
       image_1: item.image_1 || '',
       image_2: item.image_2 || '',
@@ -118,7 +120,7 @@ export default function AdminStyles() {
       />
       {form[slot] ? (
         <div className="relative group">
-          <img src={form[slot]} alt="" className="w-full aspect-[9/16] object-cover rounded-xl" />
+          <img src={form[slot]} alt="" className="w-full aspect-[9/16] object-cover rounded-lg" />
           <button
             onClick={() => setForm(prev => ({ ...prev, [slot]: '' }))}
             className="absolute top-1 right-1 bg-black/60 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
@@ -130,7 +132,7 @@ export default function AdminStyles() {
         <button
           onClick={() => fileRefs[index].current?.click()}
           disabled={uploading[slot]}
-          className="w-full aspect-[9/16] border-2 border-dashed border-muted-foreground/30 rounded-xl flex flex-col items-center justify-center gap-2 hover:border-primary/50 transition-colors"
+          className="w-full aspect-[9/16] border border-dashed border-muted-foreground/30 rounded-lg flex flex-col items-center justify-center gap-1 hover:border-primary/50 transition-colors"
         >
           <Upload size={20} className="text-muted-foreground" />
           <span className="text-xs text-muted-foreground">{uploading[slot] ? 'Загрузка...' : 'Фото'}</span>
@@ -149,18 +151,19 @@ export default function AdminStyles() {
       </div>
 
       {showForm && (
-        <div className="glass rounded-2xl p-6 mb-6 space-y-4">
+      <div className="glass rounded-2xl p-5 mb-6 space-y-3">
+          <Input placeholder="Категория *" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="bg-muted/50 rounded-xl" />
           <Input placeholder="Название стиля *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="bg-muted/50 rounded-xl" />
           <div>
             <label className="block text-sm mb-2">Фотографии (3 шт.)</label>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-6 gap-2 max-w-xs">
               <ImageSlot slot="image_1" index={0} />
               <ImageSlot slot="image_2" index={1} />
               <ImageSlot slot="image_3" index={2} />
             </div>
           </div>
           <div className="flex gap-3">
-            <Button onClick={() => save.mutate()} disabled={!form.title} className="neon-glow-btn rounded-full text-primary-foreground">
+            <Button onClick={() => save.mutate()} disabled={!form.title || !form.category} className="neon-glow-btn rounded-full text-primary-foreground">
               {editing ? 'Сохранить' : 'Добавить'}
             </Button>
             <Button variant="ghost" onClick={resetForm}>Отмена</Button>
@@ -183,7 +186,10 @@ export default function AdminStyles() {
               ))}
             </div>
             <div className="flex items-center justify-between">
-              <h3 className="font-heading font-bold">{item.title}</h3>
+              <div>
+                <span className="text-xs text-muted-foreground">{(item as any).category}</span>
+                <h3 className="font-heading font-bold">{item.title}</h3>
+              </div>
               <div className="flex gap-1">
                 <Button size="sm" variant="ghost" onClick={() => toggleVisibility.mutate({ id: item.id, is_visible: !item.is_visible })}>
                   {item.is_visible ? <Eye size={14} /> : <EyeOff size={14} />}
