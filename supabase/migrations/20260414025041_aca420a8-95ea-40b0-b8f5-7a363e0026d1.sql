@@ -1,0 +1,1 @@
+ALTER TABLE public.styles ADD COLUMN category text NOT NULL DEFAULT '';
