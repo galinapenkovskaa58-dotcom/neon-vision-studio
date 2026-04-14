@@ -68,7 +68,15 @@ export default function Styles() {
                 }}>
                 {category}
               </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div
+                className="rounded-[2rem] p-6 md:p-8"
+                style={{
+                  border: '1px solid hsla(160, 100%, 50%, 0.25)',
+                  boxShadow: '0 0 20px hsla(160, 100%, 50%, 0.1), 0 0 60px hsla(160, 100%, 50%, 0.05), inset 0 0 30px hsla(160, 100%, 50%, 0.03)',
+                  background: 'hsla(160, 100%, 50%, 0.03)',
+                }}
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {items.map((style, i) => (
                     <motion.div
                       key={style.id}
@@ -113,6 +121,7 @@ export default function Styles() {
                     </motion.div>
                   ))}
                 </div>
+              </div>
             </motion.div>
           ))}
         </div>
