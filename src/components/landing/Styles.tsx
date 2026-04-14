@@ -29,33 +29,41 @@ export default function Styles() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-12"
         >
-          <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
-            Стили <span className="gradient-text">съёмок</span>
+          <h2 className="text-5xl md:text-6xl font-heading font-extrabold mb-4 gradient-text">
+            Стили съёмок
           </h2>
           <p className="text-muted-foreground text-lg max-w-xl mx-auto">
             Выберите направление или создадим что-то совершенно новое
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {styles.map((style, i) => {
-            const images = [style.image_1, style.image_2, style.image_3].filter(Boolean);
-            return (
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="glass-strong rounded-[2rem] p-6 md:p-10"
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {styles.map((style, i) => (
               <motion.div
                 key={style.id}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="glass rounded-3xl p-5 group hover:glow-blue transition-all duration-500"
+                transition={{ delay: i * 0.1 }}
+                className="group"
               >
-                <div className="grid grid-cols-3 gap-2 mb-4">
+                <div className="grid grid-cols-3 gap-2 mb-3">
                   {[style.image_1, style.image_2, style.image_3].map((img, j) => (
                     <div key={j} className="aspect-[3/4] rounded-2xl overflow-hidden bg-muted/20">
                       {img ? (
-                        <img src={img} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                        <img
+                          src={img}
+                          alt=""
+                          className="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-[1.15]"
+                        />
                       ) : (
                         <div className="w-full h-full" />
                       )}
@@ -64,9 +72,9 @@ export default function Styles() {
                 </div>
                 <h3 className="text-xl font-heading font-bold text-center">{style.title}</h3>
               </motion.div>
-            );
-          })}
-        </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );
