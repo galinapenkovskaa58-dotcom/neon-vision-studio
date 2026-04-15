@@ -43,12 +43,14 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { isAdmin } = useAdmin();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPageNav = pageNavItems[location.pathname] || [];
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
+  const scrollToSection = (anchor: string) => {
+    const el = document.querySelector(anchor);
+    el?.scrollIntoView({ behavior: 'smooth' });
+    setMobileOpen(false);
+  };
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
