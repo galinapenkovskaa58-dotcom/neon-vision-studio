@@ -31,7 +31,7 @@ export default function Hero() {
             transition={{ duration: 0.8 }}
           >
             <span className="inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
-              Нейрофотосессии нового поколения
+              AI-студия полного цикла
             </span>
           </motion.div>
 
@@ -41,9 +41,9 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold leading-[0.95] mb-8"
           >
-            <span className="block">Где магия</span>
-            <span className="block gradient-text">встречает</span>
-            <span className="block">технологии</span>
+            <span className="block">Где идеи</span>
+            <span className="block gradient-text">оживают</span>
+            <span className="block">через AI</span>
           </motion.h1>
 
           <motion.p
@@ -52,8 +52,8 @@ export default function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
           >
-            Создаю уникальные образы с помощью нейросетей и профессиональной фотографии. 
-            Каждый кадр — это слияние искусства и искусственного интеллекта.
+            Нейрофотосессии, AI-видео, музыка и вейб-кодинг — 
+            всё, что можно создать с помощью искусственного интеллекта.
           </motion.p>
 
           <motion.div
@@ -63,14 +63,14 @@ export default function Hero() {
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
             <button
-              onClick={scrollToBooking}
+              onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
               className="neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
             >
-              Записаться на сессию
+              Наши услуги
             </button>
             <button
-              onClick={() => document.querySelector('#portfolio')?.scrollIntoView({ behavior: 'smooth' })}
-              className="glass px-10 py-4 rounded-full text-lg font-semibold hover:bg-card/80 transition-all"
+              onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
+              className="glass px-10 py-4 rounded-full text-lg font-semibold hover:bg-card/80 transition-all hidden"
             >
               Смотреть работы
             </button>
