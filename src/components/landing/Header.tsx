@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Shield, ChevronDown } from 'lucide-react';
 import { useAdmin } from '@/hooks/useAdmin';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
 import logoImg from '@/assets/logo-dsn.png';
 
 const serviceItems = [
@@ -12,6 +12,30 @@ const serviceItems = [
   { label: 'Вейб-кодинг', href: '/vibe-coding' },
 ];
 
+const pageNavItems: Record<string, { label: string; anchor: string }[]> = {
+  '/neurophoto': [
+    { label: 'Портфолио', anchor: '#portfolio' },
+    { label: 'Стили', anchor: '#styles' },
+    { label: 'Тарифы', anchor: '#tariffs' },
+    { label: 'Записаться', anchor: '#booking' },
+  ],
+  '/ai-video': [
+    { label: 'Возможности', anchor: '#features' },
+    { label: 'Связаться', anchor: '#contact' },
+  ],
+  '/songs': [
+    { label: 'Возможности', anchor: '#features' },
+    { label: 'Связаться', anchor: '#contact' },
+  ],
+  '/vibe-coding': [
+    { label: 'Возможности', anchor: '#features' },
+    { label: 'Связаться', anchor: '#contact' },
+  ],
+  '/': [
+    { label: 'Услуги', anchor: '#services' },
+  ],
+};
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -19,6 +43,14 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { isAdmin } = useAdmin();
   const navigate = useNavigate();
+  const location = useLocation();
+  const currentPageNav = pageNavItems[location.pathname] || [];
+
+  const scrollToSection = (anchor: string) => {
+    const el = document.querySelector(anchor);
+    el?.scrollIntoView({ behavior: 'smooth' });
+    setMobileOpen(false);
+  };
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -88,6 +120,18 @@ export default function Header() {
             </AnimatePresence>
           </div>
 
+          {/* Page section nav */}
+          {currentPageNav.map((item) => (
+            <button
+              key={item.anchor}
+              onClick={() => scrollToSection(item.anchor)}
+              className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors relative group"
+            >
+              {item.label}
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-neon-blue to-neon-cyan group-hover:w-full transition-all duration-300" />
+            </button>
+          ))}
+
           <Link to="/" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors relative group">
             Главная
             <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-neon-blue to-neon-cyan group-hover:w-full transition-all duration-300" />
@@ -126,6 +170,22 @@ export default function Header() {
               >
                 Главная
               </Link>
+
+              {currentPageNav.length > 0 && (
+                <>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mt-3 mb-1">Разделы</p>
+                  {currentPageNav.map((item) => (
+                    <button
+                      key={item.anchor}
+                      onClick={() => scrollToSection(item.anchor)}
+                      className="text-left text-foreground/80 hover:text-foreground py-2 pl-3"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </>
+              )}
+
               <p className="text-xs text-muted-foreground uppercase tracking-wider mt-3 mb-1">Услуги</p>
               {serviceItems.map((item) => (
                 <Link
