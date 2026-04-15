@@ -7,8 +7,8 @@ export default function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <div className="flex items-center gap-3 mb-3">
-              <img src={logoImg} alt="Dream Studio Nexoria" className="w-12 h-12 rounded-full" />
+            <div className="flex flex-col items-start gap-2 mb-3">
+              <img src={logoImg} alt="Dream Studio Nexoria" className="w-20 h-20 rounded-full" />
               <div className="flex flex-col leading-none">
                 <span className="text-lg font-heading font-bold tracking-widest uppercase gradient-text">Dream Studio</span>
                 <span className="text-[10px] font-heading font-medium tracking-[0.35em] uppercase text-muted-foreground">— Nexoria —</span>
