@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import logoImg from '@/assets/logo-dsn.png';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Shield } from 'lucide-react';
 import { useAdmin } from '@/hooks/useAdmin';
@@ -38,8 +39,12 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <a href="#" className="text-2xl font-heading font-bold gradient-text">
-          Dream Studio Nexoria
+        <a href="#" className="flex items-center gap-3">
+          <img src={logoImg} alt="Dream Studio Nexoria" className="w-10 h-10 rounded-full" />
+          <div className="flex flex-col leading-none">
+            <span className="text-base font-heading font-bold tracking-widest uppercase gradient-text">Dream Studio</span>
+            <span className="text-[10px] font-heading font-medium tracking-[0.35em] uppercase text-muted-foreground">— Nexoria —</span>
+          </div>
         </a>
 
         {/* Desktop nav */}

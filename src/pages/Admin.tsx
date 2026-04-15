@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import logoImg from '@/assets/logo-dsn.png';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { useAdmin } from '@/hooks/useAdmin';
@@ -56,9 +57,12 @@ export default function Admin() {
     <div className="min-h-screen bg-background flex">
       {/* Sidebar */}
       <aside className="w-64 glass-strong border-r border-border/30 p-6 flex flex-col shrink-0">
-        <Link to="/" className="text-lg font-heading font-bold gradient-text mb-8 flex items-center gap-2">
-          <Home size={18} />
-          Dream Studio Nexoria
+        <Link to="/" className="flex items-center gap-2 mb-8">
+          <img src={logoImg} alt="DSN" className="w-8 h-8 rounded-full" />
+          <div className="flex flex-col leading-none">
+            <span className="text-sm font-heading font-bold tracking-widest uppercase gradient-text">Dream Studio</span>
+            <span className="text-[8px] font-heading font-medium tracking-[0.3em] uppercase text-muted-foreground">— Nexoria —</span>
+          </div>
         </Link>
 
         <nav className="flex-1 space-y-2">
