@@ -1,10 +1,6 @@
 import Header from '@/components/landing/Header';
 import Hero from '@/components/landing/Hero';
-import Portfolio from '@/components/landing/Portfolio';
-import Styles from '@/components/landing/Styles';
-import Tariffs from '@/components/landing/Tariffs';
-import Reviews from '@/components/landing/Reviews';
-import BookingForm from '@/components/landing/BookingForm';
+import Services from '@/components/landing/Services';
 import Footer from '@/components/landing/Footer';
 
 const Index = () => {
@@ -12,11 +8,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <Hero />
-      <Portfolio />
-      <Styles />
-      <Tariffs />
-      <Reviews />
-      <BookingForm />
+      <Services />
       <Footer />
     </div>
   );
