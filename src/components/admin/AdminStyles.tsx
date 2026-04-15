@@ -5,6 +5,9 @@ import { Input } from '@/components/ui/input';
 import { useState, useRef } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Trash2, Plus, Eye, EyeOff, Upload, X } from 'lucide-react';
+import { useReorder } from '@/hooks/useSortable';
+import SortableItem from './SortableItem';
+import SortableWrapper from './SortableWrapper';
 
 export default function AdminStyles() {
   const queryClient = useQueryClient();
@@ -22,6 +25,8 @@ export default function AdminStyles() {
       return data || [];
     },
   });
+
+  const reorder = useReorder('styles', ['admin-styles', 'styles']);
 
   const uploadImage = async (file: File, slot: 'image_1' | 'image_2' | 'image_3') => {
     setUploading(prev => ({ ...prev, [slot]: true }));
@@ -110,32 +115,19 @@ export default function AdminStyles() {
 
   const ImageSlot = ({ slot, index }: { slot: 'image_1' | 'image_2' | 'image_3'; index: number }) => (
     <div className="relative">
-      <input
-        ref={fileRefs[index]}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (file) uploadImage(file, slot);
-        }}
-      />
+      <input ref={fileRefs[index]} type="file" accept="image/*" className="hidden"
+        onChange={(e) => { const file = e.target.files?.[0]; if (file) uploadImage(file, slot); }} />
       {form[slot] ? (
         <div className="relative group">
           <img src={form[slot]} alt="" className="w-full aspect-[9/16] object-cover rounded-lg" />
-          <button
-            onClick={() => setForm(prev => ({ ...prev, [slot]: '' }))}
-            className="absolute top-1 right-1 bg-black/60 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
-          >
+          <button onClick={() => setForm(prev => ({ ...prev, [slot]: '' }))}
+            className="absolute top-1 right-1 bg-black/60 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity">
             <X size={14} />
           </button>
         </div>
       ) : (
-        <button
-          onClick={() => fileRefs[index].current?.click()}
-          disabled={uploading[slot]}
-          className="w-full aspect-[9/16] border border-dashed border-muted-foreground/30 rounded-lg flex flex-col items-center justify-center gap-1 hover:border-primary/50 transition-colors"
-        >
+        <button onClick={() => fileRefs[index].current?.click()} disabled={uploading[slot]}
+          className="w-full aspect-[9/16] border border-dashed border-muted-foreground/30 rounded-lg flex flex-col items-center justify-center gap-1 hover:border-primary/50 transition-colors">
           <Upload size={12} className="text-muted-foreground" />
           <span className="text-[10px] text-muted-foreground">{uploading[slot] ? '...' : 'Фото'}</span>
         </button>
@@ -153,7 +145,7 @@ export default function AdminStyles() {
       </div>
 
       {showForm && (
-      <div className="glass rounded-2xl p-5 mb-6 space-y-3">
+        <div className="glass rounded-2xl p-5 mb-6 space-y-3">
           <Input placeholder="Категория *" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="bg-muted/50 rounded-xl" />
           <Input placeholder="Название стиля *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="bg-muted/50 rounded-xl" />
           <Input placeholder="Краткое описание" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="bg-muted/50 rounded-xl" />
@@ -174,40 +166,39 @@ export default function AdminStyles() {
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2">
-        {items.map((item) => (
-          <div key={item.id} className={`glass rounded-xl p-2 w-[220px] ${!item.is_visible ? 'opacity-50' : ''}`}>
-            <div className="grid grid-cols-3 gap-1 mb-1.5">
-              {[item.image_1, item.image_2, item.image_3].map((img, i) => (
-                <div key={i} className="h-16 rounded-md overflow-hidden bg-muted/30">
-                  {img ? (
-                    <img src={img} alt="" className="w-full h-full object-cover" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 text-[8px]">—</div>
-                  )}
+      <SortableWrapper items={items} strategy="grid" onReorder={(oldIdx, newIdx) => reorder.mutate({ items, oldIndex: oldIdx, newIndex: newIdx })}>
+        <div className="flex flex-wrap gap-2">
+          {items.map((item) => (
+            <SortableItem key={item.id} id={item.id} className={`glass rounded-xl p-2 w-[220px] ${!item.is_visible ? 'opacity-50' : ''}`}>
+              <div className="grid grid-cols-3 gap-1 mb-1.5">
+                {[item.image_1, item.image_2, item.image_3].map((img, i) => (
+                  <div key={i} className="h-16 rounded-md overflow-hidden bg-muted/30">
+                    {img ? <img src={img} alt="" className="w-full h-full object-cover" /> :
+                      <div className="w-full h-full flex items-center justify-center text-muted-foreground/30 text-[8px]">—</div>}
+                  </div>
+                ))}
+              </div>
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <span className="text-[10px] text-muted-foreground block truncate">{(item as any).category}</span>
+                  <h3 className="font-heading font-bold text-xs leading-tight truncate">{item.title}</h3>
                 </div>
-              ))}
-            </div>
-            <div className="flex items-start justify-between gap-2">
-              <div className="min-w-0 flex-1">
-                <span className="text-[10px] text-muted-foreground block truncate">{(item as any).category}</span>
-                <h3 className="font-heading font-bold text-xs leading-tight truncate">{item.title}</h3>
+                <div className="flex gap-0.5 shrink-0">
+                  <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => toggleVisibility.mutate({ id: item.id, is_visible: !item.is_visible })}>
+                    {item.is_visible ? <Eye size={12} /> : <EyeOff size={12} />}
+                  </Button>
+                  <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => startEdit(item)}>
+                    <span className="text-[10px]">✎</span>
+                  </Button>
+                  <Button size="icon" variant="ghost" className="h-6 w-6 text-destructive" onClick={() => remove.mutate(item.id)}>
+                    <Trash2 size={12} />
+                  </Button>
+                </div>
               </div>
-              <div className="flex gap-0.5 shrink-0">
-                <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => toggleVisibility.mutate({ id: item.id, is_visible: !item.is_visible })}>
-                  {item.is_visible ? <Eye size={12} /> : <EyeOff size={12} />}
-                </Button>
-                <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => startEdit(item)}>
-                  <span className="text-[10px]">✎</span>
-                </Button>
-                <Button size="icon" variant="ghost" className="h-6 w-6 text-destructive" onClick={() => remove.mutate(item.id)}>
-                  <Trash2 size={12} />
-                </Button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            </SortableItem>
+          ))}
+        </div>
+      </SortableWrapper>
     </div>
   );
 }

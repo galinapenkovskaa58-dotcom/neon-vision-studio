@@ -5,7 +5,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { Trash2, Plus, GripVertical } from 'lucide-react';
+import { Trash2, Plus } from 'lucide-react';
+import { useReorder } from '@/hooks/useSortable';
+import SortableItem from './SortableItem';
+import SortableWrapper from './SortableWrapper';
 
 export default function AdminPortfolio() {
   const queryClient = useQueryClient();
@@ -23,16 +26,14 @@ export default function AdminPortfolio() {
     },
   });
 
+  const reorder = useReorder('portfolio', ['admin-portfolio']);
+
   const uploadImage = async (file: File) => {
     setUploading(true);
     const ext = file.name.split('.').pop();
     const path = `${Date.now()}.${ext}`;
     const { error } = await supabase.storage.from('portfolio').upload(path, file);
-    if (error) {
-      toast({ title: 'Ошибка загрузки', description: error.message, variant: 'destructive' });
-      setUploading(false);
-      return;
-    }
+    if (error) { toast({ title: 'Ошибка загрузки', description: error.message, variant: 'destructive' }); setUploading(false); return; }
     const { data: { publicUrl } } = supabase.storage.from('portfolio').getPublicUrl(path);
     setForm((prev) => ({ ...prev, image_url: publicUrl }));
     setUploading(false);
@@ -48,20 +49,12 @@ export default function AdminPortfolio() {
         if (error) throw error;
       }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-portfolio'] });
-      setShowForm(false);
-      setEditing(null);
-      setForm({ title: '', description: '', category: '', image_url: '' });
-    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-portfolio'] }); setShowForm(false); setEditing(null); setForm({ title: '', description: '', category: '', image_url: '' }); },
     onError: (err: any) => toast({ title: 'Ошибка', description: err.message, variant: 'destructive' }),
   });
 
   const remove = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('portfolio').delete().eq('id', id);
-      if (error) throw error;
-    },
+    mutationFn: async (id: string) => { const { error } = await supabase.from('portfolio').delete().eq('id', id); if (error) throw error; },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-portfolio'] }),
   });
 
@@ -100,23 +93,23 @@ export default function AdminPortfolio() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {items.map((item) => (
-          <div key={item.id} className="glass rounded-2xl overflow-hidden group">
-            <img src={item.image_url} alt={item.title} className="w-full h-48 object-cover" />
-            <div className="p-4">
-              <h3 className="font-semibold">{item.title}</h3>
-              {item.category && <span className="text-xs text-neon-cyan">{item.category}</span>}
-              <div className="flex gap-2 mt-3">
-                <Button size="sm" variant="ghost" onClick={() => startEdit(item)}>Ред.</Button>
-                <Button size="sm" variant="ghost" className="text-destructive" onClick={() => remove.mutate(item.id)}>
-                  <Trash2 size={14} />
-                </Button>
+      <SortableWrapper items={items} strategy="grid" onReorder={(o, n) => reorder.mutate({ items, oldIndex: o, newIndex: n })}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {items.map((item) => (
+            <SortableItem key={item.id} id={item.id} className="glass rounded-2xl overflow-hidden">
+              <img src={item.image_url} alt={item.title} className="w-full h-48 object-cover" />
+              <div className="p-4">
+                <h3 className="font-semibold">{item.title}</h3>
+                {item.category && <span className="text-xs text-neon-cyan">{item.category}</span>}
+                <div className="flex gap-2 mt-3">
+                  <Button size="sm" variant="ghost" onClick={() => startEdit(item)}>Ред.</Button>
+                  <Button size="sm" variant="ghost" className="text-destructive" onClick={() => remove.mutate(item.id)}><Trash2 size={14} /></Button>
+                </div>
               </div>
-            </div>
-          </div>
-        ))}
-      </div>
+            </SortableItem>
+          ))}
+        </div>
+      </SortableWrapper>
     </div>
   );
 }
