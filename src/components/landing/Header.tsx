@@ -120,6 +120,18 @@ export default function Header() {
             </AnimatePresence>
           </div>
 
+          {/* Page section nav */}
+          {currentPageNav.map((item) => (
+            <button
+              key={item.anchor}
+              onClick={() => scrollToSection(item.anchor)}
+              className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors relative group"
+            >
+              {item.label}
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-neon-blue to-neon-cyan group-hover:w-full transition-all duration-300" />
+            </button>
+          ))}
+
           <Link to="/" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors relative group">
             Главная
             <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-neon-blue to-neon-cyan group-hover:w-full transition-all duration-300" />
@@ -158,6 +170,22 @@ export default function Header() {
               >
                 Главная
               </Link>
+
+              {currentPageNav.length > 0 && (
+                <>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mt-3 mb-1">Разделы</p>
+                  {currentPageNav.map((item) => (
+                    <button
+                      key={item.anchor}
+                      onClick={() => scrollToSection(item.anchor)}
+                      className="text-left text-foreground/80 hover:text-foreground py-2 pl-3"
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </>
+              )}
+
               <p className="text-xs text-muted-foreground uppercase tracking-wider mt-3 mb-1">Услуги</p>
               {serviceItems.map((item) => (
                 <Link

@@ -43,7 +43,7 @@ const VibeCoding = () => {
         </div>
       </section>
 
-      <section className="py-20">
+      <section id="features" className="py-20">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             {features.map((f, i) => (
@@ -64,7 +64,7 @@ const VibeCoding = () => {
         </div>
       </section>
 
-      <section className="py-20">
+      <section id="contact" className="py-20">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Нужен сайт?</h2>
           <p className="text-muted-foreground mb-8 max-w-lg mx-auto">Расскажите о вашем проекте — сделаю стильно и быстро</p>
