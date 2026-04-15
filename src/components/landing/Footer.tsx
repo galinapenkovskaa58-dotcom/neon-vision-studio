@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import logoImg from '@/assets/logo-dsn.png';
 
 export default function Footer() {
   return (
