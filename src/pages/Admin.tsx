@@ -58,7 +58,7 @@ export default function Admin() {
       <aside className="w-64 glass-strong border-r border-border/30 p-6 flex flex-col shrink-0">
         <Link to="/" className="text-lg font-heading font-bold gradient-text mb-8 flex items-center gap-2">
           <Home size={18} />
-          NEUROPHOTO
+          Dream Studio Nexoria
         </Link>
 
         <nav className="flex-1 space-y-2">

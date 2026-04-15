@@ -39,7 +39,7 @@ export default function Header() {
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         <a href="#" className="text-2xl font-heading font-bold gradient-text">
-          NEUROPHOTO
+          Dream Studio Nexoria
         </a>
 
         {/* Desktop nav */}

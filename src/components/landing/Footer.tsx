@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <span className="text-xl font-heading font-bold gradient-text">NEUROPHOTO</span>
+            <span className="text-xl font-heading font-bold gradient-text">Dream Studio Nexoria</span>
             <p className="text-muted-foreground text-sm mt-3 max-w-xs">
               Нейрофотосессии на стыке искусства и технологий. Создаём уникальные образы с помощью ИИ.
             </p>
@@ -36,7 +36,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-10 pt-6 border-t border-border/30 text-center text-xs text-muted-foreground">
-          © {new Date().getFullYear()} NEUROPHOTO. Все права защищены.
+          © {new Date().getFullYear()} Dream Studio Nexoria. Все права защищены.
         </div>
       </div>
     </footer>
