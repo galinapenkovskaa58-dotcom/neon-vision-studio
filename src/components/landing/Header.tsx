@@ -40,7 +40,7 @@ export default function Header() {
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
         <a href="#" className="flex flex-col items-center gap-1">
-          <img src={logoImg} alt="Dream Studio Nexoria" className="w-14 h-14 rounded-full" />
+          <img src={logoImg} alt="Dream Studio Nexoria" className="w-28 h-28 rounded-full" />
           <div className="flex flex-col items-center leading-none">
             <span className="text-sm font-heading font-bold tracking-widest uppercase gradient-text">Dream Studio</span>
             <span className="text-[8px] font-heading font-medium tracking-[0.35em] uppercase text-muted-foreground">— Nexoria —</span>
