@@ -11,7 +11,7 @@ export default function AdminStyles() {
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<any>(null);
-  const [form, setForm] = useState({ category: '', title: '', image_1: '', image_2: '', image_3: '', is_visible: true });
+  const [form, setForm] = useState({ category: '', title: '', description: '', image_1: '', image_2: '', image_3: '', is_visible: true });
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
   const fileRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
 
@@ -43,6 +43,7 @@ export default function AdminStyles() {
       const payload = {
         category: form.category,
         title: form.title,
+        description: form.description || null,
         image_1: form.image_1 || null,
         image_2: form.image_2 || null,
         image_3: form.image_3 || null,
@@ -90,7 +91,7 @@ export default function AdminStyles() {
   const resetForm = () => {
     setShowForm(false);
     setEditing(null);
-    setForm({ category: '', title: '', image_1: '', image_2: '', image_3: '', is_visible: true });
+    setForm({ category: '', title: '', description: '', image_1: '', image_2: '', image_3: '', is_visible: true });
   };
 
   const startEdit = (item: any) => {
@@ -98,6 +99,7 @@ export default function AdminStyles() {
     setForm({
       category: item.category || '',
       title: item.title,
+      description: item.description || '',
       image_1: item.image_1 || '',
       image_2: item.image_2 || '',
       image_3: item.image_3 || '',
@@ -154,6 +156,7 @@ export default function AdminStyles() {
       <div className="glass rounded-2xl p-5 mb-6 space-y-3">
           <Input placeholder="Категория *" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="bg-muted/50 rounded-xl" />
           <Input placeholder="Название стиля *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="bg-muted/50 rounded-xl" />
+          <Input placeholder="Краткое описание" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="bg-muted/50 rounded-xl" />
           <div>
             <label className="block text-sm mb-2">Фотографии (3 шт.)</label>
             <div className="flex gap-2" style={{ maxWidth: '180px' }}>

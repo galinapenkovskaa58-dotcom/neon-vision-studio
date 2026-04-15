@@ -118,6 +118,9 @@ export default function Styles() {
                         </div>
                       </div>
                       <h4 className="text-lg font-heading font-bold text-center mt-3">{style.title}</h4>
+                      {style.description && (
+                        <p className="text-xs text-muted-foreground text-center mt-1">{style.description}</p>
+                      )}
                     </motion.div>
                   ))}
                 </div>
