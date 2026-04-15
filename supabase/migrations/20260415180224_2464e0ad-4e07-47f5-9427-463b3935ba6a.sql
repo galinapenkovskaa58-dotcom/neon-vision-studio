@@ -1,0 +1,1 @@
+ALTER TABLE public.tariffs ADD COLUMN icon_url text DEFAULT NULL;
