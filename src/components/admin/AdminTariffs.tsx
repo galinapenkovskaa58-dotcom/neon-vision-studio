@@ -66,7 +66,7 @@ export default function AdminTariffs() {
 
       {showForm && (
         <div className="glass rounded-2xl p-6 mb-6 space-y-4">
-          <Input placeholder="Название *" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="bg-muted/50 rounded-xl" />
+          <Textarea placeholder="Название * (можно несколько строк)" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} className="bg-muted/50 rounded-xl" rows={2} />
           <Textarea placeholder="Описание" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="bg-muted/50 rounded-xl" />
           <Input placeholder="Цена (₽) *" type="number" value={form.price} onChange={(e) => setForm({ ...form, price: e.target.value })} className="bg-muted/50 rounded-xl" />
           <div>

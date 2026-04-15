@@ -2,6 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
 import { Check } from 'lucide-react';
+import tariffStandard from '@/assets/tariff-standard.png';
+import tariffPro from '@/assets/tariff-pro.png';
+import tariffVip from '@/assets/tariff-vip.png';
+
+const TARIFF_ICONS: Record<number, string> = {
+  0: tariffStandard,
+  1: tariffPro,
+  2: tariffVip,
+};
 
 export default function Tariffs() {
   const { data: tariffs = [] } = useQuery({
@@ -19,7 +28,6 @@ export default function Tariffs() {
   const scrollToBooking = (tariffId: string) => {
     const el = document.querySelector('#booking');
     el?.scrollIntoView({ behavior: 'smooth' });
-    // Store selected tariff for the form
     window.dispatchEvent(new CustomEvent('select-tariff', { detail: tariffId }));
   };
 
@@ -51,6 +59,7 @@ export default function Tariffs() {
             const features = Array.isArray(tariff.features) ? tariff.features as string[] : [];
             const gradient = accentClasses[i % accentClasses.length];
             const isMiddle = tariffs.length === 3 && i === 1;
+            const icon = TARIFF_ICONS[i];
 
             return (
               <motion.div
@@ -68,7 +77,14 @@ export default function Tariffs() {
                     Популярный
                   </span>
                 )}
-                <h3 className="text-2xl font-heading font-bold mb-2">{tariff.name}</h3>
+
+                {icon && (
+                  <div className="flex justify-center mb-4">
+                    <img src={icon} alt={tariff.name} width={80} height={80} loading="lazy" className="drop-shadow-lg" />
+                  </div>
+                )}
+
+                <h3 className="text-2xl font-heading font-bold mb-2 whitespace-pre-line">{tariff.name}</h3>
                 {tariff.description && (
                   <p className="text-muted-foreground text-sm mb-6">{tariff.description}</p>
                 )}
