@@ -7,6 +7,9 @@ import { Switch } from '@/components/ui/switch';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Trash2 } from 'lucide-react';
+import { useReorder } from '@/hooks/useSortable';
+import SortableItem from './SortableItem';
+import SortableWrapper from './SortableWrapper';
 
 export default function AdminTariffs() {
   const queryClient = useQueryClient();
@@ -23,15 +26,11 @@ export default function AdminTariffs() {
     },
   });
 
+  const reorder = useReorder('tariffs', ['admin-tariffs']);
+
   const save = useMutation({
     mutationFn: async () => {
-      const payload = {
-        name: form.name,
-        description: form.description || null,
-        price: parseInt(form.price),
-        features: form.features.split('\n').filter(Boolean),
-        is_active: form.is_active,
-      };
+      const payload = { name: form.name, description: form.description || null, price: parseInt(form.price), features: form.features.split('\n').filter(Boolean), is_active: form.is_active };
       if (editing) {
         const { error } = await supabase.from('tariffs').update(payload).eq('id', editing.id);
         if (error) throw error;
@@ -40,20 +39,12 @@ export default function AdminTariffs() {
         if (error) throw error;
       }
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-tariffs'] });
-      setShowForm(false);
-      setEditing(null);
-      setForm({ name: '', description: '', price: '', features: '', is_active: true });
-    },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-tariffs'] }); setShowForm(false); setEditing(null); setForm({ name: '', description: '', price: '', features: '', is_active: true }); },
     onError: (err: any) => toast({ title: 'Ошибка', description: err.message, variant: 'destructive' }),
   });
 
   const remove = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await supabase.from('tariffs').delete().eq('id', id);
-      if (error) throw error;
-    },
+    mutationFn: async (id: string) => { const { error } = await supabase.from('tariffs').delete().eq('id', id); if (error) throw error; },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-tariffs'] }),
   });
 
@@ -87,31 +78,29 @@ export default function AdminTariffs() {
             <span className="text-sm">Активен</span>
           </div>
           <div className="flex gap-3">
-            <Button onClick={() => save.mutate()} disabled={!form.name || !form.price} className="neon-glow-btn rounded-full text-primary-foreground">
-              {editing ? 'Сохранить' : 'Добавить'}
-            </Button>
+            <Button onClick={() => save.mutate()} disabled={!form.name || !form.price} className="neon-glow-btn rounded-full text-primary-foreground">{editing ? 'Сохранить' : 'Добавить'}</Button>
             <Button variant="ghost" onClick={() => { setShowForm(false); setEditing(null); }}>Отмена</Button>
           </div>
         </div>
       )}
 
-      <div className="space-y-4">
-        {tariffs.map((t) => (
-          <div key={t.id} className="glass rounded-2xl p-6 flex items-center justify-between">
-            <div>
-              <h3 className="font-semibold">{t.name}</h3>
-              <p className="text-sm text-muted-foreground">{t.price.toLocaleString('ru-RU')} ₽</p>
-              {!t.is_active && <span className="text-xs text-destructive">Неактивен</span>}
-            </div>
-            <div className="flex gap-2">
-              <Button size="sm" variant="ghost" onClick={() => startEdit(t)}>Ред.</Button>
-              <Button size="sm" variant="ghost" className="text-destructive" onClick={() => remove.mutate(t.id)}>
-                <Trash2 size={14} />
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
+      <SortableWrapper items={tariffs} onReorder={(o, n) => reorder.mutate({ items: tariffs, oldIndex: o, newIndex: n })}>
+        <div className="space-y-4">
+          {tariffs.map((t) => (
+            <SortableItem key={t.id} id={t.id} className="glass rounded-2xl p-6 flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold">{t.name}</h3>
+                <p className="text-sm text-muted-foreground">{t.price.toLocaleString('ru-RU')} ₽</p>
+                {!t.is_active && <span className="text-xs text-destructive">Неактивен</span>}
+              </div>
+              <div className="flex gap-2">
+                <Button size="sm" variant="ghost" onClick={() => startEdit(t)}>Ред.</Button>
+                <Button size="sm" variant="ghost" className="text-destructive" onClick={() => remove.mutate(t.id)}><Trash2 size={14} /></Button>
+              </div>
+            </SortableItem>
+          ))}
+        </div>
+      </SortableWrapper>
     </div>
   );
 }
