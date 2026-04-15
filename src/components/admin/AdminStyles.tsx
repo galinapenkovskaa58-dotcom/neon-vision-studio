@@ -174,12 +174,12 @@ export default function AdminStyles() {
         </div>
       )}
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+      <div className="flex flex-wrap gap-2">
         {items.map((item) => (
-          <div key={item.id} className={`glass rounded-xl p-2 ${!item.is_visible ? 'opacity-50' : ''}`}>
+          <div key={item.id} className={`glass rounded-xl p-2 w-[220px] ${!item.is_visible ? 'opacity-50' : ''}`}>
             <div className="grid grid-cols-3 gap-1 mb-1.5">
               {[item.image_1, item.image_2, item.image_3].map((img, i) => (
-                <div key={i} className="aspect-[3/4] rounded-md overflow-hidden bg-muted/30">
+                <div key={i} className="h-16 rounded-md overflow-hidden bg-muted/30">
                   {img ? (
                     <img src={img} alt="" className="w-full h-full object-cover" />
                   ) : (
@@ -188,10 +188,10 @@ export default function AdminStyles() {
                 </div>
               ))}
             </div>
-            <div className="flex items-center justify-between">
-              <div className="min-w-0">
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0 flex-1">
                 <span className="text-[10px] text-muted-foreground block truncate">{(item as any).category}</span>
-                <h3 className="font-heading font-bold text-xs truncate">{item.title}</h3>
+                <h3 className="font-heading font-bold text-xs leading-tight truncate">{item.title}</h3>
               </div>
               <div className="flex gap-0.5 shrink-0">
                 <Button size="icon" variant="ghost" className="h-6 w-6" onClick={() => toggleVisibility.mutate({ id: item.id, is_visible: !item.is_visible })}>
