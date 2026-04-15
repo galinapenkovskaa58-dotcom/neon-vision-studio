@@ -11,7 +11,7 @@ export default function AdminStyles() {
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<any>(null);
-  const [form, setForm] = useState({ category: '', title: '', image_1: '', image_2: '', image_3: '', is_visible: true });
+  const [form, setForm] = useState({ category: '', title: '', description: '', image_1: '', image_2: '', image_3: '', is_visible: true });
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
   const fileRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
 
