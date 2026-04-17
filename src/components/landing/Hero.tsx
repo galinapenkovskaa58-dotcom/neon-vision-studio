@@ -1,10 +1,18 @@
 import { motion } from 'framer-motion';
-import { Check } from 'lucide-react';
+import { Check, Camera, Film, Music, Code2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const trustBadges = [
   '250+ проектов',
   'AI полного цикла',
   'От идеи до результата',
+];
+
+const directions = [
+  { icon: Camera, label: 'Нейрофото', color: 'text-neon-cyan', to: '/neurophoto' },
+  { icon: Film, label: 'AI-видео', color: 'text-neon-pink', to: '/ai-video' },
+  { icon: Music, label: 'AI-музыка', color: 'text-neon-purple', to: '/songs' },
+  { icon: Code2, label: 'Вейб-кодинг', color: 'text-neon-blue', to: '/vibe-coding' },
 ];
 
 export default function Hero() {
@@ -93,6 +101,35 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
+
+      {/* Marquee with directions — full width edge to edge */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 1 }}
+        className="relative z-10 mt-16 w-full overflow-hidden"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)',
+        }}
+      >
+        <motion.div
+          animate={{ x: ['0%', '-50%'] }}
+          transition={{ repeat: Infinity, duration: 30, ease: 'linear' }}
+          className="flex gap-4 w-max"
+        >
+          {[...directions, ...directions, ...directions, ...directions].map((d, i) => (
+            <Link
+              key={i}
+              to={d.to}
+              className="glass flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 hover:border-white/30 transition-all hover:scale-105 shrink-0"
+            >
+              <d.icon className={`w-5 h-5 ${d.color}`} />
+              <span className="font-medium whitespace-nowrap">{d.label}</span>
+            </Link>
+          ))}
+        </motion.div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div

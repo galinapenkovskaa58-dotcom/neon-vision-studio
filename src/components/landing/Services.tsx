@@ -1,13 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Camera, Film, Music, Code, Code2 } from 'lucide-react';
-
-const directions = [
-  { icon: Camera, label: 'Нейрофото', color: 'text-neon-cyan', to: '/neurophoto' },
-  { icon: Film, label: 'AI-видео', color: 'text-neon-pink', to: '/ai-video' },
-  { icon: Music, label: 'AI-музыка', color: 'text-neon-purple', to: '/songs' },
-  { icon: Code2, label: 'Вейб-кодинг', color: 'text-neon-blue', to: '/vibe-coding' },
-];
+import { Camera, Film, Music, Code } from 'lucide-react';
 
 const services = [
   {
@@ -81,36 +74,6 @@ export default function Services() {
             </motion.div>
           ))}
         </div>
-
-        {/* Marquee with directions */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="relative mt-16 w-full overflow-hidden"
-          style={{
-            maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
-            WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
-          }}
-        >
-          <motion.div
-            animate={{ x: ['0%', '-50%'] }}
-            transition={{ repeat: Infinity, duration: 25, ease: 'linear' }}
-            className="flex gap-4 w-max"
-          >
-            {[...directions, ...directions, ...directions].map((d, i) => (
-              <Link
-                key={i}
-                to={d.to}
-                className="glass flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 hover:border-white/30 transition-all hover:scale-105 shrink-0"
-              >
-                <d.icon className={`w-5 h-5 ${d.color}`} />
-                <span className="font-medium whitespace-nowrap">{d.label}</span>
-              </Link>
-            ))}
-          </motion.div>
-        </motion.div>
       </div>
     </section>
   );
