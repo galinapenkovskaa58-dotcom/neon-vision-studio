@@ -10,7 +10,7 @@ import { useReorder } from '@/hooks/useSortable';
 import SortableItem from './SortableItem';
 import SortableWrapper from './SortableWrapper';
 
-export default function AdminPortfolio() {
+export default function AdminPortfolio({ service = 'neurophoto' }: { service?: string }) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
@@ -19,14 +19,14 @@ export default function AdminPortfolio() {
   const [uploading, setUploading] = useState(false);
 
   const { data: items = [] } = useQuery({
-    queryKey: ['admin-portfolio'],
+    queryKey: ['admin-portfolio', service],
     queryFn: async () => {
-      const { data } = await supabase.from('portfolio').select('*').order('sort_order');
+      const { data } = await supabase.from('portfolio').select('*').eq('service', service).order('sort_order');
       return data || [];
     },
   });
 
-  const reorder = useReorder('portfolio', ['admin-portfolio']);
+  const reorder = useReorder('portfolio', ['admin-portfolio', service]);
 
   const uploadImage = async (file: File) => {
     setUploading(true);
@@ -45,17 +45,17 @@ export default function AdminPortfolio() {
         const { error } = await supabase.from('portfolio').update(form).eq('id', editing.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('portfolio').insert({ ...form, sort_order: items.length });
+        const { error } = await supabase.from('portfolio').insert({ ...form, sort_order: items.length, service } as any);
         if (error) throw error;
       }
     },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-portfolio'] }); setShowForm(false); setEditing(null); setForm({ title: '', description: '', category: '', image_url: '' }); },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-portfolio', service] }); setShowForm(false); setEditing(null); setForm({ title: '', description: '', category: '', image_url: '' }); },
     onError: (err: any) => toast({ title: 'Ошибка', description: err.message, variant: 'destructive' }),
   });
 
   const remove = useMutation({
     mutationFn: async (id: string) => { const { error } = await supabase.from('portfolio').delete().eq('id', id); if (error) throw error; },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-portfolio'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-portfolio', service] }),
   });
 
   const startEdit = (item: any) => {
