@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import { Sparkles, Users, Layers, Award } from 'lucide-react';
 
 const stats = [
-  { icon: Sparkles, value: 250, suffix: '+', label: 'Проектов', color: 'neon-cyan' },
+  { icon: Sparkles, value: 100, suffix: '+', label: 'Проектов', color: 'neon-cyan' },
   { icon: Users, value: 120, suffix: '+', label: 'Клиентов', color: 'neon-blue' },
   { icon: Layers, value: 4, suffix: '', label: 'Направления', color: 'neon-purple' },
   { icon: Award, value: 3, suffix: ' года', label: 'На рынке', color: 'neon-pink' },
