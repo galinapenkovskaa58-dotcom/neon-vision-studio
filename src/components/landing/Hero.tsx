@@ -1,12 +1,6 @@
 import { motion } from 'framer-motion';
-import { Check, Camera, Film, Music, Code2 } from 'lucide-react';
+import { Camera, Film, Music, Code2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-const trustBadges = [
-  '250+ проектов',
-  'AI полного цикла',
-  'От идеи до результата',
-];
 
 const directions = [
   { icon: Camera, label: 'Нейрофото', color: 'text-neon-cyan', to: '/neurophoto' },
