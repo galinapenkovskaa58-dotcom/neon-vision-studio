@@ -33,7 +33,6 @@ const pageNavItems: Record<string, { label: string; anchor: string }[]> = {
   ],
   '/': [
     { label: 'О студии', anchor: '#about' },
-    { label: 'Услуги', anchor: '#services' },
     { label: 'Процесс', anchor: '#process' },
     { label: 'Отзывы', anchor: '#reviews' },
   ],
