@@ -1,13 +1,4 @@
 import { motion } from 'framer-motion';
-import { Camera, Film, Music, Code2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-
-const directions = [
-  { icon: Camera, label: 'Нейрофото', color: 'text-neon-cyan', to: '/neurophoto' },
-  { icon: Film, label: 'AI-видео', color: 'text-neon-pink', to: '/ai-video' },
-  { icon: Music, label: 'AI-музыка', color: 'text-neon-purple', to: '/songs' },
-  { icon: Code2, label: 'Вейб-кодинг', color: 'text-neon-blue', to: '/vibe-coding' },
-];
 
 export default function Hero() {
   const scrollToBooking = () => {
