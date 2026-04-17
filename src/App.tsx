@@ -13,6 +13,7 @@ import Offer from "./pages/Offer";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import ScrollToTopButton from "./components/ScrollToTopButton";
+import HashScroll from "./components/HashScroll";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <HashScroll />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/neurophoto" element={<Neurophoto />} />
