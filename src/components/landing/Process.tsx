@@ -149,6 +149,7 @@ export default function Process() {
               const isTarget = activeFlight?.to === i;
               const isIdleStarter = isVisible && phase === -1 && i === 0;
               const isFinal = isVisible && phase === 3 && i === 3;
+              const isAmbientBlink = !reduceMotion && isVisible && (i === 1 || i === 2) && !isSource && !isTarget;
               const sourceIconHsl = activeFlight?.hsl ?? step.hsl;
               const SourceIcon = activeFlight?.icon ?? Lightbulb;
 
@@ -174,6 +175,27 @@ export default function Process() {
                     }}
                   >
                     <StepIcon className="h-8 w-8" style={{ color: `hsl(${step.hsl})` }} />
+
+                      {isAmbientBlink && (
+                        <motion.div
+                          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+                          animate={{ opacity: [0.28, 0.9, 0.28], scale: [1, 1.14, 1] }}
+                          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }}
+                        >
+                          <div
+                            className="absolute inset-[-10px] rounded-full blur-xl"
+                            style={{ background: `radial-gradient(circle, hsl(${step.hsl} / 0.55), transparent 72%)` }}
+                          />
+                          <StepIcon
+                            className="relative h-9 w-9"
+                            strokeWidth={2.35}
+                            style={{
+                              color: `hsl(${step.hsl})`,
+                              filter: `drop-shadow(0 0 10px hsl(${step.hsl} / 0.95)) drop-shadow(0 0 24px hsl(${step.hsl} / 0.7))`,
+                            }}
+                          />
+                        </motion.div>
+                      )}
 
                     <div
                       className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold"
