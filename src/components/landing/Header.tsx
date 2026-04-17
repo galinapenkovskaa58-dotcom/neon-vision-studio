@@ -252,6 +252,28 @@ export default function Header() {
                   {item.label}
                 </Link>
               ))}
+
+              {isHome && (
+                <>
+                  <p className="text-xs text-muted-foreground uppercase tracking-wider mt-3 mb-1">Отзывы</p>
+                  <button
+                    onClick={() => scrollToSection('#reviews')}
+                    className="text-left text-foreground/80 hover:text-foreground py-2 pl-3"
+                  >
+                    Все отзывы
+                  </button>
+                  {serviceItems.map((item) => (
+                    <Link
+                      key={`reviews-${item.href}`}
+                      to={`${item.href}#reviews`}
+                      onClick={() => setMobileOpen(false)}
+                      className="text-left text-foreground/80 hover:text-foreground py-2 pl-3"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                </>
+              )}
               {isAdmin && (
                 <button
                   onClick={() => { setMobileOpen(false); navigate('/admin'); }}
