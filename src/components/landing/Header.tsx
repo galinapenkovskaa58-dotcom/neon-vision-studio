@@ -41,11 +41,14 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [reviewsOpen, setReviewsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const reviewsRef = useRef<HTMLDivElement>(null);
   const { isAdmin } = useAdmin();
   const navigate = useNavigate();
   const location = useLocation();
   const currentPageNav = pageNavItems[location.pathname] || [];
+  const isHome = location.pathname === '/';
 
   const scrollToSection = (anchor: string) => {
     const el = document.querySelector(anchor);
