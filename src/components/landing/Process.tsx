@@ -21,7 +21,7 @@ const successHsl = '142 72% 50%';
 export default function Process() {
   const reduceMotion = useReducedMotion();
   const sectionRef = useRef<HTMLElement | null>(null);
-  const isInView = useInView(sectionRef, { amount: 0.45 });
+  const isInView = useInView(sectionRef, { amount: 0.12, margin: '0px 0px -18% 0px' });
   const [phase, setPhase] = useState(-1);
 
   useEffect(() => {
@@ -89,13 +89,13 @@ export default function Process() {
             {!reduceMotion && isInView && activeFlight && (
               <motion.div
                 key={`flight-${phase}`}
-                className="hidden md:block absolute pointer-events-none z-[1] -translate-x-1/2 -translate-y-1/2"
+                className="hidden md:block absolute pointer-events-none z-[30] -translate-x-1/2 -translate-y-1/2"
                 style={{ top: '40px' }}
                 initial={{ left: positions[activeFlight.from], opacity: 0, scale: 0.15 }}
                 animate={{
                   left: positions[activeFlight.to],
-                  opacity: [0, 1, 1, 0.08],
-                  scale: [0.15, 1, 1, 0.5],
+                  opacity: [0, 1, 1, 0.02],
+                  scale: [0.15, 1.12, 1.05, 0.45],
                 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 1.7, times: [0, 0.14, 0.82, 1], ease: 'easeInOut' }}
@@ -112,7 +112,7 @@ export default function Process() {
                     }}
                   />
                   <activeFlight.icon
-                    className="relative w-10 h-10"
+                    className="relative w-12 h-12"
                     strokeWidth={2.3}
                     style={{
                       color: `hsl(${activeFlight.hsl})`,
@@ -148,6 +148,28 @@ export default function Process() {
                       boxShadow: isIncoming || isFinale ? `0 0 30px hsl(${step.hsl} / 0.7), 0 0 60px hsl(${step.hsl} / 0.4)` : undefined,
                     }}
                   >
+                    {!reduceMotion && !isInView && i === 0 && (
+                      <motion.div
+                        className="absolute inset-0 flex items-center justify-center"
+                        initial={{ opacity: 0.85, scale: 1 }}
+                        animate={{ opacity: [0.72, 1, 0.72], scale: [1, 1.18, 1] }}
+                        transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                      >
+                        <div
+                          className="absolute inset-[-12px] rounded-full blur-xl"
+                          style={{ background: `radial-gradient(circle, hsl(${steps[0].hsl} / 0.62), transparent 72%)` }}
+                        />
+                        <Lightbulb
+                          className="relative w-10 h-10"
+                          strokeWidth={2.4}
+                          style={{
+                            color: `hsl(${steps[0].hsl})`,
+                            filter: `drop-shadow(0 0 10px hsl(${steps[0].hsl} / 0.95)) drop-shadow(0 0 26px hsl(${steps[0].hsl} / 0.7))`,
+                          }}
+                        />
+                      </motion.div>
+                    )}
+
                     <step.icon className="w-8 h-8" style={{ color: `hsl(${step.hsl})` }} />
 
                     <div
