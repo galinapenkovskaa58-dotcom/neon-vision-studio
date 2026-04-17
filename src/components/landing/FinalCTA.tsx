@@ -23,7 +23,7 @@ export default function FinalCTA() {
 
           <div className="relative z-10 px-6 py-16 md:px-16 md:py-20 text-center">
             <h2 className="text-3xl md:text-5xl lg:text-6xl font-heading font-bold mb-6 leading-tight">
-              Готовы оживить <br className="hidden md:block" />
+              Готовы воплотить <br className="hidden md:block" />
               <span className="gradient-text">вашу идею?</span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-xl mx-auto mb-10">
