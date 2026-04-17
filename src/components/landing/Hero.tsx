@@ -1,12 +1,6 @@
 import { motion } from 'framer-motion';
-import { Check, Camera, Film, Music, Code2 } from 'lucide-react';
+import { Camera, Film, Music, Code2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-
-const trustBadges = [
-  '250+ проектов',
-  'AI полного цикла',
-  'От идеи до результата',
-];
 
 const directions = [
   { icon: Camera, label: 'Нейрофото', color: 'text-neon-cyan', to: '/neurophoto' },
@@ -85,20 +79,6 @@ export default function Hero() {
             </button>
           </motion.div>
 
-          {/* Trust badges */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-sm text-muted-foreground"
-          >
-            {trustBadges.map((b) => (
-              <div key={b} className="flex items-center gap-1.5">
-                <Check className="w-4 h-4 text-neon-cyan" />
-                <span>{b}</span>
-              </div>
-            ))}
-          </motion.div>
         </div>
       </div>
 
