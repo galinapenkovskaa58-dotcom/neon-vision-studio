@@ -1,6 +1,6 @@
-import { motion, AnimatePresence, useReducedMotion, useInView } from 'framer-motion';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Lightbulb, PenTool, Bot, CheckCircle2 } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const steps = [
   { icon: Lightbulb, title: 'Идея', desc: 'Обсуждаем задачу, цели и видение результата', hsl: '190 100% 61%' },
@@ -20,12 +20,10 @@ const successHsl = '142 72% 50%';
 
 export default function Process() {
   const reduceMotion = useReducedMotion();
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const isInView = useInView(sectionRef, { amount: 0.12, margin: '0px 0px -18% 0px' });
   const [phase, setPhase] = useState(-1);
 
   useEffect(() => {
-    if (reduceMotion || !isInView) {
+    if (reduceMotion) {
       setPhase(-1);
       return;
     }
@@ -36,15 +34,17 @@ export default function Process() {
     const handoffDelay = 220;
     const finaleDuration = 2600;
     const stepDuration = travelDuration + handoffDelay;
-    const fullCycle = stepDuration * flights.length + finaleDuration;
+    const idleDuration = 260;
+    const fullCycle = idleDuration + stepDuration * flights.length + finaleDuration;
 
     const cycle = () => {
       if (cancelled) return;
 
-      setPhase(0);
-      timeouts.push(setTimeout(() => setPhase(1), stepDuration));
-      timeouts.push(setTimeout(() => setPhase(2), stepDuration * 2));
-      timeouts.push(setTimeout(() => setPhase(3), stepDuration * 3));
+      setPhase(-1);
+      timeouts.push(setTimeout(() => setPhase(0), idleDuration));
+      timeouts.push(setTimeout(() => setPhase(1), idleDuration + stepDuration));
+      timeouts.push(setTimeout(() => setPhase(2), idleDuration + stepDuration * 2));
+      timeouts.push(setTimeout(() => setPhase(3), idleDuration + stepDuration * 3));
       timeouts.push(setTimeout(cycle, fullCycle));
     };
 
@@ -54,12 +54,12 @@ export default function Process() {
       cancelled = true;
       timeouts.forEach(clearTimeout);
     };
-  }, [reduceMotion, isInView]);
+  }, [reduceMotion]);
 
   const activeFlight = phase >= 0 && phase < flights.length ? flights[phase] : null;
 
   return (
-    <section ref={sectionRef} id="process" className="py-24 relative overflow-hidden">
+    <section id="process" className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -86,10 +86,10 @@ export default function Process() {
           />
 
           <AnimatePresence mode="wait">
-            {!reduceMotion && isInView && activeFlight && (
+            {!reduceMotion && activeFlight && (
               <motion.div
                 key={`flight-${phase}`}
-                className="hidden md:block absolute pointer-events-none z-[30] -translate-x-1/2 -translate-y-1/2"
+                className="hidden md:block absolute pointer-events-none z-[40] -translate-x-1/2 -translate-y-1/2"
                 style={{ top: '40px' }}
                 initial={{ left: positions[activeFlight.from], opacity: 0, scale: 0.15 }}
                 animate={{
@@ -126,8 +126,9 @@ export default function Process() {
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 relative">
             {steps.map((step, i) => {
-              const isIncoming = !reduceMotion && isInView && activeFlight?.to === i;
-              const isFinale = !reduceMotion && isInView && phase === 3 && i === 3;
+              const isSource = !reduceMotion && activeFlight?.from === i;
+              const isIncoming = !reduceMotion && activeFlight?.to === i;
+              const isFinale = !reduceMotion && phase === 3 && i === 3;
 
               return (
                 <motion.div
@@ -139,16 +140,64 @@ export default function Process() {
                   className="flex flex-col items-center text-center"
                 >
                   <motion.div
-                    animate={isIncoming || isFinale ? { scale: 1.08 } : { scale: 1 }}
+                    animate={isSource || isIncoming || isFinale ? { scale: 1.08 } : { scale: 1 }}
                     transition={{ duration: 0.3 }}
                     className="relative w-20 h-20 rounded-full glass-strong border-2 flex items-center justify-center mb-5 z-10 md:animate-glow-pulse"
                     style={{
                       animationDelay: `${i * 0.4}s`,
                       borderColor: `hsl(${step.hsl} / 0.4)`,
-                      boxShadow: isIncoming || isFinale ? `0 0 30px hsl(${step.hsl} / 0.7), 0 0 60px hsl(${step.hsl} / 0.4)` : undefined,
+                      boxShadow: isSource || isIncoming || isFinale ? `0 0 30px hsl(${step.hsl} / 0.7), 0 0 60px hsl(${step.hsl} / 0.4)` : undefined,
                     }}
                   >
-                    {!reduceMotion && !isInView && i === 0 && (
+                    <AnimatePresence>
+                      {!reduceMotion && phase === -1 && i === 0 && (
+                        <motion.div
+                          className="absolute inset-0 flex items-center justify-center"
+                          initial={{ opacity: 0.85, scale: 1 }}
+                          animate={{ opacity: [0.72, 1, 0.72], scale: [1, 1.18, 1] }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+                        >
+                          <div
+                            className="absolute inset-[-12px] rounded-full blur-xl"
+                            style={{ background: `radial-gradient(circle, hsl(${steps[0].hsl} / 0.62), transparent 72%)` }}
+                          />
+                          <Lightbulb
+                            className="relative w-10 h-10"
+                            strokeWidth={2.4}
+                            style={{
+                              color: `hsl(${steps[0].hsl})`,
+                              filter: `drop-shadow(0 0 10px hsl(${steps[0].hsl} / 0.95)) drop-shadow(0 0 26px hsl(${steps[0].hsl} / 0.7))`,
+                            }}
+                          />
+                        </motion.div>
+                      )}
+
+                      {!reduceMotion && isSource && activeFlight && (
+                        <motion.div
+                          className="absolute inset-0 flex items-center justify-center"
+                          initial={{ scale: 1, opacity: 0.15 }}
+                          animate={{ scale: [1, 1.32, 1.58], opacity: [0.15, 1, 0] }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.55, ease: 'easeOut' }}
+                        >
+                          <div
+                            className="absolute inset-[-12px] rounded-full blur-xl"
+                            style={{ background: `radial-gradient(circle, hsl(${activeFlight.hsl} / 0.7), transparent 72%)` }}
+                          />
+                          <activeFlight.icon
+                            className="relative w-10 h-10"
+                            strokeWidth={2.4}
+                            style={{
+                              color: `hsl(${activeFlight.hsl})`,
+                              filter: `drop-shadow(0 0 10px hsl(${activeFlight.hsl} / 0.95)) drop-shadow(0 0 26px hsl(${activeFlight.hsl} / 0.75))`,
+                            }}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {!reduceMotion && phase === -1 && i === 0 && (
                       <motion.div
                         className="absolute inset-0 flex items-center justify-center"
                         initial={{ opacity: 0.85, scale: 1 }}
