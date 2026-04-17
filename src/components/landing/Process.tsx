@@ -149,7 +149,8 @@ export default function Process() {
               const isTarget = activeFlight?.to === i;
               const isIdleStarter = isVisible && phase === -1 && i === 0;
               const isFinal = isVisible && phase === 3 && i === 3;
-              const isAmbientBlink = !reduceMotion && (i === 1 || i === 2);
+              const isSelectedBlink = !reduceMotion && i === 1;
+              const isAmbientBlink = !reduceMotion && i === 2;
               const sourceIconHsl = activeFlight?.hsl ?? step.hsl;
               const SourceIcon = activeFlight?.icon ?? Lightbulb;
 
@@ -164,50 +165,61 @@ export default function Process() {
                 >
                   <motion.div
                     animate={
-                      isSource || isTarget || isFinal
+                        isSource || isTarget || isFinal
                         ? { scale: 1.08 }
+                          : isSelectedBlink
+                            ? { scale: [1, 1.12, 1] }
                         : isAmbientBlink
                           ? { scale: [1, 1.08, 1] }
                           : { scale: 1 }
                     }
-                    transition={
-                      isAmbientBlink && !isSource && !isTarget && !isFinal
-                        ? { duration: 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }
-                        : { duration: 0.3 }
-                    }
+                      transition={
+                        (isSelectedBlink || isAmbientBlink) && !isSource && !isTarget && !isFinal
+                          ? { duration: isSelectedBlink ? 1.05 : 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }
+                          : { duration: 0.3 }
+                      }
                     className="relative z-10 mb-5 flex h-20 w-20 items-center justify-center rounded-full glass-strong border-2 md:animate-glow-pulse"
                     style={{
                       animationDelay: `${i * 0.35}s`,
                       borderColor: `hsl(${step.hsl} / 0.42)`,
-                      boxShadow: isSource || isTarget || isFinal || isAmbientBlink
-                        ? `0 0 32px hsl(${step.hsl} / 0.78), 0 0 72px hsl(${step.hsl} / 0.42)`
-                        : undefined,
+                       boxShadow:
+                         isSource || isTarget || isFinal || isSelectedBlink || isAmbientBlink
+                           ? `0 0 32px hsl(${step.hsl} / 0.78), 0 0 72px hsl(${step.hsl} / 0.42)`
+                           : undefined,
                     }}
                   >
-                    {isAmbientBlink && (
+                    {(isSelectedBlink || isAmbientBlink) && (
                       <motion.div
                         className="pointer-events-none absolute inset-0 rounded-full"
-                        animate={{ opacity: [0.45, 1, 0.45], scale: [0.92, 1.12, 0.92] }}
-                        transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }}
+                        animate={
+                          isSelectedBlink
+                            ? { opacity: [0.4, 1, 0.4], scale: [0.9, 1.18, 0.9] }
+                            : { opacity: [0.45, 1, 0.45], scale: [0.92, 1.12, 0.92] }
+                        }
+                        transition={{ duration: isSelectedBlink ? 1.05 : 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }}
                         style={{
-                          background: `radial-gradient(circle, hsl(${step.hsl} / 0.34), transparent 68%)`,
-                          boxShadow: `0 0 28px hsl(${step.hsl} / 0.6), 0 0 56px hsl(${step.hsl} / 0.36)`,
+                          background: `radial-gradient(circle, hsl(${step.hsl} / ${isSelectedBlink ? '0.42' : '0.34'}), transparent 68%)`,
+                          boxShadow: isSelectedBlink
+                            ? `0 0 34px hsl(${step.hsl} / 0.72), 0 0 68px hsl(${step.hsl} / 0.42)`
+                            : `0 0 28px hsl(${step.hsl} / 0.6), 0 0 56px hsl(${step.hsl} / 0.36)`,
                         }}
                       />
                     )}
 
                     <motion.div
                       className="relative z-[1]"
-                      animate={
-                        isAmbientBlink && !isSource && !isTarget && !isFinal
-                          ? { opacity: [0.5, 1, 0.5], scale: [1, 1.18, 1] }
-                          : { opacity: 1, scale: 1 }
-                      }
-                      transition={
-                        isAmbientBlink && !isSource && !isTarget && !isFinal
-                          ? { duration: 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }
-                          : { duration: 0.2 }
-                      }
+                        animate={
+                          (isSelectedBlink || isAmbientBlink) && !isSource && !isTarget && !isFinal
+                            ? isSelectedBlink
+                              ? { opacity: [0.38, 1, 0.38], scale: [1, 1.24, 1] }
+                              : { opacity: [0.5, 1, 0.5], scale: [1, 1.18, 1] }
+                            : { opacity: 1, scale: 1 }
+                        }
+                        transition={
+                          (isSelectedBlink || isAmbientBlink) && !isSource && !isTarget && !isFinal
+                            ? { duration: isSelectedBlink ? 1.05 : 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }
+                            : { duration: 0.2 }
+                        }
                     >
                       <StepIcon className="h-8 w-8" style={{ color: `hsl(${step.hsl})` }} />
                     </motion.div>
