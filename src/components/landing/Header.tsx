@@ -134,6 +134,47 @@ export default function Header() {
             </AnimatePresence>
           </div>
 
+          {/* Reviews dropdown (home only) */}
+          {isHome && (
+            <div ref={reviewsRef} className="relative">
+              <button
+                onClick={() => setReviewsOpen(!reviewsOpen)}
+                className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors flex items-center gap-1"
+              >
+                Отзывы
+                <ChevronDown size={14} className={`transition-transform ${reviewsOpen ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {reviewsOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-60 glass-strong rounded-xl border border-border/30 overflow-hidden"
+                  >
+                    <button
+                      onClick={() => { setReviewsOpen(false); scrollToSection('#reviews'); }}
+                      className="block w-full text-left px-5 py-3 text-sm text-foreground/80 hover:text-foreground hover:bg-card/50 transition-colors border-b border-border/20"
+                    >
+                      Все отзывы
+                    </button>
+                    {serviceItems.map((item) => (
+                      <Link
+                        key={item.href}
+                        to={`${item.href}#reviews`}
+                        onClick={() => setReviewsOpen(false)}
+                        className="block px-5 py-3 text-sm text-foreground/80 hover:text-foreground hover:bg-card/50 transition-colors"
+                      >
+                        {item.label}
+                      </Link>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
+
           {/* Page section nav */}
           {currentPageNav.map((item) => (
             <button
