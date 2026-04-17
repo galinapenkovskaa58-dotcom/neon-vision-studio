@@ -74,6 +74,7 @@ export type Database = {
           description: string | null
           id: string
           image_url: string
+          service: string
           sort_order: number | null
           title: string
           updated_at: string | null
@@ -84,6 +85,7 @@ export type Database = {
           description?: string | null
           id?: string
           image_url: string
+          service?: string
           sort_order?: number | null
           title: string
           updated_at?: string | null
@@ -94,6 +96,7 @@ export type Database = {
           description?: string | null
           id?: string
           image_url?: string
+          service?: string
           sort_order?: number | null
           title?: string
           updated_at?: string | null
@@ -108,6 +111,7 @@ export type Database = {
           is_visible: boolean | null
           photo_url: string | null
           rating: number | null
+          service: string
           sort_order: number | null
           text: string
         }
@@ -118,6 +122,7 @@ export type Database = {
           is_visible?: boolean | null
           photo_url?: string | null
           rating?: number | null
+          service?: string
           sort_order?: number | null
           text: string
         }
@@ -128,6 +133,7 @@ export type Database = {
           is_visible?: boolean | null
           photo_url?: string | null
           rating?: number | null
+          service?: string
           sort_order?: number | null
           text?: string
         }
@@ -146,6 +152,7 @@ export type Database = {
           image_2: string | null
           image_3: string | null
           is_visible: boolean | null
+          service: string
           sort_order: number | null
           title: string
           updated_at: string | null
@@ -162,6 +169,7 @@ export type Database = {
           image_2?: string | null
           image_3?: string | null
           is_visible?: boolean | null
+          service?: string
           sort_order?: number | null
           title: string
           updated_at?: string | null
@@ -178,6 +186,7 @@ export type Database = {
           image_2?: string | null
           image_3?: string | null
           is_visible?: boolean | null
+          service?: string
           sort_order?: number | null
           title?: string
           updated_at?: string | null
@@ -194,6 +203,7 @@ export type Database = {
           is_active: boolean | null
           name: string
           price: number
+          service: string
           sort_order: number | null
           updated_at: string | null
         }
@@ -206,6 +216,7 @@ export type Database = {
           is_active?: boolean | null
           name: string
           price: number
+          service?: string
           sort_order?: number | null
           updated_at?: string | null
         }
@@ -218,6 +229,7 @@ export type Database = {
           is_active?: boolean | null
           name?: string
           price?: number
+          service?: string
           sort_order?: number | null
           updated_at?: string | null
         }
