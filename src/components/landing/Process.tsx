@@ -149,7 +149,7 @@ export default function Process() {
               const isTarget = activeFlight?.to === i;
               const isIdleStarter = isVisible && phase === -1 && i === 0;
               const isFinal = isVisible && phase === 3 && i === 3;
-              const isAmbientBlink = !reduceMotion && isVisible && (i === 1 || i === 2) && !isSource && !isTarget;
+              const isAmbientBlink = !reduceMotion && isVisible && (i === 1 || i === 2);
               const sourceIconHsl = activeFlight?.hsl ?? step.hsl;
               const SourceIcon = activeFlight?.icon ?? Lightbulb;
 
@@ -163,39 +163,54 @@ export default function Process() {
                   className="flex flex-col items-center text-center"
                 >
                   <motion.div
-                    animate={isSource || isTarget || isFinal ? { scale: 1.08 } : { scale: 1 }}
-                    transition={{ duration: 0.3 }}
+                    animate={
+                      isSource || isTarget || isFinal
+                        ? { scale: 1.08 }
+                        : isAmbientBlink
+                          ? { scale: [1, 1.06, 1] }
+                          : { scale: 1 }
+                    }
+                    transition={
+                      isAmbientBlink && !isSource && !isTarget && !isFinal
+                        ? { duration: 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }
+                        : { duration: 0.3 }
+                    }
                     className="relative z-10 mb-5 flex h-20 w-20 items-center justify-center rounded-full glass-strong border-2 md:animate-glow-pulse"
                     style={{
                       animationDelay: `${i * 0.35}s`,
                       borderColor: `hsl(${step.hsl} / 0.42)`,
-                      boxShadow: isSource || isTarget || isFinal
+                      boxShadow: isSource || isTarget || isFinal || isAmbientBlink
                         ? `0 0 28px hsl(${step.hsl} / 0.7), 0 0 60px hsl(${step.hsl} / 0.35)`
                         : undefined,
                     }}
                   >
-                    <StepIcon className="h-8 w-8" style={{ color: `hsl(${step.hsl})` }} />
+                    {isAmbientBlink && (
+                      <motion.div
+                        className="pointer-events-none absolute inset-0 rounded-full"
+                        animate={{ opacity: [0.3, 0.95, 0.3], scale: [0.96, 1.08, 0.96] }}
+                        transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }}
+                        style={{
+                          background: `radial-gradient(circle, hsl(${step.hsl} / 0.2), transparent 68%)`,
+                          boxShadow: `0 0 24px hsl(${step.hsl} / 0.5), 0 0 48px hsl(${step.hsl} / 0.3)`,
+                        }}
+                      />
+                    )}
 
-                      {isAmbientBlink && (
-                        <motion.div
-                          className="pointer-events-none absolute inset-0 flex items-center justify-center"
-                          animate={{ opacity: [0.28, 0.9, 0.28], scale: [1, 1.14, 1] }}
-                          transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut', delay: i * 0.15 }}
-                        >
-                          <div
-                            className="absolute inset-[-10px] rounded-full blur-xl"
-                            style={{ background: `radial-gradient(circle, hsl(${step.hsl} / 0.55), transparent 72%)` }}
-                          />
-                          <StepIcon
-                            className="relative h-9 w-9"
-                            strokeWidth={2.35}
-                            style={{
-                              color: `hsl(${step.hsl})`,
-                              filter: `drop-shadow(0 0 10px hsl(${step.hsl} / 0.95)) drop-shadow(0 0 24px hsl(${step.hsl} / 0.7))`,
-                            }}
-                          />
-                        </motion.div>
-                      )}
+                    <motion.div
+                      className="relative z-[1]"
+                      animate={
+                        isAmbientBlink && !isSource && !isTarget && !isFinal
+                          ? { opacity: [0.45, 1, 0.45], scale: [1, 1.14, 1] }
+                          : { opacity: 1, scale: 1 }
+                      }
+                      transition={
+                        isAmbientBlink && !isSource && !isTarget && !isFinal
+                          ? { duration: 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }
+                          : { duration: 0.2 }
+                      }
+                    >
+                      <StepIcon className="h-8 w-8" style={{ color: `hsl(${step.hsl})` }} />
+                    </motion.div>
 
                     <div
                       className="absolute -right-2 -top-2 flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold"
