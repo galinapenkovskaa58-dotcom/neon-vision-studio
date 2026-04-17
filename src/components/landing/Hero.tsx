@@ -1,4 +1,19 @@
 import { motion } from 'framer-motion';
+import { Check, Camera, Film, Music, Code2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+const trustBadges = [
+  '250+ проектов',
+  'AI полного цикла',
+  'От идеи до результата',
+];
+
+const directions = [
+  { icon: Camera, label: 'Нейрофото', color: 'text-neon-cyan', to: '/neurophoto' },
+  { icon: Film, label: 'AI-видео', color: 'text-neon-pink', to: '/ai-video' },
+  { icon: Music, label: 'AI-музыка', color: 'text-neon-purple', to: '/songs' },
+  { icon: Code2, label: 'Вейб-кодинг', color: 'text-neon-blue', to: '/vibe-coding' },
+];
 
 export default function Hero() {
   const scrollToBooking = () => {
@@ -68,15 +83,53 @@ export default function Hero() {
             >
               Наши услуги
             </button>
-            <button
-              onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
-              className="glass px-10 py-4 rounded-full text-lg font-semibold hover:bg-card/80 transition-all hidden"
-            >
-              Смотреть работы
-            </button>
+          </motion.div>
+
+          {/* Trust badges */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mt-8 text-sm text-muted-foreground"
+          >
+            {trustBadges.map((b) => (
+              <div key={b} className="flex items-center gap-1.5">
+                <Check className="w-4 h-4 text-neon-cyan" />
+                <span>{b}</span>
+              </div>
+            ))}
           </motion.div>
         </div>
       </div>
+
+      {/* Marquee with directions */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8, delay: 1 }}
+        className="relative z-10 mt-16 w-full overflow-hidden"
+        style={{
+          maskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent, black 10%, black 90%, transparent)',
+        }}
+      >
+        <motion.div
+          animate={{ x: ['0%', '-50%'] }}
+          transition={{ repeat: Infinity, duration: 25, ease: 'linear' }}
+          className="flex gap-4 w-max"
+        >
+          {[...directions, ...directions, ...directions].map((d, i) => (
+            <Link
+              key={i}
+              to={d.to}
+              className="glass flex items-center gap-3 px-6 py-3 rounded-full border border-white/10 hover:border-white/30 transition-all hover:scale-105 shrink-0"
+            >
+              <d.icon className={`w-5 h-5 ${d.color}`} />
+              <span className="font-medium whitespace-nowrap">{d.label}</span>
+            </Link>
+          ))}
+        </motion.div>
+      </motion.div>
 
       {/* Scroll indicator */}
       <motion.div
