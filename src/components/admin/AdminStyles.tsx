@@ -9,7 +9,7 @@ import { useReorder } from '@/hooks/useSortable';
 import SortableItem from './SortableItem';
 import SortableWrapper from './SortableWrapper';
 
-export default function AdminStyles() {
+export default function AdminStyles({ service = 'neurophoto' }: { service?: string }) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
@@ -19,14 +19,14 @@ export default function AdminStyles() {
   const fileRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
 
   const { data: items = [] } = useQuery({
-    queryKey: ['admin-styles'],
+    queryKey: ['admin-styles', service],
     queryFn: async () => {
-      const { data } = await supabase.from('styles').select('*').order('sort_order');
+      const { data } = await supabase.from('styles').select('*').eq('service', service).order('sort_order');
       return data || [];
     },
   });
 
-  const reorder = useReorder('styles', ['admin-styles', 'styles']);
+  const reorder = useReorder('styles', ['admin-styles', service, 'styles']);
 
   const uploadImage = async (file: File, slot: 'image_1' | 'image_2' | 'image_3') => {
     setUploading(prev => ({ ...prev, [slot]: true }));
@@ -58,12 +58,12 @@ export default function AdminStyles() {
         const { error } = await supabase.from('styles').update(payload).eq('id', editing.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('styles').insert({ ...payload, sort_order: items.length });
+        const { error } = await supabase.from('styles').insert({ ...payload, sort_order: items.length, service } as any);
         if (error) throw error;
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-styles'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-styles', service] });
       queryClient.invalidateQueries({ queryKey: ['styles'] });
       resetForm();
       toast({ title: editing ? 'Стиль обновлён' : 'Стиль добавлен' });
@@ -77,7 +77,7 @@ export default function AdminStyles() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-styles'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-styles', service] });
       queryClient.invalidateQueries({ queryKey: ['styles'] });
     },
   });
@@ -88,7 +88,7 @@ export default function AdminStyles() {
       if (error) throw error;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['admin-styles'] });
+      queryClient.invalidateQueries({ queryKey: ['admin-styles', service] });
       queryClient.invalidateQueries({ queryKey: ['styles'] });
     },
   });

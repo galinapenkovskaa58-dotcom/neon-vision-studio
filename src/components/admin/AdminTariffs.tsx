@@ -11,7 +11,7 @@ import { useReorder } from '@/hooks/useSortable';
 import SortableItem from './SortableItem';
 import SortableWrapper from './SortableWrapper';
 
-export default function AdminTariffs() {
+export default function AdminTariffs({ service = 'neurophoto' }: { service?: string }) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
@@ -19,14 +19,14 @@ export default function AdminTariffs() {
   const [form, setForm] = useState({ name: '', description: '', price: '', features: '', is_active: true });
 
   const { data: tariffs = [] } = useQuery({
-    queryKey: ['admin-tariffs'],
+    queryKey: ['admin-tariffs', service],
     queryFn: async () => {
-      const { data } = await supabase.from('tariffs').select('*').order('sort_order');
+      const { data } = await supabase.from('tariffs').select('*').eq('service', service).order('sort_order');
       return data || [];
     },
   });
 
-  const reorder = useReorder('tariffs', ['admin-tariffs']);
+  const reorder = useReorder('tariffs', ['admin-tariffs', service]);
 
   const save = useMutation({
     mutationFn: async () => {
@@ -35,17 +35,17 @@ export default function AdminTariffs() {
         const { error } = await supabase.from('tariffs').update(payload).eq('id', editing.id);
         if (error) throw error;
       } else {
-        const { error } = await supabase.from('tariffs').insert({ ...payload, sort_order: tariffs.length });
+        const { error } = await supabase.from('tariffs').insert({ ...payload, sort_order: tariffs.length, service } as any);
         if (error) throw error;
       }
     },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-tariffs'] }); setShowForm(false); setEditing(null); setForm({ name: '', description: '', price: '', features: '', is_active: true }); },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ['admin-tariffs', service] }); setShowForm(false); setEditing(null); setForm({ name: '', description: '', price: '', features: '', is_active: true }); },
     onError: (err: any) => toast({ title: 'Ошибка', description: err.message, variant: 'destructive' }),
   });
 
   const remove = useMutation({
     mutationFn: async (id: string) => { const { error } = await supabase.from('tariffs').delete().eq('id', id); if (error) throw error; },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-tariffs'] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-tariffs', service] }),
   });
 
   const startEdit = (t: any) => {
