@@ -149,7 +149,7 @@ export default function Process() {
               const isTarget = activeFlight?.to === i;
               const isIdleStarter = isVisible && phase === -1 && i === 0;
               const isFinal = isVisible && phase === 3 && i === 3;
-              const isAmbientBlink = !reduceMotion && isVisible && (i === 1 || i === 2);
+              const isAmbientBlink = !reduceMotion && (i === 1 || i === 2);
               const sourceIconHsl = activeFlight?.hsl ?? step.hsl;
               const SourceIcon = activeFlight?.icon ?? Lightbulb;
 
@@ -167,7 +167,7 @@ export default function Process() {
                       isSource || isTarget || isFinal
                         ? { scale: 1.08 }
                         : isAmbientBlink
-                          ? { scale: [1, 1.06, 1] }
+                          ? { scale: [1, 1.08, 1] }
                           : { scale: 1 }
                     }
                     transition={
@@ -180,18 +180,18 @@ export default function Process() {
                       animationDelay: `${i * 0.35}s`,
                       borderColor: `hsl(${step.hsl} / 0.42)`,
                       boxShadow: isSource || isTarget || isFinal || isAmbientBlink
-                        ? `0 0 28px hsl(${step.hsl} / 0.7), 0 0 60px hsl(${step.hsl} / 0.35)`
+                        ? `0 0 32px hsl(${step.hsl} / 0.78), 0 0 72px hsl(${step.hsl} / 0.42)`
                         : undefined,
                     }}
                   >
                     {isAmbientBlink && (
                       <motion.div
                         className="pointer-events-none absolute inset-0 rounded-full"
-                        animate={{ opacity: [0.3, 0.95, 0.3], scale: [0.96, 1.08, 0.96] }}
+                        animate={{ opacity: [0.45, 1, 0.45], scale: [0.92, 1.12, 0.92] }}
                         transition={{ duration: 1.4, repeat: Infinity, ease: 'easeInOut', delay: i * 0.18 }}
                         style={{
-                          background: `radial-gradient(circle, hsl(${step.hsl} / 0.2), transparent 68%)`,
-                          boxShadow: `0 0 24px hsl(${step.hsl} / 0.5), 0 0 48px hsl(${step.hsl} / 0.3)`,
+                          background: `radial-gradient(circle, hsl(${step.hsl} / 0.34), transparent 68%)`,
+                          boxShadow: `0 0 28px hsl(${step.hsl} / 0.6), 0 0 56px hsl(${step.hsl} / 0.36)`,
                         }}
                       />
                     )}
@@ -200,7 +200,7 @@ export default function Process() {
                       className="relative z-[1]"
                       animate={
                         isAmbientBlink && !isSource && !isTarget && !isFinal
-                          ? { opacity: [0.45, 1, 0.45], scale: [1, 1.14, 1] }
+                          ? { opacity: [0.5, 1, 0.5], scale: [1, 1.18, 1] }
                           : { opacity: 1, scale: 1 }
                       }
                       transition={
