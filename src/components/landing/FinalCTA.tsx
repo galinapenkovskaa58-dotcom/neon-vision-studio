@@ -39,7 +39,7 @@ export default function FinalCTA() {
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </button>
               <a
-                href="https://t.me/nexoria"
+                href="https://t.me/Galina_Penkovskaya"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="glass px-8 py-4 rounded-full text-base font-semibold flex items-center gap-2 hover:bg-card/80 transition-all border border-border/30"
