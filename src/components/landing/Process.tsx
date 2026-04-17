@@ -1,48 +1,65 @@
-import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
-import { Lightbulb, PenTool, Sparkles, CheckCircle2 } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { motion, AnimatePresence, useReducedMotion, useInView } from 'framer-motion';
+import { Lightbulb, PenTool, Bot, CheckCircle2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
 const steps = [
-  { icon: Lightbulb, title: 'Идея', desc: 'Обсуждаем задачу, цели и видение результата', color: 'neon-cyan', hsl: '190 100% 61%' },
-  { icon: PenTool, title: 'Концепция', desc: 'Создаём мудборд, референсы и техническое задание', color: 'neon-blue', hsl: '220 100% 59%' },
-  { icon: Sparkles, title: 'AI-создание', desc: 'Генерируем, дорабатываем и шлифуем результат', color: 'neon-purple', hsl: '272 100% 65%' },
-  { icon: CheckCircle2, title: 'Результат', desc: 'Сдаём готовый проект и поддерживаем после', color: 'neon-pink', hsl: '320 100% 65%' },
+  { icon: Lightbulb, title: 'Идея', desc: 'Обсуждаем задачу, цели и видение результата', hsl: '190 100% 61%' },
+  { icon: PenTool, title: 'Концепция', desc: 'Создаём мудборд, референсы и техническое задание', hsl: '220 100% 59%' },
+  { icon: Bot, title: 'AI-создание', desc: 'Генерируем, дорабатываем и шлифуем результат', hsl: '272 100% 65%' },
+  { icon: CheckCircle2, title: 'Результат', desc: 'Сдаём готовый проект и поддерживаем после', hsl: '320 100% 65%' },
 ];
 
+const flights = [
+  { icon: Lightbulb, from: 0, to: 1, hsl: '190 100% 61%' },
+  { icon: PenTool, from: 1, to: 2, hsl: '220 100% 59%' },
+  { icon: Bot, from: 2, to: 3, hsl: '272 100% 65%' },
+] as const;
+
 const positions = ['12.5%', '37.5%', '62.5%', '87.5%'];
+const successHsl = '142 72% 50%';
 
 export default function Process() {
   const reduceMotion = useReducedMotion();
-  const [segment, setSegment] = useState(0);
-  const [isResetting, setIsResetting] = useState(false);
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isInView = useInView(sectionRef, { amount: 0.45 });
+  const [phase, setPhase] = useState(-1);
 
   useEffect(() => {
-    if (reduceMotion) return;
+    if (reduceMotion || !isInView) {
+      setPhase(-1);
+      return;
+    }
+
+    let cancelled = false;
     let timeouts: ReturnType<typeof setTimeout>[] = [];
+    const travelDuration = 1700;
+    const handoffDelay = 220;
+    const finaleDuration = 2600;
+    const stepDuration = travelDuration + handoffDelay;
+    const fullCycle = stepDuration * flights.length + finaleDuration;
 
     const cycle = () => {
-      timeouts.push(setTimeout(() => setSegment(1), 1800));
-      timeouts.push(setTimeout(() => setSegment(2), 3600));
-      timeouts.push(setTimeout(() => setSegment(3), 5400));
-      timeouts.push(setTimeout(() => {
-        setIsResetting(true);
-        setSegment(0);
-      }, 7600));
-      timeouts.push(setTimeout(() => {
-        setIsResetting(false);
-        cycle();
-      }, 7800));
+      if (cancelled) return;
+
+      setPhase(0);
+      timeouts.push(setTimeout(() => setPhase(1), stepDuration));
+      timeouts.push(setTimeout(() => setPhase(2), stepDuration * 2));
+      timeouts.push(setTimeout(() => setPhase(3), stepDuration * 3));
+      timeouts.push(setTimeout(cycle, fullCycle));
     };
+
     cycle();
 
-    return () => { timeouts.forEach(clearTimeout); };
-  }, [reduceMotion]);
+    return () => {
+      cancelled = true;
+      timeouts.forEach(clearTimeout);
+    };
+  }, [reduceMotion, isInView]);
 
-  const current = steps[segment];
-  const CurrentIcon = current.icon;
+  const activeFlight = phase >= 0 && phase < flights.length ? flights[phase] : null;
 
   return (
-    <section id="process" className="py-24 relative">
+    <section ref={sectionRef} id="process" className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -59,7 +76,6 @@ export default function Process() {
         </motion.div>
 
         <div className="relative max-w-6xl mx-auto">
-          {/* Connector line - desktop, with running shimmer */}
           <div
             className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-[2px] opacity-60"
             style={{
@@ -69,62 +85,50 @@ export default function Process() {
             }}
           />
 
-          {/* Flying capsule - desktop only */}
-          {!reduceMotion && (
-            <motion.div
-              className="hidden md:block absolute pointer-events-none z-20"
-              style={{ top: '40px', transform: 'translate(-50%, -50%)' }}
-              animate={{ left: positions[segment] }}
-              transition={isResetting ? { duration: 0 } : { duration: 1.5, ease: 'easeInOut' }}
-            >
-              <div className="relative">
-                {/* Halo */}
-                <div
-                  className="absolute inset-[-8px] rounded-2xl blur-xl"
-                  style={{
-                    background: `radial-gradient(circle, hsl(${current.hsl} / 0.6), transparent 70%)`,
-                    transition: 'background 0.4s ease',
-                  }}
-                />
-                {/* Trail glow under capsule */}
-                <div
-                  className="absolute left-1/2 top-full -translate-x-1/2 w-8 h-6 rounded-full blur-md opacity-70"
-                  style={{ background: `hsl(${current.hsl} / 0.5)` }}
-                />
-                {/* Capsule */}
-                <div
-                  className="relative w-10 h-14 rounded-2xl glass-strong border-2 flex items-center justify-center"
-                  style={{
-                    borderColor: `hsl(${current.hsl} / 0.7)`,
-                    boxShadow: `0 0 20px hsl(${current.hsl} / 0.6), 0 0 40px hsl(${current.hsl} / 0.3)`,
-                    transition: 'border-color 0.4s ease, box-shadow 0.4s ease',
-                  }}
+          <AnimatePresence mode="wait">
+            {!reduceMotion && isInView && activeFlight && (
+              <motion.div
+                key={`flight-${phase}`}
+                className="hidden md:block absolute pointer-events-none z-[1] -translate-x-1/2 -translate-y-1/2"
+                style={{ top: '40px' }}
+                initial={{ left: positions[activeFlight.from], opacity: 0, scale: 0.15 }}
+                animate={{
+                  left: positions[activeFlight.to],
+                  opacity: [0, 1, 1, 0.08],
+                  scale: [0.15, 1, 1, 0.5],
+                }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.7, times: [0, 0.14, 0.82, 1], ease: 'easeInOut' }}
+              >
+                <motion.div
+                  animate={{ y: [0, -5, 0], rotate: [-6, 6, -6] }}
+                  transition={{ duration: 1, repeat: Infinity, ease: 'easeInOut' }}
+                  className="relative"
                 >
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={segment}
-                      initial={{ scale: 0.5, opacity: 0, rotate: -90 }}
-                      animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                      exit={{ scale: 0.5, opacity: 0, rotate: 90 }}
-                      transition={{ duration: 0.25 }}
-                    >
-                      <CurrentIcon
-                        className="w-5 h-5"
-                        style={{
-                          color: `hsl(${current.hsl})`,
-                          filter: `drop-shadow(0 0 6px hsl(${current.hsl} / 0.8))`,
-                        }}
-                      />
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </div>
-            </motion.div>
-          )}
+                  <div
+                    className="absolute inset-[-18px] rounded-full blur-2xl"
+                    style={{
+                      background: `radial-gradient(circle, hsl(${activeFlight.hsl} / 0.82) 0%, hsl(${activeFlight.hsl} / 0.28) 45%, transparent 72%)`,
+                    }}
+                  />
+                  <activeFlight.icon
+                    className="relative w-10 h-10"
+                    strokeWidth={2.3}
+                    style={{
+                      color: `hsl(${activeFlight.hsl})`,
+                      filter: `drop-shadow(0 0 10px hsl(${activeFlight.hsl} / 1)) drop-shadow(0 0 28px hsl(${activeFlight.hsl} / 0.85))`,
+                    }}
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-4 relative">
             {steps.map((step, i) => {
-              const isActive = !reduceMotion && segment === i;
+              const isIncoming = !reduceMotion && isInView && activeFlight?.to === i;
+              const isFinale = !reduceMotion && isInView && phase === 3 && i === 3;
+
               return (
                 <motion.div
                   key={step.title}
@@ -135,18 +139,53 @@ export default function Process() {
                   className="flex flex-col items-center text-center"
                 >
                   <motion.div
-                    animate={isActive ? { scale: 1.08 } : { scale: 1 }}
+                    animate={isIncoming || isFinale ? { scale: 1.08 } : { scale: 1 }}
                     transition={{ duration: 0.3 }}
-                    className={`relative w-20 h-20 rounded-full glass-strong border-2 border-${step.color}/40 flex items-center justify-center mb-5 z-10 md:animate-glow-pulse`}
+                    className="relative w-20 h-20 rounded-full glass-strong border-2 flex items-center justify-center mb-5 z-10 md:animate-glow-pulse"
                     style={{
                       animationDelay: `${i * 0.4}s`,
-                      boxShadow: isActive ? `0 0 30px hsl(${step.hsl} / 0.7), 0 0 60px hsl(${step.hsl} / 0.4)` : undefined,
+                      borderColor: `hsl(${step.hsl} / 0.4)`,
+                      boxShadow: isIncoming || isFinale ? `0 0 30px hsl(${step.hsl} / 0.7), 0 0 60px hsl(${step.hsl} / 0.4)` : undefined,
                     }}
                   >
-                    <step.icon className={`w-8 h-8 text-${step.color}`} />
-                    <div className={`absolute -top-2 -right-2 w-7 h-7 rounded-full bg-${step.color} text-background text-xs font-bold flex items-center justify-center`}>
+                    <step.icon className="w-8 h-8" style={{ color: `hsl(${step.hsl})` }} />
+
+                    <div
+                      className="absolute -top-2 -right-2 w-7 h-7 rounded-full text-xs font-bold flex items-center justify-center"
+                      style={{
+                        backgroundColor: `hsl(${step.hsl})`,
+                        color: 'hsl(var(--background))',
+                      }}
+                    >
                       {i + 1}
                     </div>
+
+                    <AnimatePresence>
+                      {isFinale && (
+                        <motion.div
+                          className="absolute inset-0 flex items-center justify-center"
+                          initial={{ scale: 0.4, opacity: 0 }}
+                          animate={{ scale: [0.4, 1.45, 1, 1.08, 1], opacity: [0, 1, 1, 0.98, 0.95] }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 1.8, times: [0, 0.22, 0.45, 0.72, 1], repeat: Infinity, repeatDelay: 0.15 }}
+                        >
+                          <div
+                            className="absolute inset-[-10px] rounded-full blur-xl"
+                            style={{
+                              background: `radial-gradient(circle, hsl(${successHsl} / 0.65), transparent 70%)`,
+                            }}
+                          />
+                          <CheckCircle2
+                            className="relative w-10 h-10"
+                            strokeWidth={2.5}
+                            style={{
+                              color: `hsl(${successHsl})`,
+                              filter: `drop-shadow(0 0 12px hsl(${successHsl} / 0.95)) drop-shadow(0 0 30px hsl(${successHsl} / 0.75))`,
+                            }}
+                          />
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                   <h3 className="text-xl font-heading font-bold mb-2">{step.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed max-w-[200px]">{step.desc}</p>
