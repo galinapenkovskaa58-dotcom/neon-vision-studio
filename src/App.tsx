@@ -13,6 +13,7 @@ import Offer from "./pages/Offer";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import ScrollToTopButton from "./components/ScrollToTopButton";
+import HashScroll from "./components/HashScroll";
 
 const queryClient = new QueryClient();
 
