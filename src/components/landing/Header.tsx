@@ -74,6 +74,9 @@ export default function Header() {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setServicesOpen(false);
       }
+      if (reviewsRef.current && !reviewsRef.current.contains(e.target as Node)) {
+        setReviewsOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
