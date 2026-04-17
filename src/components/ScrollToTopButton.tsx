@@ -6,7 +6,7 @@ export default function ScrollToTopButton() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setVisible(window.scrollY > window.innerHeight);
+    const onScroll = () => setVisible(window.scrollY > window.innerHeight * 0.5);
     window.addEventListener('scroll', onScroll);
     onScroll();
     return () => window.removeEventListener('scroll', onScroll);
@@ -28,7 +28,7 @@ export default function ScrollToTopButton() {
           whileTap={{ scale: 0.95 }}
           onClick={handleClick}
           aria-label="Наверх"
-          className="fixed bottom-6 right-6 z-[60] w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-primary-foreground neon-glow-btn group"
+          className="fixed bottom-8 right-8 md:bottom-10 md:right-10 z-[60] w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center text-primary-foreground neon-glow-btn group"
         >
           <motion.span
             animate={{ y: [0, -3, 0] }}
