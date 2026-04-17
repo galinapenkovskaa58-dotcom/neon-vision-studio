@@ -1,13 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Camera, Film, Music, Code, Code2 } from 'lucide-react';
-
-const directions = [
-  { icon: Camera, label: 'Нейрофото', color: 'text-neon-cyan', to: '/neurophoto' },
-  { icon: Film, label: 'AI-видео', color: 'text-neon-pink', to: '/ai-video' },
-  { icon: Music, label: 'AI-музыка', color: 'text-neon-purple', to: '/songs' },
-  { icon: Code2, label: 'Вейб-кодинг', color: 'text-neon-blue', to: '/vibe-coding' },
-];
+import { Camera, Film, Music, Code } from 'lucide-react';
 
 const services = [
   {
