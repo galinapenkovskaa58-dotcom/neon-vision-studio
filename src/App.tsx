@@ -12,6 +12,7 @@ import Privacy from "./pages/Privacy";
 import Offer from "./pages/Offer";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
+import ScrollToTopButton from "./components/ScrollToTopButton";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
+        <ScrollToTopButton />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
