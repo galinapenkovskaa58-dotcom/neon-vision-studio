@@ -153,12 +153,6 @@ export default function Header() {
                     transition={{ duration: 0.2 }}
                     className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-60 glass-strong rounded-xl border border-border/30 overflow-hidden"
                   >
-                    <button
-                      onClick={() => { setReviewsOpen(false); scrollToSection('#reviews'); }}
-                      className="block w-full text-left px-5 py-3 text-sm text-foreground/80 hover:text-foreground hover:bg-card/50 transition-colors border-b border-border/20"
-                    >
-                      Все отзывы
-                    </button>
                     {serviceItems.map((item) => (
                       <Link
                         key={item.href}
@@ -256,12 +250,6 @@ export default function Header() {
               {isHome && (
                 <>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider mt-3 mb-1">Отзывы</p>
-                  <button
-                    onClick={() => scrollToSection('#reviews')}
-                    className="text-left text-foreground/80 hover:text-foreground py-2 pl-3"
-                  >
-                    Все отзывы
-                  </button>
                   {serviceItems.map((item) => (
                     <Link
                       key={`reviews-${item.href}`}
