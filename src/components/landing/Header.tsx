@@ -4,6 +4,7 @@ import { Menu, X, Shield, ChevronDown } from 'lucide-react';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import logoImg from '@/assets/logo-dsn.png';
+import logoImg from '@/assets/logo-dsn.png';
 
 const serviceItems = [
   { label: 'Нейрофотосессии', href: '/neurophoto' },
