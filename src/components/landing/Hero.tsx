@@ -86,12 +86,6 @@ export default function Hero() {
               src={heroImage}
               alt="DSN Nexoria — AI студия: фото, видео, музыка, сайты"
               className="relative w-full max-w-[600px] h-auto"
-              style={{
-                maskImage:
-                  'radial-gradient(ellipse 78% 82% at center, black 78%, rgba(0,0,0,0.7) 90%, transparent 100%)',
-                WebkitMaskImage:
-                  'radial-gradient(ellipse 78% 82% at center, black 78%, rgba(0,0,0,0.7) 90%, transparent 100%)',
-              }}
             />
           </motion.div>
         </div>
