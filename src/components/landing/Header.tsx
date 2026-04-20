@@ -93,7 +93,6 @@ export default function Header() {
       <div className="container mx-auto px-6 flex items-center justify-between">
         <Link to="/" onClick={handleLogoClick} aria-label="Главная" className="flex items-center transition-all duration-500" />
 
-        </Link>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">
