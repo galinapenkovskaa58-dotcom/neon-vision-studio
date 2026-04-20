@@ -81,14 +81,16 @@ export default function Hero() {
             transition={{ duration: 1, delay: 0.3 }}
             className="relative order-1 lg:order-2 flex justify-center"
           >
-            <div className="absolute inset-0 bg-gradient-radial from-neon-purple/25 via-neon-blue/10 to-transparent blur-3xl" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,hsl(var(--neon-purple)/0.18),hsl(var(--neon-blue)/0.08)_40%,transparent_70%)] blur-3xl" />
             <img
               src={heroImage}
               alt="DSN Nexoria — AI студия: фото, видео, музыка, сайты"
-              className="relative w-full max-w-[600px] h-auto drop-shadow-[0_0_60px_hsl(var(--neon-purple)/0.4)]"
+              className="relative w-full max-w-[600px] h-auto"
               style={{
-                maskImage: 'radial-gradient(ellipse at center, black 65%, transparent 95%)',
-                WebkitMaskImage: 'radial-gradient(ellipse at center, black 65%, transparent 95%)',
+                maskImage:
+                  'radial-gradient(ellipse 60% 65% at center, black 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, transparent 88%)',
+                WebkitMaskImage:
+                  'radial-gradient(ellipse 60% 65% at center, black 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, transparent 88%)',
               }}
             />
           </motion.div>
