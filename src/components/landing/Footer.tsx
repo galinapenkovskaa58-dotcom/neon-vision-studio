@@ -8,12 +8,8 @@ export default function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <div className="flex flex-col items-start gap-2 mb-3">
+            <div className="flex items-center mb-3">
               <img src={logoImg} alt="Dream Studio Nexoria" className="w-14 h-14 rounded-full" />
-              <div className="flex flex-col leading-none">
-                <span className="text-xs font-heading font-bold tracking-widest uppercase gradient-text">Dream Studio</span>
-                <span className="text-[6px] font-heading font-medium tracking-[0.35em] uppercase text-muted-foreground">— Nexoria —</span>
-              </div>
             </div>
             <p className="text-muted-foreground text-sm mt-3 max-w-xs">
               Нейрофотосессии на стыке искусства и технологий. Создаём уникальные образы с помощью ИИ.
