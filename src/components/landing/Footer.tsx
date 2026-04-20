@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Send, MessageCircle } from 'lucide-react';
+import logoImg from '@/assets/logo-dsn.png';
 
 export default function Footer() {
   return (
@@ -7,6 +8,7 @@ export default function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
+            <img src={logoImg} alt="DSN Nexoria — AI Studio" className="h-20 w-auto mb-4" />
             <p className="text-muted-foreground text-sm max-w-xs">
               Нейрофотосессии на стыке искусства и технологий. Создаём уникальные образы с помощью ИИ.
             </p>

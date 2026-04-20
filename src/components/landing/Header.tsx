@@ -91,7 +91,9 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link to="/" onClick={handleLogoClick} aria-label="Главная" className="flex items-center transition-all duration-500" />
+        <Link to="/" onClick={handleLogoClick} aria-label="Главная" className="flex items-center transition-all duration-500">
+          <img src={logoImg} alt="DSN Nexoria — AI Studio" className={`transition-all duration-500 ${scrolled ? 'h-12 md:h-16' : 'h-20 md:h-28'} w-auto`} />
+        </Link>
 
 
         {/* Desktop nav */}
