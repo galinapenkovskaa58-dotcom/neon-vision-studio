@@ -91,7 +91,7 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link to="/" onClick={handleLogoClick} className="flex flex-col items-center gap-1 transition-all duration-500">
+        <Link to="/" onClick={handleLogoClick} className="flex flex-col items-center gap-0.5 transition-all duration-500">
           <img src={logoImg} alt="Dream Studio Nexoria" className={`rounded-full transition-all duration-500 ${scrolled ? 'w-10 h-10 md:w-14 md:h-14' : 'w-16 h-16 md:w-28 md:h-28'}`} />
           <div className={`flex flex-col items-center leading-none transition-all duration-500 ${scrolled ? 'scale-90' : ''}`}>
             <span className={`font-heading font-bold tracking-widest uppercase gradient-text transition-all duration-500 ${scrolled ? 'text-[10px] md:text-xs' : 'text-xs md:text-sm'}`}>Dream Studio</span>
