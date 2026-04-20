@@ -88,9 +88,9 @@ export default function Hero() {
               className="relative w-full max-w-[600px] h-auto"
               style={{
                 maskImage:
-                  'radial-gradient(ellipse 60% 65% at center, black 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, transparent 88%)',
+                  'radial-gradient(ellipse 78% 82% at center, black 78%, rgba(0,0,0,0.7) 90%, transparent 100%)',
                 WebkitMaskImage:
-                  'radial-gradient(ellipse 60% 65% at center, black 35%, rgba(0,0,0,0.85) 50%, rgba(0,0,0,0.4) 70%, transparent 88%)',
+                  'radial-gradient(ellipse 78% 82% at center, black 78%, rgba(0,0,0,0.7) 90%, transparent 100%)',
               }}
             />
           </motion.div>
