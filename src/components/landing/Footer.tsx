@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { Send, MessageCircle } from 'lucide-react';
-import logoImg from '@/assets/logo-dsn.png';
 
 export default function Footer() {
   return (
@@ -8,10 +7,7 @@ export default function Footer() {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           <div>
-            <div className="flex items-center mb-3">
-              <img src={logoImg} alt="Dream Studio Nexoria" className="w-14 h-14 rounded-full" />
-            </div>
-            <p className="text-muted-foreground text-sm mt-3 max-w-xs">
+            <p className="text-muted-foreground text-sm max-w-xs">
               Нейрофотосессии на стыке искусства и технологий. Создаём уникальные образы с помощью ИИ.
             </p>
           </div>
