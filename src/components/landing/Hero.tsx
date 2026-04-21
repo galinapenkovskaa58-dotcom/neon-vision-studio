@@ -40,51 +40,41 @@ export default function Hero() {
               }}
             />
 
-            {/* Hover effect: pulsing heart + heart-shaped waves */}
-            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
-              {/* Pulsing heart in the center */}
-              <motion.svg
-                viewBox="0 0 32 32"
-                className="absolute w-16 h-16 z-10"
-                style={{ filter: 'drop-shadow(0 0 12px hsl(var(--neon-pink)))' }}
-                animate={{ scale: [1, 1.25, 1] }}
-                transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
+            {/* Hover effect: heart-shaped waves radiating from the heart above her fingers */}
+            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              {/* Position anchor — over the heart in her hands (approx. right side, slightly above center) */}
+              <div
+                className="absolute"
+                style={{ left: '62%', top: '52%', transform: 'translate(-50%, -50%)' }}
               >
-                <path
-                  d="M16 28s-11-7.5-11-15a6 6 0 0 1 11-3 6 6 0 0 1 11 3c0 7.5-11 15-11 15z"
-                  fill="hsl(var(--neon-pink))"
-                  stroke="hsl(var(--neon-pink))"
-                  strokeWidth="1"
-                />
-              </motion.svg>
-
-              {/* 5 heart-shaped waves radiating out, then fading */}
-              {[...Array(5)].map((_, i) => (
-                <motion.svg
-                  key={`heart-wave-${i}`}
-                  viewBox="0 0 32 32"
-                  className="absolute w-16 h-16"
-                  style={{ filter: 'drop-shadow(0 0 8px hsl(var(--neon-pink) / 0.6))' }}
-                  animate={{
-                    scale: [1, 4],
-                    opacity: [0.7, 0],
-                  }}
-                  transition={{
-                    duration: 2.5,
-                    repeat: Infinity,
-                    repeatDelay: 0.5,
-                    delay: i * 0.5,
-                    ease: 'easeOut',
-                  }}
-                >
-                  <path
-                    d="M16 28s-11-7.5-11-15a6 6 0 0 1 11-3 6 6 0 0 1 11 3c0 7.5-11 15-11 15z"
-                    fill="none"
-                    stroke="hsl(var(--neon-pink))"
-                    strokeWidth="1.5"
-                  />
-                </motion.svg>
-              ))}
+                {/* 5 heart-shaped waves radiating out, then fading */}
+                {[...Array(5)].map((_, i) => (
+                  <motion.svg
+                    key={`heart-wave-${i}`}
+                    viewBox="0 0 32 32"
+                    className="absolute w-12 h-12 -translate-x-1/2 -translate-y-1/2"
+                    style={{ filter: 'drop-shadow(0 0 8px hsl(var(--neon-pink) / 0.8))' }}
+                    animate={{
+                      scale: [1, 4],
+                      opacity: [0.8, 0],
+                    }}
+                    transition={{
+                      duration: 2.5,
+                      repeat: Infinity,
+                      repeatDelay: 0.5,
+                      delay: i * 0.5,
+                      ease: 'easeOut',
+                    }}
+                  >
+                    <path
+                      d="M16 28s-11-7.5-11-15a6 6 0 0 1 11-3 6 6 0 0 1 11 3c0 7.5-11 15-11 15z"
+                      fill="none"
+                      stroke="hsl(var(--neon-pink))"
+                      strokeWidth="1.5"
+                    />
+                  </motion.svg>
+                ))}
+              </div>
             </div>
           </motion.div>
 
