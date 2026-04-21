@@ -2,6 +2,7 @@ import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import { motion } from 'framer-motion';
 import { Music, Mic, Headphones, AudioWaveform } from 'lucide-react';
+import songsHero from '@/assets/songs-hero.png';
 
 const features = [
   { icon: Music, title: 'Написание песен', desc: 'Создание текстов и мелодий с помощью AI и креативного подхода.' },
