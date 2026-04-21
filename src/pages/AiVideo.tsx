@@ -28,7 +28,7 @@ const AiVideo = () => {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="relative order-2 lg:order-1 flex justify-center"
+              className="relative order-2 lg:order-1 flex justify-center group"
             >
               <motion.img
                 src={aiVideoHero}
@@ -43,6 +43,89 @@ const AiVideo = () => {
                     'linear-gradient(to right, transparent 0%, black 18%, black 100%)',
                 }}
               />
+
+              {/* Hover effects: ripples + film strips */}
+              <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                {/* Expanding ripples */}
+                {[...Array(5)].map((_, i) => (
+                  <motion.div
+                    key={`ripple-${i}`}
+                    className="absolute rounded-full border-2 border-neon-pink/40"
+                    style={{ width: 80, height: 80 }}
+                    animate={{
+                      scale: [0.5, 3],
+                      opacity: [0.7, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: i * 0.4,
+                      ease: 'easeOut',
+                    }}
+                  />
+                ))}
+
+                {/* Floating film strips that evaporate */}
+                {[...Array(6)].map((_, i) => {
+                  const startX = -40 + i * 16;
+                  const driftX = i % 2 === 0 ? 30 : -30;
+                  return (
+                    <motion.div
+                      key={`film-${i}`}
+                      className="absolute"
+                      style={{
+                        left: `${50 + startX}%`,
+                        top: '55%',
+                      }}
+                      animate={{
+                        y: [0, -160],
+                        x: [0, driftX],
+                        opacity: [0, 1, 1, 0],
+                        rotate: [0, i % 2 === 0 ? 15 : -15],
+                        scale: [0.6, 1, 1, 0.4],
+                        filter: ['blur(0px)', 'blur(0px)', 'blur(0px)', 'blur(6px)'],
+                      }}
+                      transition={{
+                        duration: 3,
+                        repeat: Infinity,
+                        delay: i * 0.45,
+                        ease: 'easeOut',
+                        times: [0, 0.2, 0.7, 1],
+                      }}
+                    >
+                      {/* Film strip */}
+                      <div
+                        className="relative rounded-sm bg-gradient-to-b from-neon-purple/80 via-neon-pink/70 to-neon-purple/80 border border-neon-pink/60"
+                        style={{
+                          width: 32,
+                          height: 44,
+                          boxShadow: '0 0 12px hsl(var(--neon-pink) / 0.6)',
+                        }}
+                      >
+                        {/* Sprocket holes */}
+                        <div className="absolute inset-y-1 left-0.5 flex flex-col justify-between">
+                          {[...Array(4)].map((_, h) => (
+                            <span
+                              key={h}
+                              className="block w-1 h-1 rounded-sm bg-background/90"
+                            />
+                          ))}
+                        </div>
+                        <div className="absolute inset-y-1 right-0.5 flex flex-col justify-between">
+                          {[...Array(4)].map((_, h) => (
+                            <span
+                              key={h}
+                              className="block w-1 h-1 rounded-sm bg-background/90"
+                            />
+                          ))}
+                        </div>
+                        {/* Frame */}
+                        <div className="absolute inset-x-1.5 inset-y-2 rounded-[1px] bg-background/40 backdrop-blur-sm" />
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </motion.div>
 
             <motion.div
