@@ -22,7 +22,73 @@ export default function Hero() {
 
       <div className="container mx-auto px-6 relative z-10 pt-24 lg:pt-0">
         <div className="grid lg:grid-cols-2 gap-4 lg:gap-2 items-center max-w-7xl mx-auto">
-          <div className="text-center lg:text-left order-2 lg:order-1 lg:pl-16 xl:pl-24">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="relative order-1 lg:order-1 flex justify-center group"
+          >
+            <motion.img
+              src={heroImage}
+              alt="DSN AI-студия"
+              animate={{ y: [0, -15, 0] }}
+              transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
+              className="relative w-full max-w-[520px] h-auto"
+              style={{
+                WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+                maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+              }}
+            />
+
+            {/* Hover effect: pulsing heart + heart-shaped waves */}
+            <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+              {/* Pulsing heart in the center */}
+              <motion.svg
+                viewBox="0 0 32 32"
+                className="absolute w-16 h-16 z-10"
+                style={{ filter: 'drop-shadow(0 0 12px hsl(var(--neon-pink)))' }}
+                animate={{ scale: [1, 1.25, 1] }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
+              >
+                <path
+                  d="M16 28s-11-7.5-11-15a6 6 0 0 1 11-3 6 6 0 0 1 11 3c0 7.5-11 15-11 15z"
+                  fill="hsl(var(--neon-pink))"
+                  stroke="hsl(var(--neon-pink))"
+                  strokeWidth="1"
+                />
+              </motion.svg>
+
+              {/* 5 heart-shaped waves radiating out, then fading */}
+              {[...Array(5)].map((_, i) => (
+                <motion.svg
+                  key={`heart-wave-${i}`}
+                  viewBox="0 0 32 32"
+                  className="absolute w-16 h-16"
+                  style={{ filter: 'drop-shadow(0 0 8px hsl(var(--neon-pink) / 0.6))' }}
+                  animate={{
+                    scale: [1, 4],
+                    opacity: [0.7, 0],
+                  }}
+                  transition={{
+                    duration: 2.5,
+                    repeat: Infinity,
+                    repeatDelay: 0.5,
+                    delay: i * 0.5,
+                    ease: 'easeOut',
+                  }}
+                >
+                  <path
+                    d="M16 28s-11-7.5-11-15a6 6 0 0 1 11-3 6 6 0 0 1 11 3c0 7.5-11 15-11 15z"
+                    fill="none"
+                    stroke="hsl(var(--neon-pink))"
+                    strokeWidth="1.5"
+                  />
+                </motion.svg>
+              ))}
+            </div>
+          </motion.div>
+
+          <div className="text-center lg:text-left order-2 lg:order-2">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -68,25 +134,6 @@ export default function Hero() {
               </button>
             </motion.div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 0.3 }}
-            className="relative order-1 lg:order-2 flex justify-center"
-          >
-            <motion.img
-              src={heroImage}
-              alt="DSN AI-студия"
-              animate={{ y: [0, -15, 0] }}
-              transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
-              className="relative w-full max-w-[520px] h-auto"
-              style={{
-                WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
-                maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
-              }}
-            />
-          </motion.div>
         </div>
       </div>
 
