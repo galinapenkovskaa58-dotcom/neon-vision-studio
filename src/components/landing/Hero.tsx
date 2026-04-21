@@ -81,6 +81,10 @@ export default function Hero() {
               animate={{ y: [0, -15, 0] }}
               transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
               className="relative w-full max-w-[520px] h-auto"
+              style={{
+                WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+                maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
+              }}
             />
           </motion.div>
         </div>
