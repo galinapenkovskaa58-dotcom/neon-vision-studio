@@ -23,7 +23,7 @@ const Songs = () => {
         </div>
         
         <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-4 lg:gap-0 items-center max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-4 lg:gap-16 items-center max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
