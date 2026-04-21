@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import heroImage from '@/assets/hero-dsn.png';
 
 export default function Hero() {
   return (
@@ -20,50 +21,67 @@ export default function Hero() {
       </div>
 
       <div className="container mx-auto px-6 relative z-10 pt-24 lg:pt-0">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <span className="inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
-              AI-студия полного цикла
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl lg:text-8xl font-heading font-bold leading-[0.95] mb-8"
-          >
-            <span className="block">Где идеи</span>
-            <span className="block gradient-text">оживают</span>
-            <span className="block">через AI</span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
-          >
-            Нейрофотосессии, AI-видео, музыка и вейб-кодинг —
-            всё, что можно создать с помощью искусственного интеллекта.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
-          >
-            <button
-              onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
-              className="neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center max-w-7xl mx-auto">
+          <div className="text-center lg:text-left order-2 lg:order-1">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              Наши услуги
-            </button>
+              <span className="inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
+                AI-студия полного цикла
+              </span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl md:text-7xl lg:text-7xl xl:text-8xl font-heading font-bold leading-[0.95] mb-8"
+            >
+              <span className="block">Где идеи</span>
+              <span className="block gradient-text">оживают</span>
+              <span className="block">через AI</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-10"
+            >
+              Нейрофотосессии, AI-видео, музыка и вейб-кодинг —
+              всё, что можно создать с помощью искусственного интеллекта.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+            >
+              <button
+                onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
+                className="neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
+              >
+                Наши услуги
+              </button>
+            </motion.div>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.85 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="relative order-1 lg:order-2 flex justify-center"
+          >
+            <motion.img
+              src={heroImage}
+              alt="DSN AI-студия"
+              animate={{ y: [0, -15, 0] }}
+              transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
+              className="relative w-full max-w-[520px] h-auto"
+            />
           </motion.div>
         </div>
       </div>
