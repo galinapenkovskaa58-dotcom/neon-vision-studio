@@ -47,19 +47,69 @@ const Songs = () => {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="relative order-1 lg:order-2 flex justify-center lg:justify-start"
+              className="relative order-1 lg:order-2 flex justify-center lg:justify-start group"
             >
               <motion.img
                 src={songsHero}
                 alt="DSN AI-студия — музыка и песни"
                 animate={{ y: [0, -15, 0] }}
                 transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
-                className="relative w-full max-w-[520px] h-auto"
+                whileHover={{
+                  rotate: [0, -2, 2, -2, 2, -1, 1, 0],
+                  scale: 1.03,
+                  transition: { duration: 0.8, repeat: Infinity, ease: 'easeInOut' },
+                }}
+                className="relative w-full max-w-[520px] h-auto cursor-pointer origin-bottom"
                 style={{
                   WebkitMaskImage: 'radial-gradient(ellipse at center, black 60%, transparent 100%)',
                   maskImage: 'radial-gradient(ellipse at center, black 60%, transparent 100%)',
                 }}
               />
+              {/* Singing sound waves on hover */}
+              <div className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                {[...Array(5)].map((_, i) => (
+                  <motion.div
+                    key={i}
+                    className="absolute rounded-full border-2 border-neon-pink/40"
+                    style={{ width: 80, height: 80 }}
+                    animate={{
+                      scale: [0.5, 3],
+                      opacity: [0.7, 0],
+                    }}
+                    transition={{
+                      duration: 2,
+                      repeat: Infinity,
+                      delay: i * 0.4,
+                      ease: 'easeOut',
+                    }}
+                  />
+                ))}
+                {/* Floating music notes */}
+                {['♪', '♫', '♩', '♬'].map((note, i) => (
+                  <motion.span
+                    key={note}
+                    className="absolute text-3xl text-neon-pink"
+                    style={{
+                      left: `${30 + i * 12}%`,
+                      top: '40%',
+                      textShadow: '0 0 10px hsl(var(--neon-pink))',
+                    }}
+                    animate={{
+                      y: [0, -120],
+                      opacity: [0, 1, 0],
+                      x: [0, i % 2 === 0 ? 20 : -20],
+                    }}
+                    transition={{
+                      duration: 2.5,
+                      repeat: Infinity,
+                      delay: i * 0.5,
+                      ease: 'easeOut',
+                    }}
+                  >
+                    {note}
+                  </motion.span>
+                ))}
+              </div>
             </motion.div>
           </div>
         </div>
