@@ -54,12 +54,7 @@ const Songs = () => {
                 alt="DSN AI-студия — музыка и песни"
                 animate={{ y: [0, -15, 0] }}
                 transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
-                whileHover={{
-                  rotate: [0, -2, 2, -2, 2, -1, 1, 0],
-                  scale: 1.03,
-                  transition: { duration: 0.8, repeat: Infinity, ease: 'easeInOut' },
-                }}
-                className="relative w-full max-w-[520px] h-auto cursor-pointer origin-bottom"
+                className="relative w-full max-w-[520px] h-auto"
                 style={{
                   WebkitMaskImage: 'radial-gradient(ellipse at center, black 60%, transparent 100%)',
                   maskImage: 'radial-gradient(ellipse at center, black 60%, transparent 100%)',
