@@ -45,7 +45,7 @@ export default function Hero() {
               {/* Position anchor — over the heart in her hands (approx. right side, slightly above center) */}
               <div
                 className="absolute"
-                style={{ left: '41%', top: '47%', transform: 'translate(-50%, -50%)' }}
+                style={{ left: '41%', top: '42%', transform: 'translate(-50%, -50%)' }}
               >
                 {/* 5 heart-shaped waves radiating out, then fading */}
                 {[...Array(5)].map((_, i) => (
