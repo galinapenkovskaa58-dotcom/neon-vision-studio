@@ -23,24 +23,41 @@ const AiVideo = () => {
         </div>
         
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <span className="inline-block text-sm font-medium text-neon-pink tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-pink/20 bg-neon-pink/5">
-              AI Видео & Клипы
-            </span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold leading-[0.95] mb-6">
-              <span className="block">Видео</span>
-              <span className="block gradient-text">нового поколения</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Создаю AI-видео, музыкальные клипы и рекламные ролики с использованием передовых нейросетей. 
-              Каждый кадр — произведение цифрового искусства.
-            </p>
-          </motion.div>
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="relative order-2 lg:order-1 flex justify-center"
+            >
+              <motion.img
+                src={aiVideoHero}
+                alt="AI Видео & Клипы — DSN Nexoria"
+                animate={{ y: [0, -15, 0] }}
+                transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
+                className="relative w-full max-w-[520px] h-auto"
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center lg:text-left order-1 lg:order-2"
+            >
+              <span className="inline-block text-sm font-medium text-neon-pink tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-pink/20 bg-neon-pink/5">
+                AI Видео & Клипы
+              </span>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold leading-[0.95] mb-6">
+                <span className="block">Видео</span>
+                <span className="block gradient-text">нового поколения</span>
+              </h1>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-8">
+                Создаю AI-видео, музыкальные клипы и рекламные ролики с использованием передовых нейросетей. 
+                Каждый кадр — произведение цифрового искусства.
+              </p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
