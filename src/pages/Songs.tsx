@@ -47,7 +47,7 @@ const Songs = () => {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="relative order-1 lg:order-2 flex justify-center lg:justify-start lg:-ml-8"
+              className="relative order-1 lg:order-2 flex justify-center lg:justify-start"
             >
               <motion.img
                 src={songsHero}
