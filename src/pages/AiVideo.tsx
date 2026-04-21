@@ -2,6 +2,7 @@ import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import { motion } from 'framer-motion';
 import { Film, Sparkles, Zap, Clock } from 'lucide-react';
+import aiVideoHero from '@/assets/ai-video-hero.png';
 
 const features = [
   { icon: Film, title: 'AI Видеоролики', desc: 'Создание видео с помощью нейросетей — от концепта до финального монтажа.' },
