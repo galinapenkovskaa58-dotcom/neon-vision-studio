@@ -36,6 +36,12 @@ const AiVideo = () => {
                 animate={{ y: [0, -15, 0] }}
                 transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
                 className="relative w-full max-w-[520px] h-auto"
+                style={{
+                  WebkitMaskImage:
+                    'linear-gradient(to right, transparent 0%, black 18%, black 100%)',
+                  maskImage:
+                    'linear-gradient(to right, transparent 0%, black 18%, black 100%)',
+                }}
               />
             </motion.div>
 
