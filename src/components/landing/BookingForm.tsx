@@ -1,23 +1,36 @@
-import { useState, useEffect } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { Send, CheckCircle } from 'lucide-react';
 
+type MessengerType = 'telegram' | 'vk' | 'max' | 'other';
+
+const contactLabels: Record<MessengerType, string> = {
+  telegram: 'Ник / username',
+  vk: 'Ссылка на аккаунт',
+  max: 'Номер телефона',
+  other: 'Контакт (телефон или ссылка)',
+};
+
+const contactPlaceholders: Record<MessengerType, string> = {
+  telegram: '@username',
+  vk: 'https://vk.com/...',
+  max: '+7 (999) 123-45-67',
+  other: 'Телефон или ссылка',
+};
+
 const bookingSchema = z.object({
   name: z.string().trim().min(2, 'Введите имя').max(100),
-  phone: z.string().trim().min(10, 'Введите корректный номер').max(20),
-  messenger: z.enum(['telegram', 'whatsapp', 'other'] as const),
-  messenger_username: z.string().max(100).optional(),
-  tariff_id: z.string().uuid().optional().or(z.literal('')),
-  style: z.string().max(200).optional(),
-  references_text: z.string().max(2000).optional(),
-  urgency: z.enum(['normal', 'urgent'] as const),
+  messenger: z.enum(['telegram', 'vk', 'max', 'other'] as const),
+  contact: z.string().trim().min(2, 'Введите контакт').max(200),
+  consent: z.literal(true, { errorMap: () => ({ message: 'Необходимо согласие' }) }),
 });
 
 type BookingData = z.infer<typeof bookingSchema>;
@@ -26,50 +39,27 @@ export default function BookingForm() {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [form, setForm] = useState<BookingData>({
+  const [form, setForm] = useState({
     name: '',
-    phone: '',
-    messenger: 'telegram',
-    messenger_username: '',
-    tariff_id: '',
-    style: '',
-    references_text: '',
-    urgency: 'normal',
+    messenger: 'telegram' as MessengerType,
+    contact: '',
+    consent: false,
   });
-
-  const { data: tariffs = [] } = useQuery({
-    queryKey: ['tariffs'],
-    queryFn: async () => {
-      const { data } = await supabase
-        .from('tariffs')
-        .select('id, name')
-        .eq('is_active', true)
-        .order('sort_order');
-      return data || [];
-    },
-  });
-
-  // Listen for tariff selection from pricing cards
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const tariffId = (e as CustomEvent).detail;
-      setForm((prev) => ({ ...prev, tariff_id: tariffId }));
-    };
-    window.addEventListener('select-tariff', handler);
-    return () => window.removeEventListener('select-tariff', handler);
-  }, []);
 
   const mutation = useMutation({
     mutationFn: async (data: BookingData) => {
+      // Map our messenger types to DB enum: telegram | whatsapp | other
+      const dbMessenger: 'telegram' | 'whatsapp' | 'other' =
+        data.messenger === 'telegram' ? 'telegram' : 'other';
+
+      // Phone field is required in DB; use contact for max, placeholder otherwise
+      const phone = data.messenger === 'max' ? data.contact : '—';
+
       const insertData: any = {
         name: data.name,
-        phone: data.phone,
-        messenger: data.messenger,
-        messenger_username: data.messenger_username || null,
-        style: data.style || null,
-        references_text: data.references_text || null,
-        urgency: data.urgency,
-        tariff_id: data.tariff_id || null,
+        phone,
+        messenger: dbMessenger,
+        messenger_username: `[${data.messenger.toUpperCase()}] ${data.contact}`,
       };
       const { error } = await supabase.from('bookings').insert(insertData);
       if (error) throw error;
@@ -101,9 +91,9 @@ export default function BookingForm() {
     mutation.mutate(result.data);
   };
 
-  const update = (field: keyof BookingData, value: string) => {
+  const update = <K extends keyof typeof form>(field: K, value: (typeof form)[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
-    if (errors[field]) setErrors((prev) => ({ ...prev, [field]: '' }));
+    if (errors[field as string]) setErrors((prev) => ({ ...prev, [field as string]: '' }));
   };
 
   if (submitted) {
@@ -153,110 +143,66 @@ export default function BookingForm() {
           onSubmit={handleSubmit}
           className="max-w-2xl mx-auto glass rounded-3xl p-8 md:p-10 space-y-6"
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block text-sm font-medium mb-2">Имя *</label>
-              <Input
-                value={form.name}
-                onChange={(e) => update('name', e.target.value)}
-                placeholder="Ваше имя"
-                className="bg-muted/50 border-border/50 rounded-xl h-12"
-              />
-              {errors.name && <p className="text-destructive text-xs mt-1">{errors.name}</p>}
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">Телефон *</label>
-              <Input
-                value={form.phone}
-                onChange={(e) => update('phone', e.target.value)}
-                placeholder="+7 (999) 123-45-67"
-                className="bg-muted/50 border-border/50 rounded-xl h-12"
-              />
-              {errors.phone && <p className="text-destructive text-xs mt-1">{errors.phone}</p>}
-            </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Имя *</label>
+            <Input
+              value={form.name}
+              onChange={(e) => update('name', e.target.value)}
+              placeholder="Ваше имя"
+              className="bg-muted/50 border-border/50 rounded-xl h-12"
+            />
+            {errors.name && <p className="text-destructive text-xs mt-1">{errors.name}</p>}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium mb-2">Мессенджер</label>
-              <Select value={form.messenger} onValueChange={(v) => update('messenger', v)}>
+              <label className="block text-sm font-medium mb-2">Мессенджер *</label>
+              <Select
+                value={form.messenger}
+                onValueChange={(v) => {
+                  update('messenger', v as MessengerType);
+                  update('contact', '');
+                }}
+              >
                 <SelectTrigger className="bg-muted/50 border-border/50 rounded-xl h-12">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="telegram">Telegram</SelectItem>
-                  <SelectItem value="whatsapp">WhatsApp</SelectItem>
-                  <SelectItem value="other">Другой</SelectItem>
+                  <SelectItem value="vk">ВКонтакте</SelectItem>
+                  <SelectItem value="max">МАХ</SelectItem>
+                  <SelectItem value="other">Другое</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Ник / username</label>
+              <label className="block text-sm font-medium mb-2">{contactLabels[form.messenger]} *</label>
               <Input
-                value={form.messenger_username}
-                onChange={(e) => update('messenger_username', e.target.value)}
-                placeholder="@username"
+                value={form.contact}
+                onChange={(e) => update('contact', e.target.value)}
+                placeholder={contactPlaceholders[form.messenger]}
                 className="bg-muted/50 border-border/50 rounded-xl h-12"
               />
+              {errors.contact && <p className="text-destructive text-xs mt-1">{errors.contact}</p>}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {tariffs.length > 0 && (
-              <div>
-                <label className="block text-sm font-medium mb-2">Тариф</label>
-                <Select value={form.tariff_id} onValueChange={(v) => update('tariff_id', v)}>
-                  <SelectTrigger className="bg-muted/50 border-border/50 rounded-xl h-12">
-                    <SelectValue placeholder="Выберите тариф" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {tariffs.map((t) => (
-                      <SelectItem key={t.id} value={t.id}>{t.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
-            <div>
-              <label className="block text-sm font-medium mb-2">Желаемый стиль</label>
-              <Input
-                value={form.style}
-                onChange={(e) => update('style', e.target.value)}
-                placeholder="Киберпанк, фэнтези..."
-                className="bg-muted/50 border-border/50 rounded-xl h-12"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Референсы / пожелания</label>
-            <Textarea
-              value={form.references_text}
-              onChange={(e) => update('references_text', e.target.value)}
-              placeholder="Опишите ваше видение, ссылки на примеры..."
-              className="bg-muted/50 border-border/50 rounded-xl min-h-[100px]"
+          <div className="flex items-start gap-3 pt-2">
+            <Checkbox
+              id="consent"
+              checked={form.consent}
+              onCheckedChange={(v) => update('consent', v === true)}
+              className="mt-1"
             />
+            <label htmlFor="consent" className="text-sm text-muted-foreground leading-relaxed cursor-pointer">
+              Я ознакомлен(а) и согласен(на) с{' '}
+              <Link to="/privacy" target="_blank" className="text-neon-cyan hover:underline">
+                политикой конфиденциальности
+              </Link>{' '}
+              и даю согласие на обработку персональных данных.
+            </label>
           </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Срочность</label>
-            <div className="flex gap-4">
-              {(['normal', 'urgent'] as const).map((u) => (
-                <button
-                  key={u}
-                  type="button"
-                  onClick={() => update('urgency', u)}
-                  className={`flex-1 py-3 rounded-xl text-sm font-medium transition-all ${
-                    form.urgency === u
-                      ? 'neon-glow-btn text-primary-foreground'
-                      : 'glass hover:bg-card/80'
-                  }`}
-                >
-                  {u === 'normal' ? '🕐 Обычная' : '⚡ Срочная'}
-                </button>
-              ))}
-            </div>
-          </div>
+          {errors.consent && <p className="text-destructive text-xs -mt-4">{errors.consent}</p>}
 
           <button
             type="submit"
