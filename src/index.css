@@ -1,5 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
+@font-face {
+  font-family: 'Mr Hanginglettersg';
+  src: url('/src/assets/fonts/mr-hanginglettersg.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-hanging {
+  font-family: 'Mr Hanginglettersg', cursive;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
