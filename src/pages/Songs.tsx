@@ -23,24 +23,45 @@ const Songs = () => {
         </div>
         
         <div className="container mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <span className="inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
-              Музыка & Песни
-            </span>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold leading-[0.95] mb-6">
-              <span className="block">Музыка</span>
-              <span className="block gradient-text">от нейросетей</span>
-            </h1>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
-              Пишу песни, создаю аранжировки и генерирую уникальный AI-вокал. 
-              Ваша идея — наш совместный хит.
-            </p>
-          </motion.div>
+          <div className="grid lg:grid-cols-2 gap-4 lg:gap-0 items-center max-w-7xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="text-center lg:text-right order-2 lg:order-1"
+            >
+              <span className="inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
+                Музыка & Песни
+              </span>
+              <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold leading-[0.95] mb-6">
+                <span className="block">Музыка</span>
+                <span className="block gradient-text">от нейросетей</span>
+              </h1>
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:ml-auto lg:mr-0 mb-8">
+                Пишу песни, создаю аранжировки и генерирую уникальный AI-вокал.
+                Ваша идея — наш совместный хит.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.3 }}
+              className="relative order-1 lg:order-2 flex justify-center lg:justify-start lg:-ml-8"
+            >
+              <motion.img
+                src={songsHero}
+                alt="DSN AI-студия — музыка и песни"
+                animate={{ y: [0, -15, 0] }}
+                transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
+                className="relative w-full max-w-[520px] h-auto"
+                style={{
+                  WebkitMaskImage: 'radial-gradient(ellipse at center, black 60%, transparent 100%)',
+                  maskImage: 'radial-gradient(ellipse at center, black 60%, transparent 100%)',
+                }}
+              />
+            </motion.div>
+          </div>
         </div>
       </section>
 
