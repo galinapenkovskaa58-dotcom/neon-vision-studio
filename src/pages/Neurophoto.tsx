@@ -41,7 +41,7 @@ const Neurophoto = () => {
               onClick={() => document.querySelector('#booking')?.scrollIntoView({ behavior: 'smooth' })}
               className="neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
             >
-              Записаться на сессию
+              Записаться на НЕЙРОФОТОсессию
             </button>
           </motion.div>
         </div>
