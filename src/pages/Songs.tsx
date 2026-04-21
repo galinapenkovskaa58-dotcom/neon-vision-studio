@@ -23,7 +23,7 @@ const Songs = () => {
         </div>
         
         <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-4 lg:gap-0 items-center max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-4 lg:gap-16 items-center max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -47,7 +47,7 @@ const Songs = () => {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="relative order-1 lg:order-2 flex justify-center lg:justify-start lg:-ml-8"
+              className="relative order-1 lg:order-2 flex justify-center lg:justify-start"
             >
               <motion.img
                 src={songsHero}
