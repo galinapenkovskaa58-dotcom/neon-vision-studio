@@ -35,7 +35,7 @@ const Neurophoto = () => {
                 <span className="block">Магия</span>
                 <span className="block gradient-text">нейрофото</span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-xl mb-8">
                 Создаю уникальные образы с помощью нейросетей и профессиональной фотографии. 
                 Каждый кадр — это слияние искусства и искусственного интеллекта.
               </p>
