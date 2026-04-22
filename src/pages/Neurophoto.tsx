@@ -26,7 +26,7 @@ const Neurophoto = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-center lg:text-left order-2 lg:order-1 lg:pr-0"
+              className="text-center lg:text-left order-2 lg:order-1 lg:items-start flex flex-col"
             >
               <span className="inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
                 Нейрофотосессии
