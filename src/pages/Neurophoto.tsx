@@ -26,9 +26,9 @@ const Neurophoto = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="order-2 lg:order-1 flex flex-col items-center lg:items-start text-center lg:text-left"
+              className="order-2 lg:order-1 flex flex-col items-center lg:items-end text-center lg:text-right"
             >
-              <span className="self-center lg:self-start inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
+              <span className="self-center lg:self-end inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
                 Нейрофотосессии
               </span>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold leading-[0.95] mb-6">
@@ -41,7 +41,7 @@ const Neurophoto = () => {
               </p>
               <button
                 onClick={() => document.querySelector('#booking')?.scrollIntoView({ behavior: 'smooth' })}
-                className="self-center lg:self-start neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
+                className="self-center lg:self-end neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
               >
                 Записаться на НЕЙРОФОТОсессию
               </button>
