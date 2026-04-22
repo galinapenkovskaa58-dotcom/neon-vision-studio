@@ -21,7 +21,7 @@ const Neurophoto = () => {
         </div>
         
         <div className="container mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-2 lg:gap-0 items-center max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-2 gap-2 lg:gap-12 items-center max-w-7xl mx-auto">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -51,7 +51,7 @@ const Neurophoto = () => {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="relative order-1 lg:order-2 flex justify-center lg:justify-start lg:-ml-6 group"
+              className="relative order-1 lg:order-2 flex justify-center lg:justify-start group"
             >
               <motion.img
                 src={neurophotoHero}
