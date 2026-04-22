@@ -51,7 +51,7 @@ const Neurophoto = () => {
               initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="relative order-1 lg:order-2 flex justify-center lg:justify-start lg:-ml-6 group"
+              className="relative order-1 lg:order-2 flex justify-center lg:justify-start group"
             >
               <motion.img
                 src={neurophotoHero}
