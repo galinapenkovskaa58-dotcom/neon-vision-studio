@@ -61,9 +61,9 @@ const Neurophoto = () => {
                 className="relative w-full max-w-[560px] h-auto"
                 style={{
                   WebkitMaskImage:
-                    'linear-gradient(to right, transparent 0%, black 15%, black 100%)',
+                    'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
                   maskImage:
-                    'linear-gradient(to right, transparent 0%, black 15%, black 100%)',
+                    'linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%)',
                 }}
               />
 
