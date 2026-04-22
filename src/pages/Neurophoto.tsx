@@ -26,22 +26,22 @@ const Neurophoto = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-center lg:text-left order-2 lg:order-1 lg:items-start flex flex-col"
+              className="order-2 lg:order-1 flex flex-col items-center lg:items-start text-center lg:text-left"
             >
-              <span className="inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
+              <span className="self-center lg:self-start inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
                 Нейрофотосессии
               </span>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold leading-[0.95] mb-6">
                 <span className="block">Магия</span>
                 <span className="block gradient-text">нейрофото</span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto lg:mx-0 mb-8">
+              <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-8">
                 Создаю уникальные образы с помощью нейросетей и профессиональной фотографии. 
                 Каждый кадр — это слияние искусства и искусственного интеллекта.
               </p>
               <button
                 onClick={() => document.querySelector('#booking')?.scrollIntoView({ behavior: 'smooth' })}
-                className="neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
+                className="self-center lg:self-start neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
               >
                 Записаться на НЕЙРОФОТОсессию
               </button>
