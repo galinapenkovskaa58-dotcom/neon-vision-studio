@@ -146,7 +146,7 @@ const Neurophoto = () => {
       <Portfolio />
       <Styles />
       <Tariffs />
-      <Reviews />
+      <Reviews service="neurophoto" />
       <BookingForm />
       <Footer />
     </div>

@@ -18,18 +18,22 @@ const pageNavItems: Record<string, { label: string; anchor: string }[]> = {
     { label: 'Портфолио', anchor: '#portfolio' },
     { label: 'Стили', anchor: '#styles' },
     { label: 'Тарифы', anchor: '#tariffs' },
+    { label: 'Отзывы', anchor: '#reviews' },
     { label: 'Записаться', anchor: '#booking' },
   ],
   '/ai-video': [
     { label: 'Возможности', anchor: '#features' },
+    { label: 'Отзывы', anchor: '#reviews' },
     { label: 'Связаться', anchor: '#contact' },
   ],
   '/songs': [
     { label: 'Возможности', anchor: '#features' },
+    { label: 'Отзывы', anchor: '#reviews' },
     { label: 'Связаться', anchor: '#contact' },
   ],
   '/vibe-coding': [
     { label: 'Возможности', anchor: '#features' },
+    { label: 'Отзывы', anchor: '#reviews' },
     { label: 'Связаться', anchor: '#contact' },
   ],
   '/': [

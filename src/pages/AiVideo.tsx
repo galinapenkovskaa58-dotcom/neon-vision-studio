@@ -1,5 +1,6 @@
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
+import Reviews from '@/components/landing/Reviews';
 import BookingForm from '@/components/landing/BookingForm';
 import videoBookingIcon from '@/assets/booking-icon-video.png';
 import { motion } from 'framer-motion';
@@ -172,6 +173,8 @@ const AiVideo = () => {
           </div>
         </div>
       </section>
+
+      <Reviews service="ai-video" />
 
       <BookingForm iconSrc={videoBookingIcon} />
 

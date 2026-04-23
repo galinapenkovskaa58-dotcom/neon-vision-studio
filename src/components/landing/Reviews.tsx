@@ -4,17 +4,23 @@ import { supabase } from '@/integrations/supabase/client';
 import { Star } from 'lucide-react';
 import { useState } from 'react';
 
-export default function Reviews() {
+interface ReviewsProps {
+  service?: string;
+}
+
+export default function Reviews({ service }: ReviewsProps = {}) {
   const [current, setCurrent] = useState(0);
 
   const { data: reviews = [] } = useQuery({
-    queryKey: ['reviews'],
+    queryKey: ['reviews', service ?? 'all'],
     queryFn: async () => {
-      const { data } = await supabase
+      let query = supabase
         .from('reviews')
         .select('*')
         .eq('is_visible', true)
         .order('sort_order', { ascending: true });
+      if (service) query = query.eq('service', service);
+      const { data } = await query;
       return data || [];
     },
   });
