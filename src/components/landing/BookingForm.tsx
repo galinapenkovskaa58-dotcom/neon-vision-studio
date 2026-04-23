@@ -36,7 +36,11 @@ const bookingSchema = z.object({
 
 type BookingData = z.infer<typeof bookingSchema>;
 
-export default function BookingForm() {
+interface BookingFormProps {
+  iconSrc?: string;
+}
+
+export default function BookingForm({ iconSrc }: BookingFormProps = {}) {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -136,7 +140,7 @@ export default function BookingForm() {
             className="relative shrink-0"
           >
             <img
-              src={bookingIcon}
+              src={iconSrc ?? bookingIcon}
               alt=""
               aria-hidden="true"
               className="relative z-10 w-28 h-28 md:w-36 md:h-36 object-contain"
