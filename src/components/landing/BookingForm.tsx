@@ -36,7 +36,11 @@ const bookingSchema = z.object({
 
 type BookingData = z.infer<typeof bookingSchema>;
 
-export default function BookingForm() {
+interface BookingFormProps {
+  iconSrc?: string;
+}
+
+export default function BookingForm({ iconSrc }: BookingFormProps = {}) {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
