@@ -1,5 +1,6 @@
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
+import BookingForm from '@/components/landing/BookingForm';
 import { motion } from 'framer-motion';
 import { Music, Mic, Headphones, AudioWaveform } from 'lucide-react';
 import songsHero from '@/assets/songs-hero.png';
@@ -131,20 +132,7 @@ const Songs = () => {
         </div>
       </section>
 
-      <section id="contact" className="py-20">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">Готовы создать свой трек?</h2>
-          <p className="text-muted-foreground mb-8 max-w-lg mx-auto">Расскажите о вашей идее, и мы создадим уникальную песню</p>
-          <a
-            href="https://t.me/neurophoto"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold inline-block"
-          >
-            Написать в Telegram
-          </a>
-        </div>
-      </section>
+      <BookingForm />
 
       <Footer />
     </div>

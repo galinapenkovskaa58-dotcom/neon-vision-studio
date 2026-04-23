@@ -1,5 +1,6 @@
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
+import BookingForm from '@/components/landing/BookingForm';
 import { motion } from 'framer-motion';
 import { Code, Laptop, Rocket, Palette } from 'lucide-react';
 import vibeCodingHero from '@/assets/vibe-coding-hero.png';
