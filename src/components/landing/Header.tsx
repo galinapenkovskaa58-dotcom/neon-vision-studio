@@ -322,6 +322,8 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AskQuestionDialog open={askOpen} onOpenChange={setAskOpen} />
     </motion.header>
   );
 }
