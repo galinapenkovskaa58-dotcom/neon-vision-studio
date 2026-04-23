@@ -1,9 +1,15 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Send } from 'lucide-react';
+import { Rocket, Sparkles, MessageCircleQuestion } from 'lucide-react';
+import RequestDialog, { type RequestVariant } from '@/components/RequestDialog';
 
 export default function FinalCTA() {
-  const scrollToServices = () => {
-    document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' });
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [variant, setVariant] = useState<RequestVariant>('booking');
+
+  const openDialog = (v: RequestVariant) => {
+    setVariant(v);
+    setDialogOpen(true);
   };
 
   return (
@@ -30,27 +36,34 @@ export default function FinalCTA() {
               Расскажите о проекте — подберём направление, формат и тариф под вашу задачу.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center flex-wrap">
               <button
-                onClick={scrollToServices}
+                onClick={() => openDialog('booking')}
                 className="neon-glow-btn text-primary-foreground px-8 py-4 rounded-full text-base font-semibold flex items-center gap-2 group"
               >
-                Выбрать услугу
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                <Rocket size={18} />
+                Оставить заявку
               </button>
-              <a
-                href="https://t.me/Galina_Penkovskaya"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="glass px-8 py-4 rounded-full text-base font-semibold flex items-center gap-2 hover:bg-card/80 transition-all border border-border/30"
+              <button
+                onClick={() => openDialog('project')}
+                className="glass px-8 py-4 rounded-full text-base font-semibold flex items-center gap-2 hover:bg-card/80 transition-all border border-neon-purple/40 hover:border-neon-purple/70"
               >
-                <Send size={18} />
-                Связаться в Telegram
-              </a>
+                <Sparkles size={18} className="text-neon-purple" />
+                Обсудить проект
+              </button>
+              <button
+                onClick={() => openDialog('question')}
+                className="px-8 py-4 rounded-full text-base font-semibold flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <MessageCircleQuestion size={18} />
+                Задать вопрос
+              </button>
             </div>
           </div>
         </motion.div>
       </div>
+
+      <RequestDialog open={dialogOpen} onOpenChange={setDialogOpen} variant={variant} />
     </section>
   );
 }
