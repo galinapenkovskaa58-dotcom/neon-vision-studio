@@ -130,8 +130,8 @@ export default function BookingForm() {
           className="mb-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 max-w-3xl mx-auto"
         >
           <motion.div
-            initial="hidden"
-            whileInView="visible"
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, amount: 0.6 }}
             className="relative shrink-0"
           >
@@ -148,11 +148,12 @@ export default function BookingForm() {
               }}
             />
 
-            {/* Fireworks: bursts of colored particles flying outward */}
+            {/* Continuous fireworks: bursts of colored particles flying outward */}
             <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
-              {[...Array(3)].map((_, burstIdx) => {
+              {[...Array(4)].map((_, burstIdx) => {
                 const particleCount = 14;
-                const burstDelay = burstIdx * 0.35;
+                const burstOffset = burstIdx * 0.6;
+                const cycleDuration = 2.4;
                 const colors = [
                   'hsl(var(--neon-pink))',
                   'hsl(var(--neon-cyan))',
@@ -160,8 +161,8 @@ export default function BookingForm() {
                   'hsl(var(--neon-blue))',
                 ];
                 return [...Array(particleCount)].map((_, i) => {
-                  const angle = (i / particleCount) * Math.PI * 2;
-                  const distance = 80 + Math.random() * 50;
+                  const angle = (i / particleCount) * Math.PI * 2 + burstIdx * 0.4;
+                  const distance = 75 + ((i * 13 + burstIdx * 7) % 50);
                   const x = Math.cos(angle) * distance;
                   const y = Math.sin(angle) * distance;
                   const color = colors[(i + burstIdx) % colors.length];
@@ -175,20 +176,19 @@ export default function BookingForm() {
                         background: color,
                         boxShadow: `0 0 10px ${color}, 0 0 20px ${color}`,
                       }}
-                      variants={{
-                        hidden: { x: 0, y: 0, opacity: 0, scale: 0 },
-                        visible: {
-                          x: [0, x],
-                          y: [0, y + 30],
-                          opacity: [1, 1, 0],
-                          scale: [0, 1, 0.4],
-                        },
+                      animate={{
+                        x: [0, x],
+                        y: [0, y + 30],
+                        opacity: [0, 1, 1, 0],
+                        scale: [0, 1, 0.8, 0.3],
                       }}
                       transition={{
-                        duration: 1.4,
-                        delay: burstDelay + i * 0.02,
+                        duration: cycleDuration,
+                        delay: burstOffset + i * 0.015,
                         ease: 'easeOut',
-                        times: [0, 0.6, 1],
+                        times: [0, 0.15, 0.6, 1],
+                        repeat: Infinity,
+                        repeatDelay: 0.4,
                       }}
                     />
                   );
