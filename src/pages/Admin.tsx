@@ -4,13 +4,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAdmin } from '@/hooks/useAdmin';
 import AdminLogin from '@/components/admin/AdminLogin';
 import AdminBookings from '@/components/admin/AdminBookings';
+import AdminQuestions from '@/components/admin/AdminQuestions';
 import AdminPortfolio from '@/components/admin/AdminPortfolio';
 import AdminTariffs from '@/components/admin/AdminTariffs';
 import AdminReviews from '@/components/admin/AdminReviews';
 import AdminStyles from '@/components/admin/AdminStyles';
 import {
   FileImage, CalendarCheck, Tags, MessageSquare, LogOut, Palette,
-  Camera, Video, Music, Code2, ChevronDown, ChevronRight,
+  Camera, Video, Music, Code2, ChevronDown, ChevronRight, MessageCircleQuestion,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
