@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { Send, CheckCircle } from 'lucide-react';
+import bookingIcon from '@/assets/booking-icon.png';
 
 type MessengerType = 'telegram' | 'vk' | 'max' | 'other';
 
@@ -126,14 +127,22 @@ export default function BookingForm() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="mb-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 max-w-3xl mx-auto"
         >
-          <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
-            <span className="gradient-text">Записаться</span>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-xl mx-auto">
-            Заполните форму, и я свяжусь с вами для обсуждения деталей
-          </p>
+          <img
+            src={bookingIcon}
+            alt=""
+            aria-hidden="true"
+            className="w-28 h-28 md:w-36 md:h-36 shrink-0 object-contain drop-shadow-[0_0_25px_hsl(var(--neon-purple)/0.5)]"
+          />
+          <div className="text-center sm:text-left">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold mb-3">
+              <span className="gradient-text">Записаться</span>
+            </h2>
+            <p className="text-muted-foreground text-lg max-w-xl">
+              Заполните форму, и я свяжусь с вами для обсуждения деталей
+            </p>
+          </div>
         </motion.div>
 
         <motion.form
