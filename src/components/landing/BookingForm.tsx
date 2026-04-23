@@ -133,7 +133,13 @@ export default function BookingForm() {
             src={bookingIcon}
             alt=""
             aria-hidden="true"
-            className="w-28 h-28 md:w-36 md:h-36 shrink-0 object-contain drop-shadow-[0_0_25px_hsl(var(--neon-purple)/0.5)]"
+            className="w-28 h-28 md:w-36 md:h-36 shrink-0 object-contain"
+            style={{
+              WebkitMaskImage:
+                'radial-gradient(circle at center, black 55%, transparent 80%)',
+              maskImage:
+                'radial-gradient(circle at center, black 55%, transparent 80%)',
+            }}
           />
           <div className="text-center sm:text-left">
             <h2 className="text-4xl md:text-5xl font-heading font-bold mb-3">
