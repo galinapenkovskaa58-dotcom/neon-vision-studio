@@ -1,6 +1,7 @@
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import BookingForm from '@/components/landing/BookingForm';
+import videoBookingIcon from '@/assets/booking-icon-video.png';
 import { motion } from 'framer-motion';
 import { Film, Sparkles, Zap, Clock } from 'lucide-react';
 import aiVideoHero from '@/assets/ai-video-hero.png';
@@ -172,7 +173,7 @@ const AiVideo = () => {
         </div>
       </section>
 
-      <BookingForm />
+      <BookingForm iconSrc={videoBookingIcon} />
 
       <Footer />
     </div>
