@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Camera, Film, Music, Code } from 'lucide-react';
+import { Camera, Film, Music, Code, Sparkles, Rocket } from 'lucide-react';
+import RequestDialog, { type RequestVariant } from '@/components/RequestDialog';
 
 const services = [
   {
@@ -34,6 +36,7 @@ const services = [
 ];
 
 export default function Services() {
+  const [dialog, setDialog] = useState<RequestVariant | null>(null);
   return (
     <section className="py-24" id="services">
       <div className="container mx-auto px-6">
@@ -74,7 +77,35 @@ export default function Services() {
             </motion.div>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="flex flex-col sm:flex-row gap-4 justify-center mt-12 max-w-5xl mx-auto"
+        >
+          <button
+            onClick={() => setDialog('project')}
+            className="flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-semibold border border-neon-purple/40 bg-neon-purple/5 text-neon-purple hover:bg-neon-purple/10 hover:shadow-[0_0_24px_hsl(var(--neon-purple)/0.4)] transition-all"
+          >
+            <Sparkles size={18} />
+            Обсудить проект
+          </button>
+          <button
+            onClick={() => setDialog('booking')}
+            className="flex items-center justify-center gap-2 px-8 py-4 rounded-full text-base font-semibold neon-glow-btn text-primary-foreground"
+          >
+            <Rocket size={18} />
+            Оставить заявку
+          </button>
+        </motion.div>
       </div>
+
+      <RequestDialog
+        open={dialog !== null}
+        onOpenChange={(o) => !o && setDialog(null)}
+        variant={dialog ?? 'project'}
+      />
     </section>
   );
 }

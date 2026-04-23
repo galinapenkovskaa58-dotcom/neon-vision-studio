@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MessageCircleQuestion } from 'lucide-react';
+import { Sparkles, Rocket } from 'lucide-react';
 import heroImage from '@/assets/hero-dsn.png';
-import AskQuestionDialog from '@/components/AskQuestionDialog';
+import RequestDialog, { type RequestVariant } from '@/components/RequestDialog';
 
 export default function Hero() {
-  const [askOpen, setAskOpen] = useState(false);
+  const [dialog, setDialog] = useState<RequestVariant | null>(null);
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background orbs */}
@@ -121,17 +121,18 @@ export default function Hero() {
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
             >
               <button
-                onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
-                className="neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
+                onClick={() => setDialog('project')}
+                className="flex items-center justify-center gap-2 neon-glow-btn text-primary-foreground px-10 py-4 rounded-full text-lg font-semibold animate-glow-pulse"
               >
-                Наши услуги
+                <Sparkles size={20} />
+                Обсудить проект
               </button>
               <button
-                onClick={() => setAskOpen(true)}
+                onClick={() => setDialog('booking')}
                 className="flex items-center justify-center gap-2 px-10 py-4 rounded-full text-lg font-semibold border border-neon-cyan/40 bg-neon-cyan/5 text-neon-cyan hover:bg-neon-cyan/10 hover:shadow-[0_0_24px_hsl(var(--neon-cyan)/0.4)] transition-all"
               >
-                <MessageCircleQuestion size={20} />
-                Задать вопрос
+                <Rocket size={20} />
+                Оставить заявку
               </button>
             </motion.div>
           </div>
@@ -154,7 +155,11 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      <AskQuestionDialog open={askOpen} onOpenChange={setAskOpen} />
+      <RequestDialog
+        open={dialog !== null}
+        onOpenChange={(o) => !o && setDialog(null)}
+        variant={dialog ?? 'project'}
+      />
     </section>
   );
 }
