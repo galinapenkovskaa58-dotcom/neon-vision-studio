@@ -140,7 +140,7 @@ export default function BookingForm({ iconSrc }: BookingFormProps = {}) {
             className="relative shrink-0"
           >
             <img
-              src={bookingIcon}
+              src={iconSrc ?? bookingIcon}
               alt=""
               aria-hidden="true"
               className="relative z-10 w-28 h-28 md:w-36 md:h-36 object-contain"

@@ -4,6 +4,7 @@ import BookingForm from '@/components/landing/BookingForm';
 import { motion } from 'framer-motion';
 import { Code, Laptop, Rocket, Palette } from 'lucide-react';
 import vibeCodingHero from '@/assets/vibe-coding-hero.png';
+import vibeBookingIcon from '@/assets/booking-icon-vibe.png';
 
 const codeSymbols = ['</>', '{ }', '< />', '()', '=>', '[]', '#!', '&&', '||', '++', '/*', '*/'];
 
@@ -152,7 +153,7 @@ const VibeCoding = () => {
         </div>
       </section>
 
-      <BookingForm />
+      <BookingForm iconSrc={vibeBookingIcon} />
 
       <Footer />
     </div>
