@@ -104,6 +104,19 @@ export default function Admin() {
             Заявки
           </button>
 
+          {/* Вопросы — общий раздел */}
+          <button
+            onClick={() => setActive('questions')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+              active === 'questions'
+                ? 'bg-primary/20 text-primary'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+            }`}
+          >
+            <MessageCircleQuestion size={18} />
+            Вопросы
+          </button>
+
           <div className="pt-3 pb-1 px-4 text-[10px] uppercase tracking-widest text-muted-foreground/60">
             Услуги
           </div>
