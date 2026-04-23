@@ -1,5 +1,6 @@
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
+import Reviews from '@/components/landing/Reviews';
 import BookingForm from '@/components/landing/BookingForm';
 import { motion } from 'framer-motion';
 import { Code, Laptop, Rocket, Palette } from 'lucide-react';
@@ -152,6 +153,8 @@ const VibeCoding = () => {
           </div>
         </div>
       </section>
+
+      <Reviews service="vibe-coding" />
 
       <BookingForm iconSrc={vibeBookingIcon} />
 

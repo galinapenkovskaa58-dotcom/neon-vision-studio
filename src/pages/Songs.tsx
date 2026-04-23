@@ -1,5 +1,6 @@
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
+import Reviews from '@/components/landing/Reviews';
 import BookingForm from '@/components/landing/BookingForm';
 import songsBookingIcon from '@/assets/booking-icon-songs.png';
 import { motion } from 'framer-motion';
@@ -132,6 +133,8 @@ const Songs = () => {
           </div>
         </div>
       </section>
+
+      <Reviews service="songs" />
 
       <BookingForm iconSrc={songsBookingIcon} />
 
