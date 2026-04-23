@@ -68,6 +68,7 @@ export default function Admin() {
 
   const renderContent = () => {
     if (active === 'bookings') return <AdminBookings />;
+    if (active === 'questions') return <AdminQuestions />;
     const [serviceId, sectionId] = active.split(':') as [string, Section];
     if (!serviceId || !sectionId) return null;
     if (sectionId === 'portfolio') return <AdminPortfolio service={serviceId} />;
