@@ -129,18 +129,73 @@ export default function BookingForm() {
           viewport={{ once: true }}
           className="mb-16 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8 max-w-3xl mx-auto"
         >
-          <img
-            src={bookingIcon}
-            alt=""
-            aria-hidden="true"
-            className="w-28 h-28 md:w-36 md:h-36 shrink-0 object-contain"
-            style={{
-              WebkitMaskImage:
-                'radial-gradient(circle at center, black 55%, transparent 80%)',
-              maskImage:
-                'radial-gradient(circle at center, black 55%, transparent 80%)',
-            }}
-          />
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.6 }}
+            className="relative shrink-0"
+          >
+            <img
+              src={bookingIcon}
+              alt=""
+              aria-hidden="true"
+              className="relative z-10 w-28 h-28 md:w-36 md:h-36 object-contain"
+              style={{
+                WebkitMaskImage:
+                  'radial-gradient(circle at center, black 55%, transparent 80%)',
+                maskImage:
+                  'radial-gradient(circle at center, black 55%, transparent 80%)',
+              }}
+            />
+
+            {/* Fireworks: bursts of colored particles flying outward */}
+            <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+              {[...Array(3)].map((_, burstIdx) => {
+                const particleCount = 14;
+                const burstDelay = burstIdx * 0.35;
+                const colors = [
+                  'hsl(var(--neon-pink))',
+                  'hsl(var(--neon-cyan))',
+                  'hsl(var(--neon-purple))',
+                  'hsl(var(--neon-blue))',
+                ];
+                return [...Array(particleCount)].map((_, i) => {
+                  const angle = (i / particleCount) * Math.PI * 2;
+                  const distance = 80 + Math.random() * 50;
+                  const x = Math.cos(angle) * distance;
+                  const y = Math.sin(angle) * distance;
+                  const color = colors[(i + burstIdx) % colors.length];
+                  return (
+                    <motion.span
+                      key={`fw-${burstIdx}-${i}`}
+                      className="absolute rounded-full"
+                      style={{
+                        width: 6,
+                        height: 6,
+                        background: color,
+                        boxShadow: `0 0 10px ${color}, 0 0 20px ${color}`,
+                      }}
+                      variants={{
+                        hidden: { x: 0, y: 0, opacity: 0, scale: 0 },
+                        visible: {
+                          x: [0, x],
+                          y: [0, y + 30],
+                          opacity: [1, 1, 0],
+                          scale: [0, 1, 0.4],
+                        },
+                      }}
+                      transition={{
+                        duration: 1.4,
+                        delay: burstDelay + i * 0.02,
+                        ease: 'easeOut',
+                        times: [0, 0.6, 1],
+                      }}
+                    />
+                  );
+                });
+              })}
+            </div>
+          </motion.div>
           <div className="text-center sm:text-left">
             <h2 className="text-4xl md:text-5xl font-heading font-bold mb-3">
               <span className="gradient-text">Записаться</span>
