@@ -46,14 +46,14 @@ export default function FinalCTA() {
               </button>
               <button
                 onClick={() => openDialog('project')}
-                className="glass px-8 py-4 rounded-full text-base font-semibold flex items-center gap-2 hover:bg-card/80 transition-all border border-neon-purple/40 hover:border-neon-purple/70"
+                className="px-8 py-4 rounded-full text-base font-semibold flex items-center gap-2 text-neon-purple border border-neon-purple/50 bg-neon-purple/5 shadow-[0_0_18px_hsl(var(--neon-purple)/0.35)] hover:bg-neon-purple/10 hover:shadow-[0_0_28px_hsl(var(--neon-purple)/0.6)] transition-all"
               >
-                <Sparkles size={18} className="text-neon-purple" />
+                <Sparkles size={18} />
                 Обсудить проект
               </button>
               <button
                 onClick={() => openDialog('question')}
-                className="px-8 py-4 rounded-full text-base font-semibold flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors"
+                className="px-8 py-4 rounded-full text-base font-semibold flex items-center gap-2 text-neon-cyan border border-neon-cyan/40 bg-neon-cyan/5 hover:bg-neon-cyan/10 hover:shadow-[0_0_18px_hsl(var(--neon-cyan)/0.4)] transition-all"
               >
                 <MessageCircleQuestion size={18} />
                 Задать вопрос
