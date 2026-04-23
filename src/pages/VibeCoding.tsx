@@ -18,7 +18,7 @@ const features = [
 const VibeCoding = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header pageBadge={{ label: 'Вайб-кодинг', tone: 'purple' }} />
       
       <section className="relative pt-40 pb-20 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">

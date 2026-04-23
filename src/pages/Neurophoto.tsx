@@ -11,7 +11,7 @@ import neurophotoHero from '@/assets/neurophoto-hero.png';
 const Neurophoto = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header pageBadge={{ label: 'Нейрофотосессии', tone: 'cyan' }} />
       
       {/* Hero for Neurophoto */}
       <section className="relative pt-40 pb-20 overflow-hidden">

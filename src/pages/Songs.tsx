@@ -16,7 +16,7 @@ const features = [
 const Songs = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header pageBadge={{ label: 'Музыка & Песни', tone: 'cyan' }} />
       
       <section className="relative pt-40 pb-20 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
