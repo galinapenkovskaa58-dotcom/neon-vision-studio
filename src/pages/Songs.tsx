@@ -1,6 +1,7 @@
 import Header from '@/components/landing/Header';
 import Footer from '@/components/landing/Footer';
 import BookingForm from '@/components/landing/BookingForm';
+import songsBookingIcon from '@/assets/booking-icon-songs.png';
 import { motion } from 'framer-motion';
 import { Music, Mic, Headphones, AudioWaveform } from 'lucide-react';
 import songsHero from '@/assets/songs-hero.png';
@@ -132,7 +133,7 @@ const Songs = () => {
         </div>
       </section>
 
-      <BookingForm />
+      <BookingForm iconSrc={songsBookingIcon} />
 
       <Footer />
     </div>
