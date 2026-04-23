@@ -209,10 +209,20 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
             </button>
           ))}
 
-          <Link to="/" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors relative group">
-            Главная
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-neon-blue to-neon-cyan group-hover:w-full transition-all duration-300" />
-          </Link>
+          {isHome ? (
+            <button
+              onClick={() => setAskOpen(true)}
+              className="flex items-center gap-2 text-sm font-semibold text-neon-cyan border border-neon-cyan/40 bg-neon-cyan/5 px-4 py-2 rounded-full hover:bg-neon-cyan/10 hover:shadow-[0_0_18px_hsl(var(--neon-cyan)/0.4)] transition-all"
+            >
+              <MessageCircleQuestion size={14} />
+              Задать вопрос
+            </button>
+          ) : (
+            <Link to="/" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors relative group">
+              На главную
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-neon-blue to-neon-cyan group-hover:w-full transition-all duration-300" />
+            </Link>
+          )}
 
           {isAdmin && (
             <button
