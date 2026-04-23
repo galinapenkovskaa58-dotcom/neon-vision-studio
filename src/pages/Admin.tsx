@@ -4,13 +4,14 @@ import { supabase } from '@/integrations/supabase/client';
 import { useAdmin } from '@/hooks/useAdmin';
 import AdminLogin from '@/components/admin/AdminLogin';
 import AdminBookings from '@/components/admin/AdminBookings';
+import AdminQuestions from '@/components/admin/AdminQuestions';
 import AdminPortfolio from '@/components/admin/AdminPortfolio';
 import AdminTariffs from '@/components/admin/AdminTariffs';
 import AdminReviews from '@/components/admin/AdminReviews';
 import AdminStyles from '@/components/admin/AdminStyles';
 import {
   FileImage, CalendarCheck, Tags, MessageSquare, LogOut, Palette,
-  Camera, Video, Music, Code2, ChevronDown, ChevronRight,
+  Camera, Video, Music, Code2, ChevronDown, ChevronRight, MessageCircleQuestion,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -67,6 +68,7 @@ export default function Admin() {
 
   const renderContent = () => {
     if (active === 'bookings') return <AdminBookings />;
+    if (active === 'questions') return <AdminQuestions />;
     const [serviceId, sectionId] = active.split(':') as [string, Section];
     if (!serviceId || !sectionId) return null;
     if (sectionId === 'portfolio') return <AdminPortfolio service={serviceId} />;
@@ -100,6 +102,19 @@ export default function Admin() {
           >
             <CalendarCheck size={18} />
             Заявки
+          </button>
+
+          {/* Вопросы — общий раздел */}
+          <button
+            onClick={() => setActive('questions')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+              active === 'questions'
+                ? 'bg-primary/20 text-primary'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+            }`}
+          >
+            <MessageCircleQuestion size={18} />
+            Вопросы
           </button>
 
           <div className="pt-3 pb-1 px-4 text-[10px] uppercase tracking-widest text-muted-foreground/60">

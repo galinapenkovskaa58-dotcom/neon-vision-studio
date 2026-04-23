@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Shield, ChevronDown } from 'lucide-react';
+import { Menu, X, Shield, ChevronDown, MessageCircleQuestion } from 'lucide-react';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import logoImg from '@/assets/logo-dsn.png';
+import AskQuestionDialog from '@/components/AskQuestionDialog';
 
 const serviceItems = [
   { label: 'Нейрофотосессии', href: '/neurophoto' },
@@ -55,6 +56,7 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [reviewsOpen, setReviewsOpen] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const { isAdmin } = useAdmin();
@@ -207,10 +209,20 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
             </button>
           ))}
 
-          <Link to="/" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors relative group">
-            Главная
-            <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-neon-blue to-neon-cyan group-hover:w-full transition-all duration-300" />
-          </Link>
+          {isHome ? (
+            <button
+              onClick={() => setAskOpen(true)}
+              className="flex items-center gap-2 text-sm font-semibold text-neon-cyan border border-neon-cyan/40 bg-neon-cyan/5 px-4 py-2 rounded-full hover:bg-neon-cyan/10 hover:shadow-[0_0_18px_hsl(var(--neon-cyan)/0.4)] transition-all"
+            >
+              <MessageCircleQuestion size={14} />
+              Задать вопрос
+            </button>
+          ) : (
+            <Link to="/" className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors relative group">
+              На главную
+              <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-gradient-to-r from-neon-blue to-neon-cyan group-hover:w-full transition-all duration-300" />
+            </Link>
+          )}
 
           {isAdmin && (
             <button
@@ -238,13 +250,23 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
             className="md:hidden glass-strong mt-2 mx-4 rounded-2xl overflow-hidden"
           >
             <div className="flex flex-col p-6 gap-1">
-              <Link
-                to="/"
-                onClick={() => setMobileOpen(false)}
-                className="text-left text-foreground/80 hover:text-foreground py-2"
-              >
-                Главная
-              </Link>
+              {isHome ? (
+                <button
+                  onClick={() => { setMobileOpen(false); setAskOpen(true); }}
+                  className="flex items-center justify-center gap-2 text-sm font-semibold text-neon-cyan border border-neon-cyan/40 bg-neon-cyan/5 px-4 py-2.5 rounded-full hover:bg-neon-cyan/10 transition-colors mb-2"
+                >
+                  <MessageCircleQuestion size={14} />
+                  Задать вопрос
+                </button>
+              ) : (
+                <Link
+                  to="/"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-left text-foreground/80 hover:text-foreground py-2"
+                >
+                  На главную
+                </Link>
+              )}
 
               {currentPageNav.length > 0 && (
                 <>
@@ -300,6 +322,8 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <AskQuestionDialog open={askOpen} onOpenChange={setAskOpen} />
     </motion.header>
   );
 }
