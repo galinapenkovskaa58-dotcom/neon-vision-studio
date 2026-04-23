@@ -116,7 +116,7 @@ const VibeCoding = () => {
               className="order-2 lg:order-2 flex flex-col items-center lg:items-start text-center lg:text-left"
             >
               <span className="self-center lg:self-start inline-block text-sm font-medium text-neon-purple tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-purple/20 bg-neon-purple/5">
-                Вейб-кодинг
+                Вайб-кодинг
               </span>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold leading-[0.95] mb-6">
                 <span className="block">Сайты</span>
