@@ -26,7 +26,7 @@ const directions = [
   },
   {
     icon: Code2,
-    label: 'Вейб-кодинг',
+    label: 'Вайб-кодинг',
     to: '/vibe-coding',
     glow: 'hsl(var(--neon-blue))',
     iconClass: 'text-neon-blue',
