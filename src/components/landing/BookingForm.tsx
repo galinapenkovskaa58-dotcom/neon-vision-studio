@@ -9,6 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { Send, CheckCircle } from 'lucide-react';
+import bookingIcon from '@/assets/booking-icon.png';
 
 type MessengerType = 'telegram' | 'vk' | 'max' | 'other';
 
