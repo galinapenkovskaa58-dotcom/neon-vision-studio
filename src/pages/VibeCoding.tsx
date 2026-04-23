@@ -35,7 +35,7 @@ const VibeCoding = () => {
             >
               <motion.img
                 src={vibeCodingHero}
-                alt="Вейб-кодинг — DSN Nexoria"
+                alt="Вайб-кодинг — DSN Nexoria"
                 animate={{ y: [0, -15, 0] }}
                 transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
                 className="relative w-full max-w-[560px] h-auto"
