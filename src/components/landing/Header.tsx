@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Shield, ChevronDown } from 'lucide-react';
+import { Menu, X, Shield, ChevronDown, MessageCircleQuestion } from 'lucide-react';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import logoImg from '@/assets/logo-dsn.png';
+import AskQuestionDialog from '@/components/AskQuestionDialog';
 
 const serviceItems = [
   { label: 'Нейрофотосессии', href: '/neurophoto' },
