@@ -250,13 +250,23 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
             className="md:hidden glass-strong mt-2 mx-4 rounded-2xl overflow-hidden"
           >
             <div className="flex flex-col p-6 gap-1">
-              <Link
-                to="/"
-                onClick={() => setMobileOpen(false)}
-                className="text-left text-foreground/80 hover:text-foreground py-2"
-              >
-                Главная
-              </Link>
+              {isHome ? (
+                <button
+                  onClick={() => { setMobileOpen(false); setAskOpen(true); }}
+                  className="flex items-center justify-center gap-2 text-sm font-semibold text-neon-cyan border border-neon-cyan/40 bg-neon-cyan/5 px-4 py-2.5 rounded-full hover:bg-neon-cyan/10 transition-colors mb-2"
+                >
+                  <MessageCircleQuestion size={14} />
+                  Задать вопрос
+                </button>
+              ) : (
+                <Link
+                  to="/"
+                  onClick={() => setMobileOpen(false)}
+                  className="text-left text-foreground/80 hover:text-foreground py-2"
+                >
+                  На главную
+                </Link>
+              )}
 
               {currentPageNav.length > 0 && (
                 <>
