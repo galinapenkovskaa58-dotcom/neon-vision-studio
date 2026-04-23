@@ -56,6 +56,7 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [reviewsOpen, setReviewsOpen] = useState(false);
+  const [askOpen, setAskOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const { isAdmin } = useAdmin();
