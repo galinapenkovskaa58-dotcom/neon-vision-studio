@@ -1,7 +1,11 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { MessageCircleQuestion } from 'lucide-react';
 import heroImage from '@/assets/hero-dsn.png';
+import AskQuestionDialog from '@/components/AskQuestionDialog';
 
 export default function Hero() {
+  const [askOpen, setAskOpen] = useState(false);
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background orbs */}
