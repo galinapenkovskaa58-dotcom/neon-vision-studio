@@ -37,7 +37,20 @@ const pageNavItems: Record<string, { label: string; anchor: string }[]> = {
   ],
 };
 
-export default function Header() {
+type BadgeTone = 'cyan' | 'pink' | 'purple' | 'blue';
+
+interface HeaderProps {
+  pageBadge?: { label: string; tone?: BadgeTone };
+}
+
+const toneClasses: Record<BadgeTone, string> = {
+  cyan: 'text-neon-cyan border-neon-cyan/30 bg-neon-cyan/5 shadow-[0_0_20px_hsl(var(--neon-cyan)/0.25)]',
+  pink: 'text-neon-pink border-neon-pink/30 bg-neon-pink/5 shadow-[0_0_20px_hsl(var(--neon-pink)/0.25)]',
+  purple: 'text-neon-purple border-neon-purple/30 bg-neon-purple/5 shadow-[0_0_20px_hsl(var(--neon-purple)/0.25)]',
+  blue: 'text-neon-blue border-neon-blue/30 bg-neon-blue/5 shadow-[0_0_20px_hsl(var(--neon-blue)/0.25)]',
+};
+
+export default function Header({ pageBadge }: HeaderProps = {}) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
@@ -91,10 +104,26 @@ export default function Header() {
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
-        <Link to="/" onClick={handleLogoClick} aria-label="Главная" className="flex items-center transition-all duration-500">
-          <img src={logoImg} alt="DSN Nexoria — AI Studio" className={`transition-all duration-500 ${scrolled ? 'h-12 md:h-16' : 'h-20 md:h-28'} w-auto`} />
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link to="/" onClick={handleLogoClick} aria-label="Главная" className="flex items-center transition-all duration-500">
+            <img src={logoImg} alt="DSN Nexoria — AI Studio" className={`transition-all duration-500 ${scrolled ? 'h-12 md:h-16' : 'h-20 md:h-28'} w-auto`} />
+          </Link>
 
+          {/* Page badge — appears on scroll */}
+          <AnimatePresence>
+            {pageBadge && scrolled && (
+              <motion.span
+                initial={{ opacity: 0, x: -8, scale: 0.9 }}
+                animate={{ opacity: 1, x: 0, scale: 1 }}
+                exit={{ opacity: 0, x: -8, scale: 0.9 }}
+                transition={{ duration: 0.25 }}
+                className={`hidden sm:inline-block text-[11px] md:text-xs font-medium tracking-widest uppercase px-3 py-1.5 md:px-4 md:py-2 rounded-full border ${toneClasses[pageBadge.tone ?? 'cyan']}`}
+              >
+                {pageBadge.label}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </div>
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-8">

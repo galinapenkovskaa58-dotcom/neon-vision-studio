@@ -16,7 +16,7 @@ const features = [
 const AiVideo = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header pageBadge={{ label: 'AI Видео & Клипы', tone: 'pink' }} />
       
       <section className="relative pt-40 pb-20 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
