@@ -25,8 +25,6 @@ export default function Reviews({ service }: ReviewsProps = {}) {
     },
   });
 
-  if (reviews.length === 0) return null;
-
   return (
     <section id="reviews" className="py-24 relative overflow-hidden">
       <div className="absolute inset-0">
@@ -43,8 +41,25 @@ export default function Reviews({ service }: ReviewsProps = {}) {
           <h2 className="text-4xl md:text-5xl font-heading font-bold mb-4">
             <span className="gradient-text">Отзывы</span>
           </h2>
-          <p className="text-muted-foreground text-lg">Что говорят клиенты</p>
+          <p className="text-muted-foreground text-lg">Что говорят клиенты о работе со студией</p>
         </motion.div>
+
+        {reviews.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto text-center"
+          >
+            <div className="glass rounded-3xl p-10 border border-border/30">
+              <p className="text-muted-foreground">
+                Скоро здесь появятся реальные отзывы клиентов.
+              </p>
+            </div>
+          </motion.div>
+        )}
+
+        {reviews.length > 0 && (
 
         <div className="max-w-3xl mx-auto">
           <motion.div
@@ -88,6 +103,7 @@ export default function Reviews({ service }: ReviewsProps = {}) {
             </div>
           )}
         </div>
+        )}
       </div>
     </section>
   );
