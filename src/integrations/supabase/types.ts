@@ -103,6 +103,42 @@ export type Database = {
         }
         Relationships: []
       }
+      questions: {
+        Row: {
+          created_at: string
+          id: string
+          messenger: Database["public"]["Enums"]["messenger_type"]
+          messenger_username: string | null
+          name: string
+          phone: string
+          question: string
+          status: Database["public"]["Enums"]["question_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          messenger?: Database["public"]["Enums"]["messenger_type"]
+          messenger_username?: string | null
+          name: string
+          phone: string
+          question: string
+          status?: Database["public"]["Enums"]["question_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          messenger?: Database["public"]["Enums"]["messenger_type"]
+          messenger_username?: string | null
+          name?: string
+          phone?: string
+          question?: string
+          status?: Database["public"]["Enums"]["question_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           client_name: string
@@ -271,6 +307,7 @@ export type Database = {
       booking_status: "new" | "in_progress" | "completed" | "cancelled"
       booking_urgency: "normal" | "urgent"
       messenger_type: "telegram" | "whatsapp" | "other"
+      question_status: "new" | "in_progress" | "answered" | "closed"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -402,6 +439,7 @@ export const Constants = {
       booking_status: ["new", "in_progress", "completed", "cancelled"],
       booking_urgency: ["normal", "urgent"],
       messenger_type: ["telegram", "whatsapp", "other"],
+      question_status: ["new", "in_progress", "answered", "closed"],
     },
   },
 } as const
