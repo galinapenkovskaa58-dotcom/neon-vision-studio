@@ -8,7 +8,7 @@ import vibeCodingHero from '@/assets/vibe-coding-hero.png';
 const codeSymbols = ['</>', '{ }', '< />', '()', '=>', '[]', '#!', '&&', '||', '++', '/*', '*/'];
 
 const features = [
-  { icon: Code, title: 'Вейб-кодинг', desc: 'Создание сайтов и приложений с помощью AI — быстро, стильно, современно.' },
+  { icon: Code, title: 'Вайб-кодинг', desc: 'Создание сайтов и приложений с помощью AI — быстро, стильно, современно.' },
   { icon: Palette, title: 'Уникальный дизайн', desc: 'Каждый проект — авторский дизайн, отражающий вашу индивидуальность.' },
   { icon: Rocket, title: 'Быстрый запуск', desc: 'От идеи до рабочего продукта за дни, а не месяцы.' },
   { icon: Laptop, title: 'Полный цикл', desc: 'Лендинги, интернет-магазины, веб-приложения — под ключ.' },
@@ -35,7 +35,7 @@ const VibeCoding = () => {
             >
               <motion.img
                 src={vibeCodingHero}
-                alt="Вейб-кодинг — DSN Nexoria"
+                alt="Вайб-кодинг — DSN Nexoria"
                 animate={{ y: [0, -15, 0] }}
                 transition={{ repeat: Infinity, duration: 5, ease: 'easeInOut' }}
                 className="relative w-full max-w-[560px] h-auto"
@@ -116,7 +116,7 @@ const VibeCoding = () => {
               className="order-2 lg:order-2 flex flex-col items-center lg:items-start text-center lg:text-left"
             >
               <span className="self-center lg:self-start inline-block text-sm font-medium text-neon-purple tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-purple/20 bg-neon-purple/5">
-                Вейб-кодинг
+                Вайб-кодинг
               </span>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold leading-[0.95] mb-6">
                 <span className="block">Сайты</span>

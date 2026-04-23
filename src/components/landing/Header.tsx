@@ -9,7 +9,7 @@ const serviceItems = [
   { label: 'Нейрофотосессии', href: '/neurophoto' },
   { label: 'AI Видео & Клипы', href: '/ai-video' },
   { label: 'Написание песен', href: '/songs' },
-  { label: 'Вейб-кодинг', href: '/vibe-coding' },
+  { label: 'Вайб-кодинг', href: '/vibe-coding' },
 ];
 
 const pageNavItems: Record<string, { label: string; anchor: string }[]> = {

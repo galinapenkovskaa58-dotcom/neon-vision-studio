@@ -26,7 +26,7 @@ const services = [
   },
   {
     icon: Code,
-    title: 'Вейб-кодинг',
+    title: 'Вайб-кодинг',
     desc: 'Стильные сайты и веб-приложения с помощью AI — быстро и под ключ.',
     href: '/vibe-coding',
     color: 'neon-purple',
