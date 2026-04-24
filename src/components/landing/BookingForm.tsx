@@ -6,9 +6,11 @@ import RequestDialog, { type RequestVariant } from '@/components/RequestDialog';
 
 interface BookingFormProps {
   iconSrc?: string;
+  title?: string;
+  subtitle?: string;
 }
 
-export default function BookingForm({ iconSrc }: BookingFormProps = {}) {
+export default function BookingForm({ iconSrc, title, subtitle }: BookingFormProps = {}) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [variant, setVariant] = useState<RequestVariant>('booking');
 
@@ -100,10 +102,10 @@ export default function BookingForm({ iconSrc }: BookingFormProps = {}) {
           </motion.div>
           <div className="text-center sm:text-left">
             <h2 className="text-4xl md:text-5xl font-heading font-bold mb-3">
-              <span className="gradient-text">Записаться</span>
+              <span className="gradient-text">{title ?? 'Записаться'}</span>
             </h2>
             <p className="text-muted-foreground text-lg max-w-xl">
-              Выберите удобный формат — оставьте заявку, обсудите проект или задайте вопрос
+              {subtitle ?? 'Выберите удобный формат — оставьте заявку, обсудите проект или задайте вопрос'}
             </p>
           </div>
         </motion.div>

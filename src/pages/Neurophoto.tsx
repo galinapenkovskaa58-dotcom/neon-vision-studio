@@ -147,7 +147,10 @@ const Neurophoto = () => {
       <Styles />
       <Tariffs />
       <Reviews service="neurophoto" />
-      <BookingForm />
+      <BookingForm
+        title="Нейрофотосессия, которая удивляет"
+        subtitle="От идеи до готовых изображений — создаём эффектные AI-образы под ваш стиль и задачи"
+      />
       <Footer />
     </div>
   );

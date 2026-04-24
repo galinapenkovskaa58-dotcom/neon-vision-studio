@@ -136,7 +136,11 @@ const Songs = () => {
 
       <Reviews service="songs" />
 
-      <BookingForm iconSrc={songsBookingIcon} />
+      <BookingForm
+        iconSrc={songsBookingIcon}
+        title="Ваш хит начинается здесь"
+        subtitle="Напишем текст, подберём стиль и звук — вы получите трек, который хочется слушать снова"
+      />
 
       <Footer />
     </div>
