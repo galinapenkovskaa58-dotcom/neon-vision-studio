@@ -17,7 +17,7 @@ const features = [
 const Songs = () => {
   return (
     <div className="min-h-screen bg-background">
-      <Header pageBadge={{ label: 'Музыка & Песни', tone: 'cyan' }} />
+      <Header pageBadge={{ label: 'AI-музыка', tone: 'cyan' }} />
       
       <section className="relative pt-40 pb-20 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
@@ -34,7 +34,7 @@ const Songs = () => {
               className="text-center lg:text-right order-2 lg:order-1"
             >
               <span className="inline-block text-sm font-medium text-neon-cyan tracking-widest uppercase mb-6 px-4 py-2 rounded-full border border-neon-cyan/20 bg-neon-cyan/5">
-                Музыка & Песни
+                AI-музыка
               </span>
               <h1 className="text-4xl md:text-6xl lg:text-7xl font-heading font-bold leading-[0.95] mb-6">
                 <span className="block">Музыка</span>

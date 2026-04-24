@@ -21,7 +21,7 @@ const services = [
   },
   {
     icon: Music,
-    title: 'Написание песен',
+    title: 'AI-музыка',
     desc: 'AI-музыка, тексты, вокал и полный продакшн — от идеи до готового трека.',
     href: '/songs',
     color: 'neon-cyan',

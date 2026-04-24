@@ -9,7 +9,7 @@ import AskQuestionDialog from '@/components/AskQuestionDialog';
 const serviceItems = [
   { label: 'Нейрофотосессии', href: '/neurophoto' },
   { label: 'AI Видео & Клипы', href: '/ai-video' },
-  { label: 'Написание песен', href: '/songs' },
+  { label: 'AI-музыка', href: '/songs' },
   { label: 'Вайб-кодинг', href: '/vibe-coding' },
 ];
 
