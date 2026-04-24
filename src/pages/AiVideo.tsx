@@ -176,7 +176,11 @@ const AiVideo = () => {
 
       <Reviews service="ai-video" />
 
-      <BookingForm iconSrc={videoBookingIcon} />
+      <BookingForm
+        iconSrc={videoBookingIcon}
+        title="Превратим идею в живое видео"
+        subtitle="Создаём AI-видео и клипы — от идеи до финального монтажа"
+      />
 
       <Footer />
     </div>
