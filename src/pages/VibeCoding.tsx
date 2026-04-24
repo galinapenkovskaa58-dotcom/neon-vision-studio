@@ -156,7 +156,11 @@ const VibeCoding = () => {
 
       <Reviews service="vibe-coding" />
 
-      <BookingForm iconSrc={vibeBookingIcon} />
+      <BookingForm
+        iconSrc={vibeBookingIcon}
+        title="Создаём интерфейсы, которые работают на вас"
+        subtitle="Сайты, приложения и UI — проектируем и собираем удобные решения с продуманной логикой и визуалом"
+      />
 
       <Footer />
     </div>
