@@ -24,17 +24,17 @@ const pageNavItems: Record<string, { label: string; anchor: string }[]> = {
   '/ai-video': [
     { label: 'Возможности', anchor: '#features' },
     { label: 'Отзывы', anchor: '#reviews' },
-    { label: 'Связаться', anchor: '#contact' },
+    { label: 'Связаться', anchor: '#booking' },
   ],
   '/songs': [
     { label: 'Возможности', anchor: '#features' },
     { label: 'Отзывы', anchor: '#reviews' },
-    { label: 'Связаться', anchor: '#contact' },
+    { label: 'Связаться', anchor: '#booking' },
   ],
   '/vibe-coding': [
     { label: 'Возможности', anchor: '#features' },
     { label: 'Отзывы', anchor: '#reviews' },
-    { label: 'Связаться', anchor: '#contact' },
+    { label: 'Связаться', anchor: '#booking' },
   ],
   '/': [
     { label: 'О студии', anchor: '#about' },
