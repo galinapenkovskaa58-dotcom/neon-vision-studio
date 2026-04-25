@@ -31,7 +31,8 @@ function generateCode(prefix: string): string {
 }
 
 async function createUniqueCode(
-  supabase: ReturnType<typeof createClient>,
+  // deno-lint-ignore no-explicit-any
+  supabase: any,
   prefix: string,
   discount_percent: number,
   source: 'review' | 'portfolio',
