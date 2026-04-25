@@ -344,72 +344,21 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
                   </p>
                 </div>
 
-                <div
-                  onClick={() => setShareToPortfolio(true)}
-                  className={`rounded-2xl border p-5 cursor-pointer transition-all ${
-                    shareToPortfolio ? 'border-neon-pink bg-neon-pink/10' : 'border-border/40 bg-muted/30'
+                <label
+                  className={`rounded-2xl border p-5 cursor-pointer transition-all flex items-start gap-3 ${
+                    shareToPortfolio ? 'border-neon-pink bg-neon-pink/10' : 'border-border/40 bg-muted/30 hover:border-border/60'
                   }`}
                 >
-                  <div className="flex items-start gap-3 mb-4">
-                    <Checkbox checked={shareToPortfolio} onCheckedChange={(v) => setShareToPortfolio(v === true)} className="mt-1" />
-                    <label className="text-sm leading-relaxed cursor-pointer">
-                      Разрешаю опубликовать материал в портфолио DSN Nexoria с указанием моего имени
-                    </label>
-                  </div>
-
-                  {shareToPortfolio && (
-                    <div className="space-y-4 pt-2">
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Описание (что показываем)</label>
-                        <Textarea
-                          value={portfolioDesc}
-                          onChange={(e) => setPortfolioDesc(e.target.value)}
-                          rows={2}
-                          placeholder="Например: серия портретов в стиле кибер-нуар"
-                          className="bg-muted/30 border-border/50 rounded-xl resize-none"
-                        />
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Файлы (изображения / аудио, до 5 шт., 20 МБ)</label>
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {mediaUrls.map((url) => (
-                            <div key={url} className="relative w-20 h-20 rounded-lg overflow-hidden border border-border/50 bg-muted/40">
-                              {/\.(jpe?g|png|webp|gif)$/i.test(url) ? (
-                                <img src={url} alt="upload" className="w-full h-full object-cover" />
-                              ) : (
-                                <div className="w-full h-full flex items-center justify-center text-[10px] text-muted-foreground p-1 text-center">{url.split('/').pop()}</div>
-                              )}
-                              <button onClick={(e) => { e.stopPropagation(); removeMedia(url); }} className="absolute top-1 right-1 bg-background/80 rounded-full p-0.5">
-                                <X size={12} />
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                        <label className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-dashed border-border/60 cursor-pointer hover:bg-muted/40 transition-colors text-sm">
-                          <Upload size={16} />
-                          {uploading ? 'Загрузка…' : 'Добавить файлы'}
-                          <input type="file" multiple accept="image/*,audio/*" className="hidden" onChange={(e) => handleUpload(e.target.files)} />
-                        </label>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium mb-2">Или ссылка на проект (для вайб-кодинга)</label>
-                        <Input
-                          value={portfolioLink}
-                          onChange={(e) => setPortfolioLink(e.target.value)}
-                          placeholder="https://…"
-                          className="bg-muted/30 border-border/50 rounded-xl h-12"
-                        />
-                      </div>
-                    </div>
-                  )}
-                </div>
+                  <Checkbox checked={shareToPortfolio} onCheckedChange={(v) => setShareToPortfolio(v === true)} className="mt-1" />
+                  <span className="text-sm leading-relaxed">
+                    Разрешаю опубликовать материал по моему проекту в портфолио DSN Nexoria с указанием моего имени
+                  </span>
+                </label>
 
                 <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={() => submit(true)}
-                    disabled={submitting || !shareToPortfolio || (mediaUrls.length === 0 && !portfolioLink.trim() && !portfolioDesc.trim())}
+                    disabled={submitting || !shareToPortfolio}
                     className="flex-1 neon-glow-btn text-primary-foreground py-4 rounded-full text-base font-semibold flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     <Sparkles size={18} />
