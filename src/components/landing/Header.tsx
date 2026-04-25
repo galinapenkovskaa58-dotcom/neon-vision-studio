@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Shield, ChevronDown, MessageCircleQuestion } from 'lucide-react';
+import { Menu, X, Shield, ChevronDown, MessageCircleQuestion, Sparkles } from 'lucide-react';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import logoImg from '@/assets/logo-dsn.png';
@@ -166,40 +166,50 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
             </AnimatePresence>
           </div>
 
-          {/* Reviews dropdown (home only) */}
-          {isHome && (
-            <div ref={reviewsRef} className="relative">
-              <button
-                onClick={() => setReviewsOpen(!reviewsOpen)}
-                className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors flex items-center gap-1"
-              >
-                Отзывы
-                <ChevronDown size={14} className={`transition-transform ${reviewsOpen ? 'rotate-180' : ''}`} />
-              </button>
-              <AnimatePresence>
-                {reviewsOpen && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 8 }}
-                    transition={{ duration: 0.2 }}
-                    className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-60 glass-strong rounded-xl border border-border/30 overflow-hidden"
+          {/* Reviews dropdown — visible on all pages */}
+          <div ref={reviewsRef} className="relative">
+            <button
+              onClick={() => setReviewsOpen(!reviewsOpen)}
+              className="text-sm font-medium text-foreground/70 hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              Отзывы
+              <ChevronDown size={14} className={`transition-transform ${reviewsOpen ? 'rotate-180' : ''}`} />
+            </button>
+            <AnimatePresence>
+              {reviewsOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 8 }}
+                  transition={{ duration: 0.2 }}
+                  className="absolute top-full left-1/2 -translate-x-1/2 mt-3 w-64 glass-strong rounded-xl border border-border/30 overflow-hidden"
+                >
+                  <div className="px-5 pt-3 pb-1 text-[10px] uppercase tracking-widest text-muted-foreground/70">
+                    Почитать отзывы
+                  </div>
+                  {serviceItems.map((item) => (
+                    <Link
+                      key={item.href}
+                      to={`${item.href}#reviews`}
+                      onClick={() => setReviewsOpen(false)}
+                      className="block px-5 py-2.5 text-sm text-foreground/80 hover:text-foreground hover:bg-card/50 transition-colors"
+                    >
+                      {item.label}
+                    </Link>
+                  ))}
+                  <div className="h-px bg-border/40 my-1" />
+                  <Link
+                    to="/review"
+                    onClick={() => setReviewsOpen(false)}
+                    className="flex items-center gap-2 px-5 py-3 text-sm font-semibold text-neon-cyan hover:bg-neon-cyan/10 transition-colors"
                   >
-                    {serviceItems.map((item) => (
-                      <Link
-                        key={item.href}
-                        to={`${item.href}#reviews`}
-                        onClick={() => setReviewsOpen(false)}
-                        className="block px-5 py-3 text-sm text-foreground/80 hover:text-foreground hover:bg-card/50 transition-colors"
-                      >
-                        {item.label}
-                      </Link>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )}
+                    <Sparkles size={14} />
+                    Оставить отзыв
+                  </Link>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
 
           {/* Page section nav */}
           {currentPageNav.map((item) => (
@@ -299,21 +309,25 @@ export default function Header({ pageBadge }: HeaderProps = {}) {
                 </Link>
               ))}
 
-              {isHome && (
-                <>
-                  <p className="text-xs text-muted-foreground uppercase tracking-wider mt-3 mb-1">Отзывы</p>
-                  {serviceItems.map((item) => (
-                    <Link
-                      key={`reviews-${item.href}`}
-                      to={`${item.href}#reviews`}
-                      onClick={() => setMobileOpen(false)}
-                      className="text-left text-foreground/80 hover:text-foreground py-2 pl-3"
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </>
-              )}
+              <p className="text-xs text-muted-foreground uppercase tracking-wider mt-3 mb-1">Отзывы</p>
+              {serviceItems.map((item) => (
+                <Link
+                  key={`reviews-${item.href}`}
+                  to={`${item.href}#reviews`}
+                  onClick={() => setMobileOpen(false)}
+                  className="text-left text-foreground/80 hover:text-foreground py-2 pl-3"
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <Link
+                to="/review"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center justify-center gap-2 text-sm font-semibold text-neon-cyan border border-neon-cyan/40 bg-neon-cyan/5 px-4 py-2.5 rounded-full hover:bg-neon-cyan/10 transition-colors mt-3"
+              >
+                <Sparkles size={14} />
+                Оставить отзыв
+              </Link>
               {isAdmin && (
                 <button
                   onClick={() => { setMobileOpen(false); navigate('/admin'); }}

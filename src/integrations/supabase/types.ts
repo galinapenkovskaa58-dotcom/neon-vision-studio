@@ -103,6 +103,117 @@ export type Database = {
         }
         Relationships: []
       }
+      portfolio_submissions: {
+        Row: {
+          approved_at: string | null
+          client_name: string
+          created_at: string
+          description: string | null
+          external_link: string | null
+          id: string
+          media_urls: string[]
+          review_id: string | null
+          service: string
+          status: Database["public"]["Enums"]["review_status"]
+          updated_at: string
+        }
+        Insert: {
+          approved_at?: string | null
+          client_name: string
+          created_at?: string
+          description?: string | null
+          external_link?: string | null
+          id?: string
+          media_urls?: string[]
+          review_id?: string | null
+          service: string
+          status?: Database["public"]["Enums"]["review_status"]
+          updated_at?: string
+        }
+        Update: {
+          approved_at?: string | null
+          client_name?: string
+          created_at?: string
+          description?: string | null
+          external_link?: string | null
+          id?: string
+          media_urls?: string[]
+          review_id?: string | null
+          service?: string
+          status?: Database["public"]["Enums"]["review_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "portfolio_submissions_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      promocodes: {
+        Row: {
+          code: string
+          created_at: string
+          discount_percent: number
+          id: string
+          is_used: boolean
+          portfolio_submission_id: string | null
+          review_id: string | null
+          source: Database["public"]["Enums"]["promocode_source"]
+          used_at: string | null
+          used_for_booking_id: string | null
+        }
+        Insert: {
+          code: string
+          created_at?: string
+          discount_percent: number
+          id?: string
+          is_used?: boolean
+          portfolio_submission_id?: string | null
+          review_id?: string | null
+          source: Database["public"]["Enums"]["promocode_source"]
+          used_at?: string | null
+          used_for_booking_id?: string | null
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          discount_percent?: number
+          id?: string
+          is_used?: boolean
+          portfolio_submission_id?: string | null
+          review_id?: string | null
+          source?: Database["public"]["Enums"]["promocode_source"]
+          used_at?: string | null
+          used_for_booking_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "promocodes_portfolio_submission_id_fkey"
+            columns: ["portfolio_submission_id"]
+            isOneToOne: false
+            referencedRelation: "portfolio_submissions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "promocodes_review_id_fkey"
+            columns: ["review_id"]
+            isOneToOne: false
+            referencedRelation: "reviews"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "promocodes_used_for_booking_id_fkey"
+            columns: ["used_for_booking_id"]
+            isOneToOne: false
+            referencedRelation: "bookings"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       questions: {
         Row: {
           created_at: string
@@ -143,34 +254,43 @@ export type Database = {
         Row: {
           client_name: string
           created_at: string | null
+          email: string | null
           id: string
           is_visible: boolean | null
           photo_url: string | null
           rating: number | null
           service: string
           sort_order: number | null
+          status: Database["public"]["Enums"]["review_status"]
+          submitted_at: string
           text: string
         }
         Insert: {
           client_name: string
           created_at?: string | null
+          email?: string | null
           id?: string
           is_visible?: boolean | null
           photo_url?: string | null
           rating?: number | null
           service?: string
           sort_order?: number | null
+          status?: Database["public"]["Enums"]["review_status"]
+          submitted_at?: string
           text: string
         }
         Update: {
           client_name?: string
           created_at?: string | null
+          email?: string | null
           id?: string
           is_visible?: boolean | null
           photo_url?: string | null
           rating?: number | null
           service?: string
           sort_order?: number | null
+          status?: Database["public"]["Enums"]["review_status"]
+          submitted_at?: string
           text?: string
         }
         Relationships: []
@@ -307,7 +427,9 @@ export type Database = {
       booking_status: "new" | "in_progress" | "completed" | "cancelled"
       booking_urgency: "normal" | "urgent"
       messenger_type: "telegram" | "whatsapp" | "other"
+      promocode_source: "review" | "portfolio"
       question_status: "new" | "in_progress" | "answered" | "closed"
+      review_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -439,7 +561,9 @@ export const Constants = {
       booking_status: ["new", "in_progress", "completed", "cancelled"],
       booking_urgency: ["normal", "urgent"],
       messenger_type: ["telegram", "whatsapp", "other"],
+      promocode_source: ["review", "portfolio"],
       question_status: ["new", "in_progress", "answered", "closed"],
+      review_status: ["pending", "approved", "rejected"],
     },
   },
 } as const

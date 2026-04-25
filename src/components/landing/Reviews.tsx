@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
-import { Star } from 'lucide-react';
+import { Star, Sparkles } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface ReviewsProps {
   service?: string;
@@ -104,6 +105,24 @@ export default function Reviews({ service }: ReviewsProps = {}) {
           )}
         </div>
         )}
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12 text-center"
+        >
+          <Link
+            to="/review"
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-neon-cyan/40 bg-neon-cyan/5 text-sm font-semibold text-neon-cyan hover:bg-neon-cyan/10 hover:shadow-[0_0_18px_hsl(var(--neon-cyan)/0.4)] transition-all"
+          >
+            <Sparkles size={16} />
+            Оставить свой отзыв
+          </Link>
+          <p className="text-xs text-muted-foreground mt-3">
+            Получите 10% скидки за отзыв и ещё 15% за материал в портфолио
+          </p>
+        </motion.div>
       </div>
     </section>
   );

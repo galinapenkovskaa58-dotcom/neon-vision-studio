@@ -9,9 +9,12 @@ import AdminPortfolio from '@/components/admin/AdminPortfolio';
 import AdminTariffs from '@/components/admin/AdminTariffs';
 import AdminReviews from '@/components/admin/AdminReviews';
 import AdminStyles from '@/components/admin/AdminStyles';
+import AdminPortfolioSubmissions from '@/components/admin/AdminPortfolioSubmissions';
+import AdminPromocodes from '@/components/admin/AdminPromocodes';
 import {
   FileImage, CalendarCheck, Tags, MessageSquare, LogOut, Palette,
   Camera, Video, Music, Code2, ChevronDown, ChevronRight, MessageCircleQuestion,
+  Inbox, Tag,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -69,6 +72,8 @@ export default function Admin() {
   const renderContent = () => {
     if (active === 'bookings') return <AdminBookings />;
     if (active === 'questions') return <AdminQuestions />;
+    if (active === 'submissions') return <AdminPortfolioSubmissions />;
+    if (active === 'promocodes') return <AdminPromocodes />;
     const [serviceId, sectionId] = active.split(':') as [string, Section];
     if (!serviceId || !sectionId) return null;
     if (sectionId === 'portfolio') return <AdminPortfolio service={serviceId} />;
@@ -115,6 +120,32 @@ export default function Admin() {
           >
             <MessageCircleQuestion size={18} />
             Вопросы
+          </button>
+
+          {/* Заявки в портфолио (от клиентов) */}
+          <button
+            onClick={() => setActive('submissions')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+              active === 'submissions'
+                ? 'bg-primary/20 text-primary'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+            }`}
+          >
+            <Inbox size={18} />
+            Заявки в портфолио
+          </button>
+
+          {/* Промокоды */}
+          <button
+            onClick={() => setActive('promocodes')}
+            className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+              active === 'promocodes'
+                ? 'bg-primary/20 text-primary'
+                : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+            }`}
+          >
+            <Tag size={18} />
+            Промокоды
           </button>
 
           <div className="pt-3 pb-1 px-4 text-[10px] uppercase tracking-widest text-muted-foreground/60">

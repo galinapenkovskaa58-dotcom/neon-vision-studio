@@ -10,6 +10,7 @@ import Songs from "./pages/Songs";
 import VibeCoding from "./pages/VibeCoding";
 import Privacy from "./pages/Privacy";
 import Offer from "./pages/Offer";
+import Review from "./pages/Review";
 import Admin from "./pages/Admin";
 import NotFound from "./pages/NotFound";
 import ScrollToTopButton from "./components/ScrollToTopButton";
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/vibe-coding" element={<VibeCoding />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/offer" element={<Offer />} />
+          <Route path="/review" element={<Review />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
