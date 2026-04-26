@@ -340,7 +340,7 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
                 <div>
                   <h3 className="text-2xl font-heading font-bold mb-2 gradient-text">Поделиться результатом? 🎁</h3>
                   <p className="text-muted-foreground">
-                    Если разрешите опубликовать ваш материал в разделе «Портфолио» — подарим <span className="text-neon-pink font-semibold">ещё один промокод на 15%</span>
+                    Если разрешите опубликовать ваш материал в разделе «Портфолио» — добавим <span className="text-neon-pink font-semibold">+5% к бонусу</span> (итого <span className="text-neon-pink font-semibold">15%</span>)
                   </p>
                 </div>
 
