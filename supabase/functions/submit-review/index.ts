@@ -99,14 +99,9 @@ Deno.serve(async (req) => {
 
     const reviewId = reviewRow.id as string;
 
-    // 2. Promocode for review (10%)
-    const reviewPromocode = await createUniqueCode(supabase, 'REVIEW', 10, 'review', {
-      review_id: reviewId,
-    });
+    let portfolioSubmissionId: string | null = null;
 
-    let portfolioPromocode: string | null = null;
-
-    // 3. If user gave permission to share to portfolio — always create submission + extra 5% code
+    // 2. If user gave permission to share to portfolio — create submission first
     if (data.share_to_portfolio) {
       const { data: submission, error: subErr } = await supabase
         .from('portfolio_submissions')
@@ -125,17 +120,27 @@ Deno.serve(async (req) => {
       if (subErr || !submission) {
         console.error('portfolio submission error', subErr);
       } else {
-        portfolioPromocode = await createUniqueCode(supabase, 'PORTFOLIO', 5, 'portfolio', {
-          portfolio_submission_id: submission.id as string,
-        });
+        portfolioSubmissionId = submission.id as string;
       }
     }
+
+    // 3. Single promocode: 15% if also shared to portfolio, otherwise 10%
+    const isPortfolio = portfolioSubmissionId !== null;
+    const promocode = await createUniqueCode(
+      supabase,
+      isPortfolio ? 'PORTFOLIO' : 'REVIEW',
+      isPortfolio ? 15 : 10,
+      isPortfolio ? 'portfolio' : 'review',
+      isPortfolio
+        ? { portfolio_submission_id: portfolioSubmissionId!, review_id: reviewId }
+        : { review_id: reviewId }
+    );
 
     return new Response(
       JSON.stringify({
         ok: true,
-        review_promocode: reviewPromocode,
-        portfolio_promocode: portfolioPromocode,
+        promocode,
+        discount_percent: isPortfolio ? 15 : 10,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );
