@@ -167,8 +167,8 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
       }
       const { data, error } = await supabase.functions.invoke('submit-review', { body: payload });
       if (error) throw error;
-      setReviewCode(data?.review_promocode ?? null);
-      setPortfolioCode(data?.portfolio_promocode ?? null);
+      setPromocode(data?.promocode ?? null);
+      setDiscountPercent(data?.discount_percent ?? (withPortfolio ? 15 : 10));
       setStep('success');
     } catch (e: any) {
       toast({ title: 'Не удалось отправить', description: e?.message ?? 'Попробуйте позже', variant: 'destructive' });
