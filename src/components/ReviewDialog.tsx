@@ -84,7 +84,7 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
     setAnswers({}); setFreeText(''); setName(''); setEmail(''); setRating(5);
     setEditing(false); setEditedText('');
     setShareToPortfolio(false); setPortfolioDesc(''); setPortfolioLink(''); setMediaUrls([]);
-    setReviewCode(null); setPortfolioCode(null); setCopiedKey(null);
+    setPromocode(null); setDiscountPercent(10); setCopiedKey(null);
   };
 
   const handleOpenChange = (next: boolean) => {
