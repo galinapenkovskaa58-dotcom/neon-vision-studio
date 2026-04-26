@@ -63,8 +63,8 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
   const [mediaUrls, setMediaUrls] = useState<string[]>([]);
   // Submit
   const [submitting, setSubmitting] = useState(false);
-  const [reviewCode, setReviewCode] = useState<string | null>(null);
-  const [portfolioCode, setPortfolioCode] = useState<string | null>(null);
+  const [promocode, setPromocode] = useState<string | null>(null);
+  const [discountPercent, setDiscountPercent] = useState<number>(10);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const assembledText = useMemo(() => {
