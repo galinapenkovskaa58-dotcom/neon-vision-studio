@@ -47,7 +47,7 @@ export default function AdminPromocodes() {
                 : 'text-muted-foreground hover:text-foreground border border-border/40'
             }`}
           >
-            {s === 'all' ? 'Все' : s === 'review' ? 'За отзыв (10%)' : 'За портфолио (+5%)'}
+            {s === 'all' ? 'Все' : s === 'review' ? 'За отзыв (10%)' : 'За отзыв + портфолио (15%)'}
           </button>
         ))}
       </div>
