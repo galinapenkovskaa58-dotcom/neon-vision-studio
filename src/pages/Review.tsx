@@ -53,9 +53,9 @@ export default function Review() {
                 <span className="text-neon-cyan font-semibold">+10% бонуса</span> на следующий проект.
               </p>
               <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-                Если вы разрешите нам показать результат в портфолио —<br />
-                мы добавим ещё <span className="text-neon-pink font-semibold">+5%</span> (итого{' '}
-                <span className="text-neon-pink font-semibold">15%</span>).
+                А если разрешите показать результат в портфолио —<br />
+                ваш бонус вырастет до{' '}
+                <span className="text-neon-pink font-semibold">15%</span>.
               </p>
               <button
                 onClick={() => setOpen(true)}
@@ -69,7 +69,7 @@ export default function Review() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {[
-              { icon: Gift, title: 'Двойной подарок', text: 'До 25% скидки совокупно — 10% за отзыв + 15% за материал в портфолио.', tone: 'cyan' },
+              { icon: Gift, title: 'Двойной бонус', text: '10% за отзыв или 15%, если разрешите показать материал в портфолио.', tone: 'cyan' },
               { icon: ShieldCheck, title: 'Модерация', text: 'Опубликуем отзыв после короткой проверки в течение 1–2 дней.', tone: 'purple' },
               { icon: Sparkles, title: 'Одноразовые коды', text: 'Промокоды действуют на любую услугу студии.', tone: 'pink' },
             ].map((b, i) => {

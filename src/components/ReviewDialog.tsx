@@ -63,8 +63,8 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
   const [mediaUrls, setMediaUrls] = useState<string[]>([]);
   // Submit
   const [submitting, setSubmitting] = useState(false);
-  const [reviewCode, setReviewCode] = useState<string | null>(null);
-  const [portfolioCode, setPortfolioCode] = useState<string | null>(null);
+  const [promocode, setPromocode] = useState<string | null>(null);
+  const [discountPercent, setDiscountPercent] = useState<number>(10);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
 
   const assembledText = useMemo(() => {
@@ -84,7 +84,7 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
     setAnswers({}); setFreeText(''); setName(''); setEmail(''); setRating(5);
     setEditing(false); setEditedText('');
     setShareToPortfolio(false); setPortfolioDesc(''); setPortfolioLink(''); setMediaUrls([]);
-    setReviewCode(null); setPortfolioCode(null); setCopiedKey(null);
+    setPromocode(null); setDiscountPercent(10); setCopiedKey(null);
   };
 
   const handleOpenChange = (next: boolean) => {
@@ -167,8 +167,8 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
       }
       const { data, error } = await supabase.functions.invoke('submit-review', { body: payload });
       if (error) throw error;
-      setReviewCode(data?.review_promocode ?? null);
-      setPortfolioCode(data?.portfolio_promocode ?? null);
+      setPromocode(data?.promocode ?? null);
+      setDiscountPercent(data?.discount_percent ?? (withPortfolio ? 15 : 10));
       setStep('success');
     } catch (e: any) {
       toast({ title: 'Не удалось отправить', description: e?.message ?? 'Попробуйте позже', variant: 'destructive' });
@@ -384,24 +384,23 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
                 </p>
 
                 <div className="space-y-4">
-                  {reviewCode && (
-                    <div className="glass rounded-2xl p-5 border border-neon-cyan/40">
-                      <div className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Скидка 10% за отзыв</div>
-                      <div className="flex items-center justify-between gap-3">
-                        <code className="text-xl md:text-2xl font-mono font-bold text-neon-cyan tracking-wider">{reviewCode}</code>
-                        <button onClick={() => copy('r', reviewCode)} className="p-2 rounded-full hover:bg-muted/50 transition-colors">
-                          {copiedKey === 'r' ? <Check size={18} className="text-neon-cyan" /> : <Copy size={18} />}
-                        </button>
+                  {promocode && (
+                    <div className={`glass rounded-2xl p-5 border ${discountPercent >= 15 ? 'border-neon-pink/40' : 'border-neon-cyan/40'}`}>
+                      <div className="text-xs text-muted-foreground uppercase tracking-widest mb-1">
+                        {discountPercent >= 15
+                          ? 'Скидка 15% — за отзыв и материал в портфолио'
+                          : 'Скидка 10% за отзыв'}
                       </div>
-                    </div>
-                  )}
-                  {portfolioCode && (
-                    <div className="glass rounded-2xl p-5 border border-neon-pink/40">
-                      <div className="text-xs text-muted-foreground uppercase tracking-widest mb-1">Скидка 15% за материал в портфолио</div>
                       <div className="flex items-center justify-between gap-3">
-                        <code className="text-xl md:text-2xl font-mono font-bold text-neon-pink tracking-wider">{portfolioCode}</code>
-                        <button onClick={() => copy('p', portfolioCode)} className="p-2 rounded-full hover:bg-muted/50 transition-colors">
-                          {copiedKey === 'p' ? <Check size={18} className="text-neon-pink" /> : <Copy size={18} />}
+                        <code className={`text-xl md:text-2xl font-mono font-bold tracking-wider ${discountPercent >= 15 ? 'text-neon-pink' : 'text-neon-cyan'}`}>
+                          {promocode}
+                        </code>
+                        <button onClick={() => copy('p', promocode)} className="p-2 rounded-full hover:bg-muted/50 transition-colors">
+                          {copiedKey === 'p' ? (
+                            <Check size={18} className={discountPercent >= 15 ? 'text-neon-pink' : 'text-neon-cyan'} />
+                          ) : (
+                            <Copy size={18} />
+                          )}
                         </button>
                       </div>
                     </div>

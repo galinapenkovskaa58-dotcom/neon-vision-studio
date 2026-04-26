@@ -47,7 +47,7 @@ export default function AdminPromocodes() {
                 : 'text-muted-foreground hover:text-foreground border border-border/40'
             }`}
           >
-            {s === 'all' ? 'Все' : s === 'review' ? 'За отзыв (10%)' : 'За портфолио (+5%)'}
+            {s === 'all' ? 'Все' : s === 'review' ? 'За отзыв (10%)' : 'За отзыв + портфолио (15%)'}
           </button>
         ))}
       </div>
@@ -70,7 +70,7 @@ export default function AdminPromocodes() {
                   <Tag size={16} className={c.source === 'review' ? 'text-neon-cyan' : 'text-neon-pink'} />
                   <code className="font-mono font-bold text-base tracking-wider">{c.code}</code>
                   <span className={`text-xs px-2 py-0.5 rounded-full ${c.source === 'review' ? 'bg-neon-cyan/10 text-neon-cyan' : 'bg-neon-pink/10 text-neon-pink'}`}>
-                    {c.source === 'portfolio' ? '+' : '−'}{c.discount_percent}%
+                    {c.discount_percent}%
                   </span>
                   {client?.client_name && (
                     <span className="text-sm text-foreground/80 flex items-center gap-1.5">
