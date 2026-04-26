@@ -29,11 +29,11 @@ export default function Review() {
               Спасибо, что были с нами
             </span>
             <h1 className="text-4xl md:text-6xl font-heading font-bold mb-5">
-              <span className="gradient-text">Поделитесь впечатлением</span>
+              <span className="gradient-text">Помогите нам стать лучше — получите бонус 💜</span>
             </h1>
             <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-              Получите <span className="text-neon-cyan font-semibold">10% скидки</span> за отзыв и ещё{' '}
-              <span className="text-neon-pink font-semibold">15%</span>, если разрешите поделиться результатом в портфолио.
+              Ваши проекты — это то, чем мы гордимся.<br />
+              И нам важно делиться работами 💫
             </p>
           </motion.div>
 
@@ -48,8 +48,14 @@ export default function Review() {
                 <MessageSquareHeart size={40} className="text-neon-cyan" />
               </div>
               <h2 className="text-2xl md:text-3xl font-heading font-bold mb-3">Готовы рассказать о работе?</h2>
+              <p className="text-muted-foreground mb-2 max-w-lg mx-auto">
+                Оставьте отзыв о работе и получите{' '}
+                <span className="text-neon-cyan font-semibold">+10% бонуса</span> на следующий проект.
+              </p>
               <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-                Напишите свободно или ответьте на 4 коротких вопроса — мы соберём отзыв за вас. Займёт 2–3 минуты.
+                Если вы разрешите нам показать результат в портфолио —<br />
+                мы добавим ещё <span className="text-neon-pink font-semibold">+5%</span> (итого{' '}
+                <span className="text-neon-pink font-semibold">15%</span>).
               </p>
               <button
                 onClick={() => setOpen(true)}
