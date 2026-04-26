@@ -125,7 +125,7 @@ Deno.serve(async (req) => {
       if (subErr || !submission) {
         console.error('portfolio submission error', subErr);
       } else {
-        portfolioPromocode = await createUniqueCode(supabase, 'PORTFOLIO', 15, 'portfolio', {
+        portfolioPromocode = await createUniqueCode(supabase, 'PORTFOLIO', 5, 'portfolio', {
           portfolio_submission_id: submission.id as string,
         });
       }
