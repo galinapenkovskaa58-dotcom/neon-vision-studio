@@ -106,14 +106,8 @@ Deno.serve(async (req) => {
 
     let portfolioPromocode: string | null = null;
 
-    // 3. Optional portfolio submission + 15% promocode
-    const hasPortfolioContent =
-      data.share_to_portfolio &&
-      ((data.portfolio_media_urls && data.portfolio_media_urls.length > 0) ||
-        !!data.portfolio_external_link ||
-        !!data.portfolio_description);
-
-    if (hasPortfolioContent) {
+    // 3. If user gave permission to share to portfolio — always create submission + extra 5% code
+    if (data.share_to_portfolio) {
       const { data: submission, error: subErr } = await supabase
         .from('portfolio_submissions')
         .insert({
