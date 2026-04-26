@@ -53,9 +53,9 @@ export default function Review() {
                 <span className="text-neon-cyan font-semibold">+10% бонуса</span> на следующий проект.
               </p>
               <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-                Если вы разрешите нам показать результат в портфолио —<br />
-                мы добавим ещё <span className="text-neon-pink font-semibold">+5%</span> (итого{' '}
-                <span className="text-neon-pink font-semibold">15%</span>).
+                А если разрешите показать результат в портфолио —<br />
+                ваш бонус вырастет до{' '}
+                <span className="text-neon-pink font-semibold">15%</span>.
               </p>
               <button
                 onClick={() => setOpen(true)}
