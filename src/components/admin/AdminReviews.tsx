@@ -18,6 +18,7 @@ export default function AdminReviews({ service = 'neurophoto' }: { service?: str
   const [tab, setTab] = useState<StatusFilter>('approved');
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<any>(null);
+  const [expanded, setExpanded] = useState<string | null>(null);
   const [form, setForm] = useState({ client_name: '', text: '', rating: '5', photo_url: '' });
 
   const { data: reviews = [] } = useQuery({
