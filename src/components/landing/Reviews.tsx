@@ -45,9 +45,10 @@ const SERVICE_LINKS = [
 
 interface ReviewsProps {
   service?: string;
+  showServiceLinks?: boolean;
 }
 
-export default function Reviews({ service }: ReviewsProps = {}) {
+export default function Reviews({ service, showServiceLinks = false }: ReviewsProps = {}) {
   const { data: reviews = [] } = useQuery({
     queryKey: ['reviews', service ?? 'all'],
     queryFn: async () => {
