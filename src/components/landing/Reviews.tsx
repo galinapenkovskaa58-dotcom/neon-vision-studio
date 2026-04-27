@@ -1,8 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, Sparkles, User } from 'lucide-react';
+import { Star, Sparkles, User, Camera, Video, Music, Code, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+const SERVICE_LINKS = [
+  { service: 'neurophoto', label: 'Нейрофотосессия', to: '/neurophoto#reviews', Icon: Camera, color: 'neon-cyan' },
+  { service: 'ai-video', label: 'AI-видео', to: '/ai-video#reviews', Icon: Video, color: 'neon-blue' },
+  { service: 'songs', label: 'Песни на заказ', to: '/songs#reviews', Icon: Music, color: 'neon-pink' },
+  { service: 'vibe-coding', label: 'Vibe-coding', to: '/vibe-coding#reviews', Icon: Code, color: 'neon-purple' },
+] as const;
 
 interface ReviewsProps {
   service?: string;
