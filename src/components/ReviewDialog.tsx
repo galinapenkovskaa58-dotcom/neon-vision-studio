@@ -84,20 +84,20 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
 
   const assembledText = useMemo(() => {
     if (mode !== 'guided') return '';
-    const parts: string[] = [];
-    if (answers.request?.trim()) parts.push(answers.request.trim());
-    if (answers.process?.trim()) parts.push(answers.process.trim());
-    if (answers.result?.trim()) parts.push(answers.result.trim());
-    if (answers.recommend?.trim()) parts.push(answers.recommend.trim());
-    return parts.join('\n\n');
+    return composeGuidedText(answers);
   }, [mode, answers]);
 
   const finalText = editing ? editedText : (mode === 'guided' ? assembledText : freeText);
+
+  // Author photo
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoUploading, setPhotoUploading] = useState(false);
 
   const reset = () => {
     setStep('service'); setService(null); setMode(null);
     setAnswers({}); setFreeText(''); setName(''); setEmail(''); setRating(5);
     setEditing(false); setEditedText('');
+    setPhotoUrl(null);
     setShareToPortfolio(false); setPortfolioDesc(''); setPortfolioLink(''); setMediaUrls([]);
     setPromocode(null); setDiscountPercent(10); setCopiedKey(null);
   };
