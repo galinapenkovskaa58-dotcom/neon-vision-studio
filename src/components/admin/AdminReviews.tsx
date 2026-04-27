@@ -25,7 +25,7 @@ export default function AdminReviews({ service = 'neurophoto' }: { service?: str
     queryFn: async () => {
       const { data } = await supabase
         .from('reviews')
-        .select('*')
+        .select('*, promocodes:promocodes!review_id(code, discount_percent, is_used, used_at, source)')
         .eq('service', service)
         .eq('status', tab)
         .order('sort_order');
