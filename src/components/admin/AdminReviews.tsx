@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Trash2, Star, Check, X, Mail } from 'lucide-react';
+import { Plus, Trash2, Star, Check, X, Mail, ChevronDown, Tag, User } from 'lucide-react';
 import { useReorder } from '@/hooks/useSortable';
 import SortableItem from './SortableItem';
 import SortableWrapper from './SortableWrapper';
