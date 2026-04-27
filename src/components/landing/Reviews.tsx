@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, Sparkles } from 'lucide-react';
-import { useState } from 'react';
+import { Star, Sparkles, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ReviewsProps {
@@ -10,8 +9,6 @@ interface ReviewsProps {
 }
 
 export default function Reviews({ service }: ReviewsProps = {}) {
-  const [current, setCurrent] = useState(0);
-
   const { data: reviews = [] } = useQuery({
     queryKey: ['reviews', service ?? 'all'],
     queryFn: async () => {
@@ -19,6 +16,7 @@ export default function Reviews({ service }: ReviewsProps = {}) {
         .from('reviews')
         .select('*')
         .eq('is_visible', true)
+        .eq('status', 'approved')
         .order('sort_order', { ascending: true });
       if (service) query = query.eq('service', service);
       const { data } = await query;
@@ -61,49 +59,41 @@ export default function Reviews({ service }: ReviewsProps = {}) {
         )}
 
         {reviews.length > 0 && (
-
-        <div className="max-w-3xl mx-auto">
-          <motion.div
-            key={current}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            className="glass rounded-3xl p-10 text-center"
-          >
-            <div className="flex justify-center gap-1 mb-6">
-              {Array.from({ length: reviews[current]?.rating || 5 }).map((_, i) => (
-                <Star key={i} size={20} className="fill-neon-cyan text-neon-cyan" />
-              ))}
-            </div>
-            <p className="text-lg md:text-xl leading-relaxed mb-8 text-foreground/90">
-              «{reviews[current]?.text}»
-            </p>
-            <div className="flex items-center justify-center gap-3">
-              {reviews[current]?.photo_url && (
-                <img
-                  src={reviews[current].photo_url!}
-                  alt={reviews[current].client_name}
-                  className="w-12 h-12 rounded-full object-cover border-2 border-neon-blue/30"
-                />
-              )}
-              <span className="font-heading font-semibold">{reviews[current]?.client_name}</span>
-            </div>
-          </motion.div>
-
-          {reviews.length > 1 && (
-            <div className="flex justify-center gap-3 mt-8">
-              {reviews.map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setCurrent(i)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    i === current ? 'bg-neon-cyan w-8' : 'bg-foreground/20 hover:bg-foreground/40'
-                  }`}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {reviews.map((r, i) => (
+              <motion.div
+                key={r.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: Math.min(i * 0.05, 0.4) }}
+                className="group relative glass rounded-2xl p-6 border border-border/30 transition-all duration-300 hover:border-neon-cyan/60 hover:shadow-[0_0_28px_hsl(var(--neon-cyan)/0.35)] hover:-translate-y-1 flex flex-col"
+              >
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: r.rating || 5 }).map((_, idx) => (
+                    <Star key={idx} size={16} className="fill-neon-cyan text-neon-cyan" />
+                  ))}
+                </div>
+                <p className="text-sm md:text-base leading-relaxed text-foreground/85 whitespace-pre-line flex-1">
+                  «{r.text}»
+                </p>
+                <div className="flex items-center gap-3 mt-6 pt-5 border-t border-border/30">
+                  {r.photo_url ? (
+                    <img
+                      src={r.photo_url}
+                      alt={r.client_name}
+                      className="w-11 h-11 rounded-full object-cover border-2 border-neon-cyan/40"
+                    />
+                  ) : (
+                    <div className="w-11 h-11 rounded-full bg-muted/60 border-2 border-border/40 flex items-center justify-center">
+                      <User size={18} className="text-muted-foreground" />
+                    </div>
+                  )}
+                  <span className="font-heading font-semibold text-sm">{r.client_name}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         )}
 
         <motion.div

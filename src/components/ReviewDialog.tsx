@@ -23,11 +23,26 @@ const services: { id: ServiceId; label: string; icon: any; tone: string }[] = [
 ];
 
 const guidedQuestions = [
-  { key: 'request', label: 'С какой задачей вы обратились?', placeholder: 'Например: хотел получить серию портретов в киберпанк-стиле…' },
-  { key: 'process', label: 'Как прошёл процесс работы?', placeholder: 'Что понравилось в общении, скорости, гибкости…' },
-  { key: 'result', label: 'Что особенно понравилось в результате?', placeholder: 'Качество, детали, эмоции от работы…' },
-  { key: 'recommend', label: 'Кому бы вы порекомендовали и почему?', placeholder: 'Например: тем, кто хочет нестандартный визуал для соцсетей…' },
+  { key: 'request', label: 'С какой задачей вы обратились?', placeholder: 'Например: хотел получить серию портретов в киберпанк-стиле…', connector: 'Я обратился(-ась) в студию с задачей: ' },
+  { key: 'process', label: 'Как прошёл процесс работы?', placeholder: 'Что понравилось в общении, скорости, гибкости…', connector: 'Сам процесс работы прошёл отлично — ' },
+  { key: 'result', label: 'Что особенно понравилось в результате?', placeholder: 'Качество, детали, эмоции от работы…', connector: 'В результате особенно порадовало то, что ' },
+  { key: 'recommend', label: 'Кому бы вы порекомендовали и почему?', placeholder: 'Например: тем, кто хочет нестандартный визуал для соцсетей…', connector: 'Однозначно рекомендую студию ' },
 ] as const;
+
+function composeGuidedText(answers: Record<string, string>): string {
+  const parts: string[] = [];
+  for (const q of guidedQuestions) {
+    const raw = answers[q.key]?.trim();
+    if (!raw) continue;
+    // Lowercase first letter so it flows after the connector, unless it's a proper noun / starts with quote/digit.
+    const needsLower = /^[А-ЯA-ZЁ]/.test(raw) && !/^[«"„]/.test(raw);
+    const body = needsLower ? raw[0].toLowerCase() + raw.slice(1) : raw;
+    // Ensure sentence ends with punctuation.
+    const ended = /[.!?…]$/.test(body) ? body : body + '.';
+    parts.push(q.connector + ended);
+  }
+  return parts.join(' ');
+}
 
 const finalSchema = z.object({
   client_name: z.string().trim().min(2, 'Введите имя').max(100),
@@ -69,20 +84,20 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
 
   const assembledText = useMemo(() => {
     if (mode !== 'guided') return '';
-    const parts: string[] = [];
-    if (answers.request?.trim()) parts.push(answers.request.trim());
-    if (answers.process?.trim()) parts.push(answers.process.trim());
-    if (answers.result?.trim()) parts.push(answers.result.trim());
-    if (answers.recommend?.trim()) parts.push(answers.recommend.trim());
-    return parts.join('\n\n');
+    return composeGuidedText(answers);
   }, [mode, answers]);
 
   const finalText = editing ? editedText : (mode === 'guided' ? assembledText : freeText);
+
+  // Author photo
+  const [photoUrl, setPhotoUrl] = useState<string | null>(null);
+  const [photoUploading, setPhotoUploading] = useState(false);
 
   const reset = () => {
     setStep('service'); setService(null); setMode(null);
     setAnswers({}); setFreeText(''); setName(''); setEmail(''); setRating(5);
     setEditing(false); setEditedText('');
+    setPhotoUrl(null);
     setShareToPortfolio(false); setPortfolioDesc(''); setPortfolioLink(''); setMediaUrls([]);
     setPromocode(null); setDiscountPercent(10); setCopiedKey(null);
   };
@@ -148,6 +163,28 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
 
   const removeMedia = (url: string) => setMediaUrls((prev) => prev.filter((u) => u !== url));
 
+  const handlePhotoUpload = async (file: File | null) => {
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: 'Фото больше 5 МБ', description: 'Выберите файл поменьше', variant: 'destructive' });
+      return;
+    }
+    setPhotoUploading(true);
+    try {
+      const ext = file.name.split('.').pop() ?? 'jpg';
+      const path = `avatars/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error } = await supabase.storage.from('review-uploads').upload(path, file, { upsert: false });
+      if (error) {
+        toast({ title: 'Ошибка загрузки', description: error.message, variant: 'destructive' });
+        return;
+      }
+      const { data } = supabase.storage.from('review-uploads').getPublicUrl(path);
+      setPhotoUrl(data.publicUrl);
+    } finally {
+      setPhotoUploading(false);
+    }
+  };
+
   const submit = async (withPortfolio: boolean) => {
     if (!service) return;
     setSubmitting(true);
@@ -158,6 +195,7 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
         text: finalText.trim(),
         rating,
         email: email.trim() || undefined,
+        photo_url: photoUrl ?? undefined,
         share_to_portfolio: withPortfolio,
       };
       if (withPortfolio) {
@@ -282,6 +320,40 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
                 <div>
                   <label className="block text-sm font-medium mb-2">Ваше имя *</label>
                   <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Как подписать отзыв" className="bg-muted/50 border-border/50 rounded-xl h-12" />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium mb-2">Ваше фото (необязательно)</label>
+                  <div className="flex items-center gap-4">
+                    {photoUrl ? (
+                      <div className="relative">
+                        <img src={photoUrl} alt="Превью" className="w-16 h-16 rounded-full object-cover border-2 border-neon-cyan/50" />
+                        <button
+                          type="button"
+                          onClick={() => setPhotoUrl(null)}
+                          className="absolute -top-1 -right-1 bg-background border border-border/60 rounded-full p-1 hover:bg-muted"
+                          aria-label="Удалить фото"
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-muted/40 border-2 border-dashed border-border/60 flex items-center justify-center text-muted-foreground">
+                        <Upload size={20} />
+                      </div>
+                    )}
+                    <label className="cursor-pointer px-4 py-2.5 rounded-full border border-border/60 text-sm font-medium hover:bg-muted/50 transition-colors">
+                      {photoUploading ? 'Загрузка…' : photoUrl ? 'Заменить' : 'Загрузить фото'}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handlePhotoUpload(e.target.files?.[0] ?? null)}
+                        disabled={photoUploading}
+                      />
+                    </label>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">JPG / PNG до 5 МБ. Будет показано в карточке отзыва.</p>
                 </div>
 
                 <div>
