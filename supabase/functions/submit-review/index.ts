@@ -15,6 +15,7 @@ const BodySchema = z.object({
   text: z.string().trim().min(10).max(2000),
   rating: z.number().int().min(1).max(5),
   email: z.string().trim().email().max(200).optional().or(z.literal('').transform(() => undefined)),
+  photo_url: z.string().trim().url().max(500).optional().or(z.literal('').transform(() => undefined)),
   share_to_portfolio: z.boolean().optional().default(false),
   portfolio_description: z.string().trim().max(1000).optional(),
   portfolio_media_urls: z.array(z.string().url().max(500)).max(5).optional().default([]),
