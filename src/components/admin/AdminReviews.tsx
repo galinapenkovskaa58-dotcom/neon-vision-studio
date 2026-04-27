@@ -214,19 +214,35 @@ export default function AdminReviews({ service = 'neurophoto' }: { service?: str
           items={reviews}
           onReorder={(o, n) => reorder.mutate({ items: reviews, oldIndex: o, newIndex: n })}
         >
-          <div className="space-y-4">
+          <div className="space-y-2">
             {reviews.map((r) => (
-              <SortableItem key={r.id} id={r.id} className="glass rounded-2xl p-6">
-                <ReviewCard r={r} onEdit={startEdit} onDelete={(id) => remove.mutate(id)} onStatus={(id, s) => setStatus.mutate({ id, status: s })} currentTab={tab} />
+              <SortableItem key={r.id} id={r.id} className="glass rounded-xl overflow-hidden">
+                <ReviewCard
+                  r={r}
+                  isOpen={expanded === r.id}
+                  onToggle={() => setExpanded(expanded === r.id ? null : r.id)}
+                  onEdit={startEdit}
+                  onDelete={(id) => remove.mutate(id)}
+                  onStatus={(id, s) => setStatus.mutate({ id, status: s })}
+                  currentTab={tab}
+                />
               </SortableItem>
             ))}
           </div>
         </SortableWrapper>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-2">
           {reviews.map((r) => (
-            <div key={r.id} className="glass rounded-2xl p-6">
-              <ReviewCard r={r} onEdit={startEdit} onDelete={(id) => remove.mutate(id)} onStatus={(id, s) => setStatus.mutate({ id, status: s })} currentTab={tab} />
+            <div key={r.id} className="glass rounded-xl overflow-hidden">
+              <ReviewCard
+                r={r}
+                isOpen={expanded === r.id}
+                onToggle={() => setExpanded(expanded === r.id ? null : r.id)}
+                onEdit={startEdit}
+                onDelete={(id) => remove.mutate(id)}
+                onStatus={(id, s) => setStatus.mutate({ id, status: s })}
+                currentTab={tab}
+              />
             </div>
           ))}
         </div>
@@ -237,51 +253,99 @@ export default function AdminReviews({ service = 'neurophoto' }: { service?: str
 
 function ReviewCard({
   r,
+  isOpen,
+  onToggle,
   onEdit,
   onDelete,
   onStatus,
   currentTab,
 }: {
   r: any;
+  isOpen: boolean;
+  onToggle: () => void;
   onEdit: (r: any) => void;
   onDelete: (id: string) => void;
   onStatus: (id: string, status: StatusFilter) => void;
   currentTab: StatusFilter;
 }) {
+  const promo = Array.isArray(r.promocodes) ? r.promocodes[0] : r.promocodes;
   return (
-    <div className="flex items-start justify-between gap-4 flex-wrap">
-      <div className="min-w-0 flex-1">
-        <div className="flex gap-1 mb-2">
-          {Array.from({ length: r.rating || 5 }).map((_, i) => (
-            <Star key={i} size={14} className="fill-neon-cyan text-neon-cyan" />
-          ))}
-        </div>
-        <h3 className="font-semibold">{r.client_name}</h3>
-        {r.email && (
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-0.5">
-            <Mail size={12} /> {r.email}
+    <div>
+      <button
+        onClick={onToggle}
+        className="w-full p-4 flex items-center justify-between gap-4 flex-wrap text-left hover:bg-muted/30 transition-colors"
+      >
+        <div className="flex items-center gap-3 min-w-0 flex-wrap">
+          <User size={16} className="text-muted-foreground shrink-0" />
+          <span className="font-semibold">{r.client_name}</span>
+          <div className="flex gap-0.5">
+            {Array.from({ length: r.rating || 5 }).map((_, i) => (
+              <Star key={i} size={12} className="fill-neon-cyan text-neon-cyan" />
+            ))}
           </div>
-        )}
-        <p className="text-sm text-muted-foreground mt-2 whitespace-pre-line">{r.text}</p>
-      </div>
-      <div className="flex gap-2 shrink-0">
-        {currentTab !== 'approved' && (
-          <Button size="sm" variant="ghost" className="text-neon-cyan" onClick={() => onStatus(r.id, 'approved')}>
-            <Check size={14} /> Одобрить
-          </Button>
-        )}
-        {currentTab !== 'rejected' && (
-          <Button size="sm" variant="ghost" className="text-destructive" onClick={() => onStatus(r.id, 'rejected')}>
-            <X size={14} /> Отклонить
-          </Button>
-        )}
-        <Button size="sm" variant="ghost" onClick={() => onEdit(r)}>
-          Ред.
-        </Button>
-        <Button size="sm" variant="ghost" className="text-destructive" onClick={() => onDelete(r.id)}>
-          <Trash2 size={14} />
-        </Button>
-      </div>
+          {promo?.code && (
+            <span className={`text-xs px-2 py-0.5 rounded-full font-mono flex items-center gap-1 ${promo.source === 'portfolio' ? 'bg-neon-pink/10 text-neon-pink' : 'bg-neon-cyan/10 text-neon-cyan'}`}>
+              <Tag size={10} /> {promo.code} · {promo.discount_percent}%
+            </span>
+          )}
+        </div>
+        <div className="text-xs text-muted-foreground flex items-center gap-3">
+          <span>{new Date(r.submitted_at || r.created_at).toLocaleDateString('ru')}</span>
+          <ChevronDown size={14} className={`transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        </div>
+      </button>
+
+      {isOpen && (
+        <div className="px-4 pb-4 pt-2 border-t border-border/30 space-y-3 text-sm">
+          {r.email && (
+            <div className="flex items-center gap-2">
+              <Mail size={14} className="text-muted-foreground" />
+              <span className="text-muted-foreground">Email:</span>
+              <a href={`mailto:${r.email}`} className="text-neon-cyan hover:underline">{r.email}</a>
+            </div>
+          )}
+          <div>
+            <div className="text-muted-foreground text-xs uppercase tracking-wider mb-1">Отзыв</div>
+            <p className="whitespace-pre-line text-foreground/90 leading-relaxed">{r.text}</p>
+          </div>
+          {promo && (
+            <div className="rounded-lg bg-muted/30 p-3 space-y-1">
+              <div className="flex items-center gap-2 text-muted-foreground text-xs uppercase tracking-wider">
+                <Tag size={12} /> Промокод
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <code className="font-mono font-bold text-base tracking-wider">{promo.code}</code>
+                <span className={`text-xs px-2 py-0.5 rounded-full ${promo.source === 'portfolio' ? 'bg-neon-pink/10 text-neon-pink' : 'bg-neon-cyan/10 text-neon-cyan'}`}>
+                  {promo.discount_percent}%
+                </span>
+                {promo.is_used ? (
+                  <span className="text-xs text-foreground/60">использован {promo.used_at ? new Date(promo.used_at).toLocaleDateString('ru') : ''}</span>
+                ) : (
+                  <span className="text-xs text-neon-cyan">активен</span>
+                )}
+              </div>
+            </div>
+          )}
+          <div className="flex gap-2 flex-wrap pt-2">
+            {currentTab !== 'approved' && (
+              <Button size="sm" variant="ghost" className="text-neon-cyan" onClick={() => onStatus(r.id, 'approved')}>
+                <Check size={14} /> Одобрить
+              </Button>
+            )}
+            {currentTab !== 'rejected' && (
+              <Button size="sm" variant="ghost" className="text-destructive" onClick={() => onStatus(r.id, 'rejected')}>
+                <X size={14} /> Отклонить
+              </Button>
+            )}
+            <Button size="sm" variant="ghost" onClick={() => onEdit(r)}>
+              Редактировать
+            </Button>
+            <Button size="sm" variant="ghost" className="text-destructive ml-auto" onClick={() => onDelete(r.id)}>
+              <Trash2 size={14} /> Удалить
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
