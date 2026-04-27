@@ -45,9 +45,10 @@ const SERVICE_LINKS = [
 
 interface ReviewsProps {
   service?: string;
+  showServiceLinks?: boolean;
 }
 
-export default function Reviews({ service }: ReviewsProps = {}) {
+export default function Reviews({ service, showServiceLinks = false }: ReviewsProps = {}) {
   const { data: reviews = [] } = useQuery({
     queryKey: ['reviews', service ?? 'all'],
     queryFn: async () => {
@@ -82,7 +83,7 @@ export default function Reviews({ service }: ReviewsProps = {}) {
           <p className="text-muted-foreground text-lg">Что говорят клиенты о работе со студией</p>
         </motion.div>
 
-        {reviews.length === 0 && (
+        {reviews.length === 0 && showServiceLinks && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -119,6 +120,17 @@ export default function Reviews({ service }: ReviewsProps = {}) {
               ))}
             </div>
           </motion.div>
+        )}
+
+        {reviews.length === 0 && !showServiceLinks && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center text-muted-foreground"
+          >
+            Скоро здесь появятся отзывы клиентов
+          </motion.p>
         )}
 
         {reviews.length > 0 && (
