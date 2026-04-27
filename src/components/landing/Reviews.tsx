@@ -120,7 +120,7 @@ export default function Reviews({ service }: ReviewsProps = {}) {
             Оставить свой отзыв
           </Link>
           <p className="text-xs text-muted-foreground mt-3">
-            Получите 10% скидки за отзыв и ещё 15% за материал в портфолио
+            Поделитесь своим мнением о работе с нами, и получите Бонус на следующий заказ в виде 10% или 15% скидки
           </p>
         </motion.div>
       </div>
