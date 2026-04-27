@@ -163,6 +163,28 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
 
   const removeMedia = (url: string) => setMediaUrls((prev) => prev.filter((u) => u !== url));
 
+  const handlePhotoUpload = async (file: File | null) => {
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) {
+      toast({ title: 'Фото больше 5 МБ', description: 'Выберите файл поменьше', variant: 'destructive' });
+      return;
+    }
+    setPhotoUploading(true);
+    try {
+      const ext = file.name.split('.').pop() ?? 'jpg';
+      const path = `avatars/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      const { error } = await supabase.storage.from('review-uploads').upload(path, file, { upsert: false });
+      if (error) {
+        toast({ title: 'Ошибка загрузки', description: error.message, variant: 'destructive' });
+        return;
+      }
+      const { data } = supabase.storage.from('review-uploads').getPublicUrl(path);
+      setPhotoUrl(data.publicUrl);
+    } finally {
+      setPhotoUploading(false);
+    }
+  };
+
   const submit = async (withPortfolio: boolean) => {
     if (!service) return;
     setSubmitting(true);
@@ -173,6 +195,7 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
         text: finalText.trim(),
         rating,
         email: email.trim() || undefined,
+        photo_url: photoUrl ?? undefined,
         share_to_portfolio: withPortfolio,
       };
       if (withPortfolio) {
