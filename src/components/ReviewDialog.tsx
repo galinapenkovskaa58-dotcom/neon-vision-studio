@@ -23,11 +23,26 @@ const services: { id: ServiceId; label: string; icon: any; tone: string }[] = [
 ];
 
 const guidedQuestions = [
-  { key: 'request', label: 'С какой задачей вы обратились?', placeholder: 'Например: хотел получить серию портретов в киберпанк-стиле…' },
-  { key: 'process', label: 'Как прошёл процесс работы?', placeholder: 'Что понравилось в общении, скорости, гибкости…' },
-  { key: 'result', label: 'Что особенно понравилось в результате?', placeholder: 'Качество, детали, эмоции от работы…' },
-  { key: 'recommend', label: 'Кому бы вы порекомендовали и почему?', placeholder: 'Например: тем, кто хочет нестандартный визуал для соцсетей…' },
+  { key: 'request', label: 'С какой задачей вы обратились?', placeholder: 'Например: хотел получить серию портретов в киберпанк-стиле…', connector: 'Я обратился(-ась) в студию с задачей: ' },
+  { key: 'process', label: 'Как прошёл процесс работы?', placeholder: 'Что понравилось в общении, скорости, гибкости…', connector: 'Сам процесс работы прошёл отлично — ' },
+  { key: 'result', label: 'Что особенно понравилось в результате?', placeholder: 'Качество, детали, эмоции от работы…', connector: 'В результате особенно порадовало то, что ' },
+  { key: 'recommend', label: 'Кому бы вы порекомендовали и почему?', placeholder: 'Например: тем, кто хочет нестандартный визуал для соцсетей…', connector: 'Однозначно рекомендую студию ' },
 ] as const;
+
+function composeGuidedText(answers: Record<string, string>): string {
+  const parts: string[] = [];
+  for (const q of guidedQuestions) {
+    const raw = answers[q.key]?.trim();
+    if (!raw) continue;
+    // Lowercase first letter so it flows after the connector, unless it's a proper noun / starts with quote/digit.
+    const needsLower = /^[А-ЯA-ZЁ]/.test(raw) && !/^[«"„]/.test(raw);
+    const body = needsLower ? raw[0].toLowerCase() + raw.slice(1) : raw;
+    // Ensure sentence ends with punctuation.
+    const ended = /[.!?…]$/.test(body) ? body : body + '.';
+    parts.push(q.connector + ended);
+  }
+  return parts.join(' ');
+}
 
 const finalSchema = z.object({
   client_name: z.string().trim().min(2, 'Введите имя').max(100),
