@@ -1,8 +1,47 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, Sparkles, User } from 'lucide-react';
+import { Star, Sparkles, User, Camera, Video, Music, Code, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+
+const SERVICE_LINKS = [
+  {
+    service: 'neurophoto',
+    label: 'Нейрофотосессия',
+    to: '/neurophoto#reviews',
+    Icon: Camera,
+    iconWrap: 'bg-neon-cyan/10 border-neon-cyan/30 text-neon-cyan',
+    accent: 'text-neon-cyan',
+    hover: 'hover:border-neon-cyan/60 hover:shadow-[0_0_28px_hsl(var(--neon-cyan)/0.35)]',
+  },
+  {
+    service: 'ai-video',
+    label: 'AI-видео',
+    to: '/ai-video#reviews',
+    Icon: Video,
+    iconWrap: 'bg-neon-blue/10 border-neon-blue/30 text-neon-blue',
+    accent: 'text-neon-blue',
+    hover: 'hover:border-neon-blue/60 hover:shadow-[0_0_28px_hsl(var(--neon-blue)/0.35)]',
+  },
+  {
+    service: 'songs',
+    label: 'Песни на заказ',
+    to: '/songs#reviews',
+    Icon: Music,
+    iconWrap: 'bg-neon-pink/10 border-neon-pink/30 text-neon-pink',
+    accent: 'text-neon-pink',
+    hover: 'hover:border-neon-pink/60 hover:shadow-[0_0_28px_hsl(var(--neon-pink)/0.35)]',
+  },
+  {
+    service: 'vibe-coding',
+    label: 'Vibe-coding',
+    to: '/vibe-coding#reviews',
+    Icon: Code,
+    iconWrap: 'bg-neon-purple/10 border-neon-purple/30 text-neon-purple',
+    accent: 'text-neon-purple',
+    hover: 'hover:border-neon-purple/60 hover:shadow-[0_0_28px_hsl(var(--neon-purple)/0.35)]',
+  },
+] as const;
 
 interface ReviewsProps {
   service?: string;
@@ -48,12 +87,36 @@ export default function Reviews({ service }: ReviewsProps = {}) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-2xl mx-auto text-center"
+            className="max-w-5xl mx-auto"
           >
-            <div className="glass rounded-3xl p-10 border border-border/30">
-              <p className="text-muted-foreground">
-                Скоро здесь появятся реальные отзывы клиентов.
-              </p>
+            <p className="text-center text-muted-foreground mb-8">
+              Выберите услугу, чтобы посмотреть отзывы клиентов
+            </p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {SERVICE_LINKS.map(({ service: s, label, to, Icon, iconWrap, accent, hover }, i) => (
+                <motion.div
+                  key={s}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                >
+                  <Link
+                    to={to}
+                    className={`group relative block glass rounded-2xl p-6 border border-border/30 transition-all duration-300 hover:-translate-y-1 h-full ${hover}`}
+                  >
+                    <div
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 border group-hover:scale-110 transition-transform ${iconWrap}`}
+                    >
+                      <Icon size={22} />
+                    </div>
+                    <h3 className="font-heading font-semibold text-base mb-2">{label}</h3>
+                    <span className={`inline-flex items-center gap-1 text-xs font-medium opacity-80 group-hover:opacity-100 transition-opacity ${accent}`}>
+                      Смотреть отзывы <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         )}
