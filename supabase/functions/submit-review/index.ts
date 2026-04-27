@@ -84,6 +84,7 @@ Deno.serve(async (req) => {
         text: data.text,
         rating: data.rating,
         email: data.email ?? null,
+        photo_url: data.photo_url ?? null,
         status: 'pending',
         is_visible: true,
       })
