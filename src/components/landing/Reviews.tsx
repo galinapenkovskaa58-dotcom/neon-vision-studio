@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { motion } from 'framer-motion';
 import { supabase } from '@/integrations/supabase/client';
-import { Star, Sparkles } from 'lucide-react';
-import { useState } from 'react';
+import { Star, Sparkles, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 interface ReviewsProps {
@@ -10,8 +9,6 @@ interface ReviewsProps {
 }
 
 export default function Reviews({ service }: ReviewsProps = {}) {
-  const [current, setCurrent] = useState(0);
-
   const { data: reviews = [] } = useQuery({
     queryKey: ['reviews', service ?? 'all'],
     queryFn: async () => {
@@ -19,6 +16,7 @@ export default function Reviews({ service }: ReviewsProps = {}) {
         .from('reviews')
         .select('*')
         .eq('is_visible', true)
+        .eq('status', 'approved')
         .order('sort_order', { ascending: true });
       if (service) query = query.eq('service', service);
       const { data } = await query;
