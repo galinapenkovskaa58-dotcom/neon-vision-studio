@@ -55,12 +55,36 @@ export default function Reviews({ service }: ReviewsProps = {}) {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-2xl mx-auto text-center"
+            className="max-w-5xl mx-auto"
           >
-            <div className="glass rounded-3xl p-10 border border-border/30">
-              <p className="text-muted-foreground">
-                Скоро здесь появятся реальные отзывы клиентов.
-              </p>
+            <p className="text-center text-muted-foreground mb-8">
+              Выберите услугу, чтобы посмотреть отзывы клиентов
+            </p>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+              {SERVICE_LINKS.map(({ service: s, label, to, Icon, color }, i) => (
+                <motion.div
+                  key={s}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.08 }}
+                >
+                  <Link
+                    to={to}
+                    className={`group relative block glass rounded-2xl p-6 border border-border/30 transition-all duration-300 hover:border-${color}/60 hover:shadow-[0_0_28px_hsl(var(--${color})/0.35)] hover:-translate-y-1 h-full`}
+                  >
+                    <div
+                      className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 bg-${color}/10 border border-${color}/30 text-${color} group-hover:scale-110 transition-transform`}
+                    >
+                      <Icon size={22} />
+                    </div>
+                    <h3 className="font-heading font-semibold text-base mb-2">{label}</h3>
+                    <span className={`inline-flex items-center gap-1 text-xs font-medium text-${color} opacity-80 group-hover:opacity-100 transition-opacity`}>
+                      Смотреть отзывы <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         )}
