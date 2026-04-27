@@ -323,6 +323,40 @@ export default function ReviewDialog({ open, onOpenChange }: ReviewDialogProps) 
                 </div>
 
                 <div>
+                  <label className="block text-sm font-medium mb-2">Ваше фото (необязательно)</label>
+                  <div className="flex items-center gap-4">
+                    {photoUrl ? (
+                      <div className="relative">
+                        <img src={photoUrl} alt="Превью" className="w-16 h-16 rounded-full object-cover border-2 border-neon-cyan/50" />
+                        <button
+                          type="button"
+                          onClick={() => setPhotoUrl(null)}
+                          className="absolute -top-1 -right-1 bg-background border border-border/60 rounded-full p-1 hover:bg-muted"
+                          aria-label="Удалить фото"
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="w-16 h-16 rounded-full bg-muted/40 border-2 border-dashed border-border/60 flex items-center justify-center text-muted-foreground">
+                        <Upload size={20} />
+                      </div>
+                    )}
+                    <label className="cursor-pointer px-4 py-2.5 rounded-full border border-border/60 text-sm font-medium hover:bg-muted/50 transition-colors">
+                      {photoUploading ? 'Загрузка…' : photoUrl ? 'Заменить' : 'Загрузить фото'}
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => handlePhotoUpload(e.target.files?.[0] ?? null)}
+                        disabled={photoUploading}
+                      />
+                    </label>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">JPG / PNG до 5 МБ. Будет показано в карточке отзыва.</p>
+                </div>
+
+                <div>
                   <label className="block text-sm font-medium mb-2">Email (необязательно — чтобы прислать промокод)</label>
                   <Input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@example.com" type="email" className="bg-muted/50 border-border/50 rounded-xl h-12" />
                 </div>
