@@ -5,10 +5,42 @@ import { Star, Sparkles, User, Camera, Video, Music, Code, ArrowRight } from 'lu
 import { Link } from 'react-router-dom';
 
 const SERVICE_LINKS = [
-  { service: 'neurophoto', label: 'Нейрофотосессия', to: '/neurophoto#reviews', Icon: Camera, color: 'neon-cyan' },
-  { service: 'ai-video', label: 'AI-видео', to: '/ai-video#reviews', Icon: Video, color: 'neon-blue' },
-  { service: 'songs', label: 'Песни на заказ', to: '/songs#reviews', Icon: Music, color: 'neon-pink' },
-  { service: 'vibe-coding', label: 'Vibe-coding', to: '/vibe-coding#reviews', Icon: Code, color: 'neon-purple' },
+  {
+    service: 'neurophoto',
+    label: 'Нейрофотосессия',
+    to: '/neurophoto#reviews',
+    Icon: Camera,
+    iconWrap: 'bg-neon-cyan/10 border-neon-cyan/30 text-neon-cyan',
+    accent: 'text-neon-cyan',
+    hover: 'hover:border-neon-cyan/60 hover:shadow-[0_0_28px_hsl(var(--neon-cyan)/0.35)]',
+  },
+  {
+    service: 'ai-video',
+    label: 'AI-видео',
+    to: '/ai-video#reviews',
+    Icon: Video,
+    iconWrap: 'bg-neon-blue/10 border-neon-blue/30 text-neon-blue',
+    accent: 'text-neon-blue',
+    hover: 'hover:border-neon-blue/60 hover:shadow-[0_0_28px_hsl(var(--neon-blue)/0.35)]',
+  },
+  {
+    service: 'songs',
+    label: 'Песни на заказ',
+    to: '/songs#reviews',
+    Icon: Music,
+    iconWrap: 'bg-neon-pink/10 border-neon-pink/30 text-neon-pink',
+    accent: 'text-neon-pink',
+    hover: 'hover:border-neon-pink/60 hover:shadow-[0_0_28px_hsl(var(--neon-pink)/0.35)]',
+  },
+  {
+    service: 'vibe-coding',
+    label: 'Vibe-coding',
+    to: '/vibe-coding#reviews',
+    Icon: Code,
+    iconWrap: 'bg-neon-purple/10 border-neon-purple/30 text-neon-purple',
+    accent: 'text-neon-purple',
+    hover: 'hover:border-neon-purple/60 hover:shadow-[0_0_28px_hsl(var(--neon-purple)/0.35)]',
+  },
 ] as const;
 
 interface ReviewsProps {
