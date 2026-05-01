@@ -137,20 +137,20 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
             {uploading && <p className="text-xs text-muted-foreground mt-1">Загрузка...</p>}
 
             {form.image_urls.length > 0 && (
-              <div className="mt-3 grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
+              <div className="mt-3 grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2">
                 {form.image_urls.map((url, idx) => (
-                  <div key={url + idx} className="relative group rounded-lg overflow-hidden border border-border/50">
-                    <img src={url} alt={`img-${idx}`} className="w-full h-24 object-cover" />
+                  <div key={url + idx} className="relative group rounded-md overflow-hidden border border-border/50">
+                    <img src={url} alt={`img-${idx}`} className="w-full h-16 object-cover" />
                     {idx === 0 && (
-                      <span className="absolute top-1 left-1 text-[10px] px-1.5 py-0.5 rounded bg-neon-cyan/90 text-background font-semibold">
-                        обложка
+                      <span className="absolute top-0.5 left-0.5 text-[9px] px-1 py-0.5 rounded bg-neon-cyan/90 text-background font-semibold leading-none">
+                        обл.
                       </span>
                     )}
-                    <div className="absolute inset-0 bg-background/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-1">
-                      <button type="button" onClick={() => moveImage(idx, -1)} className="px-1.5 py-0.5 text-xs rounded bg-card hover:bg-muted">←</button>
-                      <button type="button" onClick={() => moveImage(idx, 1)} className="px-1.5 py-0.5 text-xs rounded bg-card hover:bg-muted">→</button>
-                      <button type="button" onClick={() => removeImage(idx)} className="px-1.5 py-0.5 rounded bg-destructive/90 text-destructive-foreground">
-                        <X size={12} />
+                    <div className="absolute inset-0 bg-background/70 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-0.5">
+                      <button type="button" onClick={() => moveImage(idx, -1)} className="px-1 py-0.5 text-[10px] rounded bg-card hover:bg-muted">←</button>
+                      <button type="button" onClick={() => moveImage(idx, 1)} className="px-1 py-0.5 text-[10px] rounded bg-card hover:bg-muted">→</button>
+                      <button type="button" onClick={() => removeImage(idx)} className="px-1 py-0.5 rounded bg-destructive/90 text-destructive-foreground">
+                        <X size={10} />
                       </button>
                     </div>
                   </div>
