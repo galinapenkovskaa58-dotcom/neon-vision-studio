@@ -99,9 +99,9 @@ export default function Portfolio() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filtered.map((item, i) => {
             const images = getImages(item);
-            const cover = images[0];
-            const extras = images.slice(1, 5);
-            const moreCount = Math.max(0, images.length - 5);
+            // Show up to 9 photos as a 3x3 mosaic on the cover
+            const tiles = images.slice(0, 9);
+            const moreCount = Math.max(0, images.length - 9);
 
             return (
               <motion.div
@@ -113,45 +113,19 @@ export default function Portfolio() {
                 onClick={() => { setOpenItem(item); setActiveIdx(0); }}
                 className="group cursor-pointer relative rounded-2xl overflow-hidden gradient-border"
               >
-                {/* Cover */}
-                <div className="relative aspect-[3/4] overflow-hidden">
-                  <img
-                    src={cover}
-                    alt={item.title}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                    loading="lazy"
-                  />
-
-                  {/* Photo count badge */}
-                  {images.length > 1 && (
-                    <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/70 backdrop-blur-md text-xs font-semibold text-foreground border border-neon-cyan/30">
-                      <Images size={13} className="text-neon-cyan" />
-                      {images.length}
-                    </div>
-                  )}
-
-                  {/* Overlay info */}
-                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-background via-background/80 to-transparent p-5 pt-16">
-                    <h3 className="font-heading font-semibold text-lg">{item.title}</h3>
-                    {item.description && (
-                      <p className="text-sm text-foreground/70 mt-1 line-clamp-2">{item.description}</p>
-                    )}
-                    {item.category && (
-                      <span className="inline-block mt-2 text-xs px-3 py-1 rounded-full bg-neon-blue/20 text-neon-blue">
-                        {item.category}
-                      </span>
-                    )}
-                  </div>
-                </div>
-
-                {/* Thumbnails strip */}
-                {extras.length > 0 && (
-                  <div className="grid grid-cols-4 gap-1 p-1 bg-card/40">
-                    {extras.map((src, idx) => {
-                      const isLast = idx === extras.length - 1 && moreCount > 0;
+                {/* 3x3 mosaic cover */}
+                <div className="relative aspect-square overflow-hidden bg-card/40">
+                  <div className="grid grid-cols-3 grid-rows-3 gap-1 w-full h-full p-1">
+                    {tiles.map((src, idx) => {
+                      const isLast = idx === tiles.length - 1 && moreCount > 0;
                       return (
-                        <div key={src + idx} className="relative aspect-square overflow-hidden rounded-md">
-                          <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
+                        <div key={src + idx} className="relative overflow-hidden rounded-md">
+                          <img
+                            src={src}
+                            alt={`${item.title} ${idx + 1}`}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                            loading="lazy"
+                          />
                           {isLast && (
                             <div className="absolute inset-0 bg-background/70 backdrop-blur-sm flex items-center justify-center text-sm font-semibold text-neon-cyan">
                               +{moreCount}
@@ -160,8 +134,33 @@ export default function Portfolio() {
                         </div>
                       );
                     })}
+                    {/* Fill empty slots to keep 3x3 grid shape */}
+                    {Array.from({ length: Math.max(0, 9 - tiles.length) }).map((_, idx) => (
+                      <div key={`empty-${idx}`} className="rounded-md bg-card/40" />
+                    ))}
                   </div>
-                )}
+
+                  {/* Photo count badge */}
+                  {images.length > 1 && (
+                    <div className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-background/70 backdrop-blur-md text-xs font-semibold text-foreground border border-neon-cyan/30">
+                      <Images size={13} className="text-neon-cyan" />
+                      {images.length}
+                    </div>
+                  )}
+                </div>
+
+                {/* Info */}
+                <div className="p-5 bg-card/40">
+                  <h3 className="font-heading font-semibold text-lg">{item.title}</h3>
+                  {item.description && (
+                    <p className="text-sm text-foreground/70 mt-1 line-clamp-2">{item.description}</p>
+                  )}
+                  {item.category && (
+                    <span className="inline-block mt-2 text-xs px-3 py-1 rounded-full bg-neon-blue/20 text-neon-blue">
+                      {item.category}
+                    </span>
+                  )}
+                </div>
               </motion.div>
             );
           })}
