@@ -5,10 +5,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { Trash2, Plus, X, GripVertical } from 'lucide-react';
+import { Trash2, Plus, X, GripVertical, Eye } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
 import { useReorder } from '@/hooks/useSortable';
 import SortableItem from './SortableItem';
 import SortableWrapper from './SortableWrapper';
+import PortfolioCard from '@/components/portfolio/PortfolioCard';
+import PortfolioLightbox from '@/components/portfolio/PortfolioLightbox';
 
 const MAX_IMAGES = 10;
 
@@ -21,6 +24,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
     title: '', description: '', category: '', image_urls: [],
   });
   const [uploading, setUploading] = useState(false);
+  const [preview, setPreview] = useState<null | 'card' | 'lightbox'>(null);
 
   const { data: items = [] } = useQuery({
     queryKey: ['admin-portfolio', service],
@@ -159,12 +163,55 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
             )}
           </div>
 
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap">
             <Button onClick={() => save.mutate()} disabled={!form.title || form.image_urls.length === 0} className="neon-glow-btn rounded-full text-primary-foreground">
               {editing ? 'Сохранить' : 'Добавить'}
             </Button>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setPreview('card')}
+              disabled={form.image_urls.length === 0}
+              className="rounded-full"
+            >
+              <Eye size={16} /> Предварительный просмотр
+            </Button>
             <Button variant="ghost" onClick={() => { setShowForm(false); setEditing(null); }}>Отмена</Button>
           </div>
+
+          {preview === 'card' && (
+            <div className="mt-6 pt-6 border-t border-border/40">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-sm text-muted-foreground">
+                  Так подборка будет выглядеть на странице сайта. Нажмите на карточку, чтобы открыть галерею.
+                </p>
+                <Button size="sm" variant="ghost" onClick={() => setPreview(null)}>
+                  <X size={14} /> Скрыть
+                </Button>
+              </div>
+              <div className="max-w-sm mx-auto">
+                <PortfolioCard
+                  data={{
+                    title: form.title,
+                    description: form.description,
+                    category: form.category,
+                    images: form.image_urls,
+                  }}
+                  onClick={() => setPreview('lightbox')}
+                />
+              </div>
+            </div>
+          )}
+
+          <AnimatePresence>
+            {preview === 'lightbox' && (
+              <PortfolioLightbox
+                title={form.title || 'Предпросмотр'}
+                images={form.image_urls}
+                onClose={() => setPreview('card')}
+              />
+            )}
+          </AnimatePresence>
         </div>
       )}
 
