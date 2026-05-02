@@ -12,6 +12,7 @@ type PortfolioItem = {
   category?: string | null;
   image_url: string;
   image_urls?: string[] | null;
+  image_positions?: string[] | null;
 };
 
 export default function Portfolio() {
@@ -93,6 +94,7 @@ export default function Portfolio() {
                   description: item.description,
                   category: item.category,
                   images: getImages(item),
+                  positions: item.image_positions || [],
                 }}
                 onClick={() => setOpenItem(item)}
               />

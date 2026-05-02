@@ -5,6 +5,7 @@ export type PortfolioCardData = {
   description?: string | null;
   category?: string | null;
   images: string[];
+  positions?: string[];
 };
 
 export default function PortfolioCard({
@@ -26,12 +27,14 @@ export default function PortfolioCard({
         <div className="grid grid-cols-3 grid-rows-3 gap-1 w-full h-full p-1">
           {tiles.map((src, idx) => {
             const isLast = idx === tiles.length - 1 && moreCount > 0;
+            const pos = data.positions?.[idx] || '50% 50%';
             return (
               <div key={src + idx} className="relative overflow-hidden rounded-md">
                 <img
                   src={src}
                   alt={`${data.title} ${idx + 1}`}
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  style={{ objectPosition: pos }}
                   loading="lazy"
                 />
                 {isLast && (

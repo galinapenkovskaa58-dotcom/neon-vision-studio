@@ -1,0 +1,1 @@
+ALTER TABLE public.portfolio ADD COLUMN IF NOT EXISTS image_positions text[] NOT NULL DEFAULT '{}'::text[];
