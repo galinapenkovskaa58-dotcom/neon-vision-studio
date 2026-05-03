@@ -1,5 +1,6 @@
 import { forwardRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { User } from 'lucide-react';
 
 export type NeonTone = 'cyan' | 'purple' | 'pink' | 'blue';
 
