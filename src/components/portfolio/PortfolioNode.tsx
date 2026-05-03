@@ -156,6 +156,38 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
           <div className="text-[11px] text-muted-foreground mt-0.5">{category}</div>
         )}
       </div>
+
+      {/* Original photo button */}
+      {originalUrl && (
+        <div className="mt-2 relative">
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setShowOriginal((v) => !v); }}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium glass border ${t.ring} ${t.text} hover:scale-105 transition`}
+          >
+            <User size={10} /> Оригинал
+          </button>
+          <AnimatePresence>
+            {showOriginal && (
+              <motion.div
+                initial={{ opacity: 0, y: 6, scale: 0.6 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 6, scale: 0.6 }}
+                transition={{ duration: 0.2 }}
+                className="absolute left-1/2 -translate-x-1/2 mt-2 z-10"
+                onMouseLeave={() => setShowOriginal(false)}
+              >
+                <div
+                  className="w-24 h-24 rounded-full overflow-hidden border-2"
+                  style={{ borderColor: t.hex, boxShadow: `0 6px 24px ${t.hex}66` }}
+                >
+                  <img src={originalUrl} alt="Оригинал" className="w-full h-full object-cover" />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
     </div>
   );
 });
