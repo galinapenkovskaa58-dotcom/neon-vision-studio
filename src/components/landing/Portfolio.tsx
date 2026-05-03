@@ -138,6 +138,7 @@ export default function Portfolio() {
           <PortfolioLightbox
             title={openItem.title}
             images={getImages(openItem)}
+            originalUrl={openItem.original_url || null}
             onClose={() => setOpenItem(null)}
           />
         )}
