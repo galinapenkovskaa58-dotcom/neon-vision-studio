@@ -141,6 +141,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
         image_urls: form.image_urls,
         image_positions: positions,
         image_url: form.image_urls[0] ?? '',
+        original_url: form.original_url || null,
       };
       if (editing) {
         const { error } = await supabase.from('portfolio').update(payload).eq('id', editing.id);
