@@ -32,7 +32,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [form, setForm] = useState<FormState>({
-    title: '', description: '', category: '', image_urls: [], image_positions: [],
+    title: '', description: '', category: '', image_urls: [], image_positions: [], original_url: '',
   });
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<null | 'card' | 'lightbox'>(null);
