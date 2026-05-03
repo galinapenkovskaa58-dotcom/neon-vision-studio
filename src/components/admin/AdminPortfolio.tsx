@@ -23,6 +23,7 @@ type FormState = {
   category: string;
   image_urls: string[];
   image_positions: string[];
+  original_url: string;
 };
 
 export default function AdminPortfolio({ service = 'neurophoto' }: { service?: string }) {
