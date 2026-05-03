@@ -1,5 +1,6 @@
 import { forwardRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { User } from 'lucide-react';
 
 export type NeonTone = 'cyan' | 'purple' | 'pink' | 'blue';
 
@@ -42,19 +43,22 @@ type Props = {
   category?: string | null;
   images: string[];
   positions?: string[];
+  originalUrl?: string | null;
   tone: NeonTone;
   onClick: () => void;
 };
 
 const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
-  { title, category, images, positions, tone, onClick },
+  { title, category, images, positions, originalUrl, tone, onClick },
   ref
 ) {
   const [hover, setHover] = useState(false);
+  const [showOriginal, setShowOriginal] = useState(false);
   const t = toneStyles[tone];
   const cover = images[0];
   const coverPos = positions?.[0] || '50% 50%';
-  const fanImages = images.slice(0, 5);
+  const fanFront = images.slice(0, 5);
+  const fanBack = images.slice(5, 10);
 
   return (
     <div
@@ -63,41 +67,47 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {/* Fan preview */}
+      {/* Fan preview (back layer = images 6-10, front layer = images 1-5) */}
       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 pointer-events-none w-0 h-0">
         <AnimatePresence>
-          {hover && fanImages.length > 0 && (
-            <>
-              {fanImages.map((src, i) => {
-                const total = fanImages.length;
-                const mid = (total - 1) / 2;
-                const angle = (i - mid) * 18; // -36..+36 for 5
-                const offsetX = (i - mid) * 60;
-                return (
-                  <motion.div
-                    key={src + i}
-                    initial={{ opacity: 0, y: 10, rotate: 0, scale: 0.5 }}
-                    animate={{
-                      opacity: 1,
-                      y: -110,
-                      x: offsetX,
-                      rotate: angle,
-                      scale: 1,
-                    }}
-                    exit={{ opacity: 0, y: 0, rotate: 0, scale: 0.6 }}
-                    transition={{ duration: 0.35, delay: i * 0.04, ease: 'easeOut' }}
-                    style={{
-                      borderColor: t.hex,
-                      boxShadow: `0 6px 24px ${t.hex}55`,
-                    }}
-                    className="absolute -translate-x-1/2 w-20 h-28 rounded-xl overflow-hidden border-2 glass"
-                  >
-                    <img src={src} alt="" className="w-full h-full object-cover" />
-                  </motion.div>
-                );
-              })}
-            </>
-          )}
+          {hover && fanBack.length > 0 && fanBack.map((src, i) => {
+            const total = fanBack.length;
+            const mid = (total - 1) / 2;
+            const angle = (i - mid) * 22;
+            const offsetX = (i - mid) * 70;
+            return (
+              <motion.div
+                key={'back' + src + i}
+                initial={{ opacity: 0, y: 10, rotate: 0, scale: 0.5 }}
+                animate={{ opacity: 0.95, y: -160, x: offsetX, rotate: angle, scale: 1 }}
+                exit={{ opacity: 0, y: 0, rotate: 0, scale: 0.6 }}
+                transition={{ duration: 0.4, delay: i * 0.04, ease: 'easeOut' }}
+                style={{ borderColor: t.hex, boxShadow: `0 6px 24px ${t.hex}55` }}
+                className="absolute -translate-x-1/2 w-20 h-28 rounded-xl overflow-hidden border-2 glass"
+              >
+                <img src={src} alt="" className="w-full h-full object-cover" />
+              </motion.div>
+            );
+          })}
+          {hover && fanFront.length > 0 && fanFront.map((src, i) => {
+            const total = fanFront.length;
+            const mid = (total - 1) / 2;
+            const angle = (i - mid) * 18;
+            const offsetX = (i - mid) * 60;
+            return (
+              <motion.div
+                key={'front' + src + i}
+                initial={{ opacity: 0, y: 10, rotate: 0, scale: 0.5 }}
+                animate={{ opacity: 1, y: -110, x: offsetX, rotate: angle, scale: 1 }}
+                exit={{ opacity: 0, y: 0, rotate: 0, scale: 0.6 }}
+                transition={{ duration: 0.35, delay: 0.1 + i * 0.04, ease: 'easeOut' }}
+                style={{ borderColor: t.hex, boxShadow: `0 6px 24px ${t.hex}55` }}
+                className="absolute -translate-x-1/2 w-20 h-28 rounded-xl overflow-hidden border-2 glass"
+              >
+                <img src={src} alt="" className="w-full h-full object-cover" />
+              </motion.div>
+            );
+          })}
         </AnimatePresence>
       </div>
 
@@ -146,6 +156,38 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
           <div className="text-[11px] text-muted-foreground mt-0.5">{category}</div>
         )}
       </div>
+
+      {/* Original photo button */}
+      {originalUrl && (
+        <div className="mt-2 relative">
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); setShowOriginal((v) => !v); }}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium glass border ${t.ring} ${t.text} hover:scale-105 transition`}
+          >
+            <User size={10} /> Оригинал
+          </button>
+          <AnimatePresence>
+            {showOriginal && (
+              <motion.div
+                initial={{ opacity: 0, y: 6, scale: 0.6 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: 6, scale: 0.6 }}
+                transition={{ duration: 0.2 }}
+                className="absolute left-1/2 -translate-x-1/2 mt-2 z-10"
+                onMouseLeave={() => setShowOriginal(false)}
+              >
+                <div
+                  className="w-24 h-24 rounded-full overflow-hidden border-2"
+                  style={{ borderColor: t.hex, boxShadow: `0 6px 24px ${t.hex}66` }}
+                >
+                  <img src={originalUrl} alt="Оригинал" className="w-full h-full object-cover" />
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
     </div>
   );
 });

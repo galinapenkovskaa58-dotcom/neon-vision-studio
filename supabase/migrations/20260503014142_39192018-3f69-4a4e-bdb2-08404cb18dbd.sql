@@ -1,0 +1,1 @@
+ALTER TABLE public.portfolio ADD COLUMN IF NOT EXISTS original_url text;

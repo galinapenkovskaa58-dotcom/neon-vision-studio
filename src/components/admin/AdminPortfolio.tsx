@@ -23,6 +23,7 @@ type FormState = {
   category: string;
   image_urls: string[];
   image_positions: string[];
+  original_url: string;
 };
 
 export default function AdminPortfolio({ service = 'neurophoto' }: { service?: string }) {
@@ -31,7 +32,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<any>(null);
   const [form, setForm] = useState<FormState>({
-    title: '', description: '', category: '', image_urls: [], image_positions: [],
+    title: '', description: '', category: '', image_urls: [], image_positions: [], original_url: '',
   });
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState<null | 'card' | 'lightbox'>(null);
@@ -140,6 +141,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
         image_urls: form.image_urls,
         image_positions: positions,
         image_url: form.image_urls[0] ?? '',
+        original_url: form.original_url || null,
       };
       if (editing) {
         const { error } = await supabase.from('portfolio').update(payload).eq('id', editing.id);
@@ -153,7 +155,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
       queryClient.invalidateQueries({ queryKey: ['admin-portfolio', service] });
       queryClient.invalidateQueries({ queryKey: ['portfolio'] });
       setShowForm(false); setEditing(null);
-      setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [] });
+      setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [], original_url: '' });
     },
     onError: (err: any) => toast({ title: 'Ошибка', description: err.message, variant: 'destructive' }),
   });
@@ -170,7 +172,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
       ? item.image_positions
       : urls.map(() => DEFAULT_POS));
     while (positions.length < urls.length) positions.push(DEFAULT_POS);
-    setForm({ title: item.title, description: item.description || '', category: item.category || '', image_urls: urls, image_positions: positions.slice(0, urls.length) });
+    setForm({ title: item.title, description: item.description || '', category: item.category || '', image_urls: urls, image_positions: positions.slice(0, urls.length), original_url: item.original_url || '' });
     setShowForm(true);
   };
 
@@ -181,7 +183,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-heading font-bold">Портфолио ({items.length})</h2>
         <Button
-          onClick={() => { setShowForm(true); setEditing(null); setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [] }); }}
+          onClick={() => { setShowForm(true); setEditing(null); setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [], original_url: '' }); }}
           className="neon-glow-btn rounded-full text-primary-foreground"
         >
           <Plus size={16} /> Добавить
@@ -246,6 +248,42 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
                 ))}
               </div>
             )}
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">Оригинал клиента (фото до нейрообработки)</label>
+            <div className="flex items-center gap-3 flex-wrap">
+              {form.original_url ? (
+                <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-neon-pink/60">
+                  <img src={form.original_url} alt="original" className="w-full h-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setForm((p) => ({ ...p, original_url: '' }))}
+                    className="absolute top-0 right-0 p-0.5 rounded-full bg-destructive text-destructive-foreground"
+                  >
+                    <X size={10} />
+                  </button>
+                </div>
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-card/40 border border-dashed border-border flex items-center justify-center text-[10px] text-muted-foreground text-center px-1">
+                  нет фото
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  const f = e.target.files?.[0];
+                  if (!f) return;
+                  setUploading(true);
+                  const url = await uploadFile(f);
+                  setUploading(false);
+                  if (url) setForm((p) => ({ ...p, original_url: url }));
+                  e.target.value = '';
+                }}
+                className="text-sm"
+              />
+            </div>
           </div>
 
           <div className="flex gap-3 flex-wrap">

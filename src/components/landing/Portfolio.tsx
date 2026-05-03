@@ -14,6 +14,7 @@ type PortfolioItem = {
   image_url: string;
   image_urls?: string[] | null;
   image_positions?: string[] | null;
+  original_url?: string | null;
 };
 
 const palette: NeonTone[] = ['cyan', 'purple', 'pink', 'blue'];
@@ -97,9 +98,9 @@ export default function Portfolio() {
         <div ref={containerRef} className="relative max-w-5xl mx-auto">
           <PortfolioPath containerRef={containerRef} nodeRefs={nodeRefs} tones={tones} />
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-y-20 gap-x-6 md:gap-x-12 relative">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-y-20 gap-x-6 md:gap-x-10 relative">
             {filtered.map((item, i) => {
-              const offset = i % 2 === 0 ? 'md:translate-y-0' : 'md:translate-y-16';
+              const offset = i % 2 === 0 ? 'lg:translate-y-0' : 'lg:translate-y-12';
               return (
                 <motion.div
                   key={item.id}
@@ -115,6 +116,7 @@ export default function Portfolio() {
                     category={item.category}
                     images={getImages(item)}
                     positions={item.image_positions || []}
+                    originalUrl={item.original_url || null}
                     tone={tones[i]}
                     onClick={() => setOpenItem(item)}
                   />
@@ -136,6 +138,7 @@ export default function Portfolio() {
           <PortfolioLightbox
             title={openItem.title}
             images={getImages(openItem)}
+            originalUrl={openItem.original_url || null}
             onClose={() => setOpenItem(null)}
           />
         )}

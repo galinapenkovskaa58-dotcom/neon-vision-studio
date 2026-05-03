@@ -5,13 +5,16 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 export default function PortfolioLightbox({
   title,
   images,
+  originalUrl,
   onClose,
 }: {
   title: string;
   images: string[];
+  originalUrl?: string | null;
   onClose: () => void;
 }) {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [origHover, setOrigHover] = useState(false);
 
   const next = useCallback(
     () => setActiveIdx((i) => (images.length ? (i + 1) % images.length : 0)),
@@ -80,6 +83,30 @@ export default function PortfolioLightbox({
           >
             <ChevronRight size={24} />
           </button>
+        )}
+
+        {originalUrl && (
+          <div
+            className="absolute left-2 sm:left-16 bottom-4 sm:bottom-1/2 sm:translate-y-1/2 z-20"
+            onMouseEnter={() => setOrigHover(true)}
+            onMouseLeave={() => setOrigHover(false)}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <motion.div
+              animate={{
+                width: origHover ? 'min(38vw, 320px)' : 96,
+                height: origHover ? 'min(50vh, 420px)' : 96,
+                borderRadius: origHover ? 24 : 9999,
+              }}
+              transition={{ type: 'spring', stiffness: 220, damping: 24 }}
+              className="overflow-hidden border-2 border-neon-pink/70 shadow-[0_0_24px_hsl(var(--neon-pink)/0.5)] cursor-pointer bg-card/40"
+            >
+              <img src={originalUrl} alt="Оригинал" className="w-full h-full object-cover" />
+            </motion.div>
+            <div className="text-[10px] mt-1 text-center text-neon-pink font-semibold tracking-wide">
+              ОРИГИНАЛ
+            </div>
+          </div>
         )}
       </div>
 
