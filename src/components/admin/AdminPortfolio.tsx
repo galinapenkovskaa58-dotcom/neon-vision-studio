@@ -246,6 +246,8 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
                     </div>
                   </div>
                 ))}
+              </div>
+            )}
           </div>
 
           <div>
@@ -282,8 +284,6 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
                 className="text-sm"
               />
             </div>
-          </div>
-            )}
           </div>
 
           <div className="flex gap-3 flex-wrap">
