@@ -171,7 +171,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
       ? item.image_positions
       : urls.map(() => DEFAULT_POS));
     while (positions.length < urls.length) positions.push(DEFAULT_POS);
-    setForm({ title: item.title, description: item.description || '', category: item.category || '', image_urls: urls, image_positions: positions.slice(0, urls.length) });
+    setForm({ title: item.title, description: item.description || '', category: item.category || '', image_urls: urls, image_positions: positions.slice(0, urls.length), original_url: item.original_url || '' });
     setShowForm(true);
   };
 
