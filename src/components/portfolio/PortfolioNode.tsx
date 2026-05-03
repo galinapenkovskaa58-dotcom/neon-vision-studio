@@ -43,19 +43,22 @@ type Props = {
   category?: string | null;
   images: string[];
   positions?: string[];
+  originalUrl?: string | null;
   tone: NeonTone;
   onClick: () => void;
 };
 
 const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
-  { title, category, images, positions, tone, onClick },
+  { title, category, images, positions, originalUrl, tone, onClick },
   ref
 ) {
   const [hover, setHover] = useState(false);
+  const [showOriginal, setShowOriginal] = useState(false);
   const t = toneStyles[tone];
   const cover = images[0];
   const coverPos = positions?.[0] || '50% 50%';
-  const fanImages = images.slice(0, 5);
+  const fanFront = images.slice(0, 5);
+  const fanBack = images.slice(5, 10);
 
   return (
     <div
