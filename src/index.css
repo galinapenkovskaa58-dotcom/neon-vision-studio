@@ -148,11 +148,25 @@
   to { stroke-dashoffset: -160; }
 }
 @keyframes pp-spark-dash {
-  to { stroke-dashoffset: -300; }
+  to { stroke-dashoffset: -240; }
+}
+@keyframes pp-snake-wiggle {
+  0%, 100% { transform: translateY(0px); }
+  25% { transform: translateY(-3px); }
+  50% { transform: translateY(0px); }
+  75% { transform: translateY(3px); }
 }
 .pp-flow {
-  animation: pp-flow-dash 2.5s linear infinite;
+  animation: pp-flow-dash 7s linear infinite;
 }
 .pp-spark {
-  animation: pp-spark-dash 1.4s linear infinite;
+  animation: pp-spark-dash 5s linear infinite;
 }
+.pp-snake {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pp-snake-wiggle 6s ease-in-out infinite;
+}
+.pp-snake-1 { animation-delay: -1.5s; }
+.pp-snake-2 { animation-delay: -3s; }
+.pp-snake-3 { animation-delay: -4.5s; }
