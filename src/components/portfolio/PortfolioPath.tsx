@@ -115,9 +115,21 @@ export default function PortfolioPath({ containerRef, nodeRefs, tones }: Props) 
               fill="none"
               stroke={grad}
               strokeWidth={2}
-              strokeDasharray="6 6"
+              strokeDasharray="6 10"
               strokeLinecap="round"
               opacity={0.85}
+              className="pp-flow"
+            />
+            <path
+              d={d}
+              fill="none"
+              stroke={toneStyles[tones[i + 1] || 'purple'].hex}
+              strokeWidth={4}
+              strokeDasharray="2 28"
+              strokeLinecap="round"
+              opacity={0.95}
+              className="pp-spark"
+              style={{ filter: `drop-shadow(0 0 6px ${toneStyles[tones[i + 1] || 'purple'].hex})` }}
             />
             <polygon
               points={`${ex},${ey} ${ax1},${ay1} ${ax2},${ay2}`}

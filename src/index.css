@@ -143,3 +143,16 @@
   0% { background-position: -200% center; }
   100% { background-position: 200% center; }
 }
+
+@keyframes pp-flow-dash {
+  to { stroke-dashoffset: -160; }
+}
+@keyframes pp-spark-dash {
+  to { stroke-dashoffset: -300; }
+}
+.pp-flow {
+  animation: pp-flow-dash 2.5s linear infinite;
+}
+.pp-spark {
+  animation: pp-spark-dash 1.4s linear infinite;
+}
