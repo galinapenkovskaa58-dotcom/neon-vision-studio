@@ -5,13 +5,16 @@ import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 export default function PortfolioLightbox({
   title,
   images,
+  originalUrl,
   onClose,
 }: {
   title: string;
   images: string[];
+  originalUrl?: string | null;
   onClose: () => void;
 }) {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [origHover, setOrigHover] = useState(false);
 
   const next = useCallback(
     () => setActiveIdx((i) => (images.length ? (i + 1) % images.length : 0)),
