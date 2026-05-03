@@ -14,6 +14,7 @@ type PortfolioItem = {
   image_url: string;
   image_urls?: string[] | null;
   image_positions?: string[] | null;
+  original_url?: string | null;
 };
 
 const palette: NeonTone[] = ['cyan', 'purple', 'pink', 'blue'];
