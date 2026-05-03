@@ -246,7 +246,43 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
                     </div>
                   </div>
                 ))}
-              </div>
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">Оригинал клиента (фото до нейрообработки)</label>
+            <div className="flex items-center gap-3 flex-wrap">
+              {form.original_url ? (
+                <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-neon-pink/60">
+                  <img src={form.original_url} alt="original" className="w-full h-full object-cover" />
+                  <button
+                    type="button"
+                    onClick={() => setForm((p) => ({ ...p, original_url: '' }))}
+                    className="absolute top-0 right-0 p-0.5 rounded-full bg-destructive text-destructive-foreground"
+                  >
+                    <X size={10} />
+                  </button>
+                </div>
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-card/40 border border-dashed border-border flex items-center justify-center text-[10px] text-muted-foreground text-center px-1">
+                  нет фото
+                </div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                onChange={async (e) => {
+                  const f = e.target.files?.[0];
+                  if (!f) return;
+                  setUploading(true);
+                  const url = await uploadFile(f);
+                  setUploading(false);
+                  if (url) setForm((p) => ({ ...p, original_url: url }));
+                  e.target.value = '';
+                }}
+                className="text-sm"
+              />
+            </div>
+          </div>
             )}
           </div>
 
