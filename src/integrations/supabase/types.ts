@@ -76,6 +76,7 @@ export type Database = {
           image_positions: string[]
           image_url: string
           image_urls: string[]
+          original_url: string | null
           service: string
           sort_order: number | null
           title: string
@@ -89,6 +90,7 @@ export type Database = {
           image_positions?: string[]
           image_url: string
           image_urls?: string[]
+          original_url?: string | null
           service?: string
           sort_order?: number | null
           title: string
@@ -102,6 +104,7 @@ export type Database = {
           image_positions?: string[]
           image_url?: string
           image_urls?: string[]
+          original_url?: string | null
           service?: string
           sort_order?: number | null
           title?: string
