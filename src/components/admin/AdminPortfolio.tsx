@@ -154,7 +154,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
       queryClient.invalidateQueries({ queryKey: ['admin-portfolio', service] });
       queryClient.invalidateQueries({ queryKey: ['portfolio'] });
       setShowForm(false); setEditing(null);
-      setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [] });
+      setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [], original_url: '' });
     },
     onError: (err: any) => toast({ title: 'Ошибка', description: err.message, variant: 'destructive' }),
   });
@@ -182,7 +182,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-heading font-bold">Портфолио ({items.length})</h2>
         <Button
-          onClick={() => { setShowForm(true); setEditing(null); setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [] }); }}
+          onClick={() => { setShowForm(true); setEditing(null); setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [], original_url: '' }); }}
           className="neon-glow-btn rounded-full text-primary-foreground"
         >
           <Plus size={16} /> Добавить
