@@ -109,7 +109,7 @@ export default function PortfolioPath({ containerRef, nodeRefs, tones }: Props) 
         const ay2 = ey - Math.sin(angle) * ah - Math.cos(angle) * aw;
 
         return (
-          <g key={i}>
+          <g key={i} className={`pp-snake pp-snake-${i % 4}`}>
             <path
               d={d}
               fill="none"
