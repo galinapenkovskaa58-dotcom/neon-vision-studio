@@ -2,40 +2,40 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { useRef, useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { Trash2, Plus, X, Eye, Crop, RefreshCw } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
+import { Trash2, Plus, X, Crop, RefreshCw } from 'lucide-react';
 import { useReorder } from '@/hooks/useSortable';
 import SortableItem from './SortableItem';
 import SortableWrapper from './SortableWrapper';
-import PortfolioCard from '@/components/portfolio/PortfolioCard';
-import PortfolioLightbox from '@/components/portfolio/PortfolioLightbox';
 import FocalPointEditor from '@/components/portfolio/FocalPointEditor';
 
 const MAX_IMAGES = 10;
 const DEFAULT_POS = '50% 50%';
 
+type DisplayMode = 'fan' | 'grid';
+
 type FormState = {
-  title: string;
-  description: string;
   category: string;
   image_urls: string[];
   image_positions: string[];
   original_url: string;
+  original_name: string;
+  original_position: string;
+  display_mode: DisplayMode;
 };
+
+const emptyForm = (): FormState => ({
+  category: '', image_urls: [], image_positions: [], original_url: '', original_name: '', original_position: DEFAULT_POS, display_mode: 'fan',
+});
 
 export default function AdminPortfolio({ service = 'neurophoto' }: { service?: string }) {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState<any>(null);
-  const [form, setForm] = useState<FormState>({
-    title: '', description: '', category: '', image_urls: [], image_positions: [], original_url: '',
-  });
+  const [form, setForm] = useState<FormState>(emptyForm());
   const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState<null | 'card' | 'lightbox'>(null);
   const [showFocalEditor, setShowFocalEditor] = useState(false);
   const replaceIdxRef = useRef<number | null>(null);
   const replaceInputRef = useRef<HTMLInputElement>(null);
@@ -48,7 +48,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
     },
   });
 
-  const reorder = useReorder('portfolio', ['admin-portfolio', service]);
+  const reorder = useReorder('portfolio', ['admin-portfolio', service, 'portfolio']);
 
   const uploadFile = async (file: File): Promise<string | null> => {
     const ext = file.name.split('.').pop();
@@ -135,13 +135,15 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
     mutationFn: async () => {
       const positions = form.image_urls.map((_, i) => form.image_positions[i] || DEFAULT_POS);
       const payload: any = {
-        title: form.title,
-        description: form.description,
+        title: form.original_name || form.category || 'Подборка',
         category: form.category,
         image_urls: form.image_urls,
         image_positions: positions,
         image_url: form.image_urls[0] ?? '',
         original_url: form.original_url || null,
+        original_name: form.original_name || null,
+        original_position: form.original_position || DEFAULT_POS,
+        display_mode: form.display_mode,
       };
       if (editing) {
         const { error } = await supabase.from('portfolio').update(payload).eq('id', editing.id);
@@ -155,14 +157,17 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
       queryClient.invalidateQueries({ queryKey: ['admin-portfolio', service] });
       queryClient.invalidateQueries({ queryKey: ['portfolio'] });
       setShowForm(false); setEditing(null);
-      setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [], original_url: '' });
+      setForm(emptyForm());
     },
     onError: (err: any) => toast({ title: 'Ошибка', description: err.message, variant: 'destructive' }),
   });
 
   const remove = useMutation({
     mutationFn: async (id: string) => { const { error } = await supabase.from('portfolio').delete().eq('id', id); if (error) throw error; },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-portfolio', service] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['admin-portfolio', service] });
+      queryClient.invalidateQueries({ queryKey: ['portfolio'] });
+    },
   });
 
   const startEdit = (item: any) => {
@@ -172,7 +177,15 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
       ? item.image_positions
       : urls.map(() => DEFAULT_POS));
     while (positions.length < urls.length) positions.push(DEFAULT_POS);
-    setForm({ title: item.title, description: item.description || '', category: item.category || '', image_urls: urls, image_positions: positions.slice(0, urls.length), original_url: item.original_url || '' });
+    setForm({
+      category: item.category || '',
+      image_urls: urls,
+      image_positions: positions.slice(0, urls.length),
+      original_url: item.original_url || '',
+      original_name: item.original_name || '',
+      original_position: item.original_position || DEFAULT_POS,
+      display_mode: (item.display_mode === 'grid' ? 'grid' : 'fan'),
+    });
     setShowForm(true);
   };
 
@@ -183,14 +196,13 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-heading font-bold">Портфолио ({items.length})</h2>
         <Button
-          onClick={() => { setShowForm(true); setEditing(null); setForm({ title: '', description: '', category: '', image_urls: [], image_positions: [], original_url: '' }); }}
+          onClick={() => { setShowForm(true); setEditing(null); setForm(emptyForm()); }}
           className="neon-glow-btn rounded-full text-primary-foreground"
         >
           <Plus size={16} /> Добавить
         </Button>
       </div>
 
-      {/* hidden input for replacing a single image */}
       <input
         ref={replaceInputRef}
         type="file"
@@ -201,9 +213,26 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
 
       {showForm && (
         <div className="glass rounded-2xl p-6 mb-6 space-y-4">
-          <Input placeholder="Заголовок *" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="bg-muted/50 rounded-xl" />
-          <Textarea placeholder="Описание" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} className="bg-muted/50 rounded-xl" />
           <Input placeholder="Категория" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })} className="bg-muted/50 rounded-xl" />
+
+          {/* Display mode */}
+          <div>
+            <label className="block text-sm mb-2">Способ публикации</label>
+            <div className="flex gap-2 flex-wrap">
+              {(['fan', 'grid'] as DisplayMode[]).map((m) => (
+                <button
+                  key={m}
+                  type="button"
+                  onClick={() => setForm({ ...form, display_mode: m })}
+                  className={`px-4 py-1.5 rounded-full text-sm font-medium transition ${
+                    form.display_mode === m ? 'neon-glow-btn text-primary-foreground' : 'glass hover:bg-card/80'
+                  }`}
+                >
+                  {m === 'fan' ? 'Веером (кружок)' : 'Сеткой (мини)'}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div>
             <label className="block text-sm mb-2">
@@ -250,22 +279,47 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
             )}
           </div>
 
-          <div>
-            <label className="block text-sm mb-2">Оригинал клиента (фото до нейрообработки)</label>
-            <div className="flex items-center gap-3 flex-wrap">
+          {/* Original */}
+          <div className="space-y-3">
+            <Input
+              placeholder="Имя для фото-оригинала (например: Анна)"
+              value={form.original_name}
+              onChange={(e) => setForm({ ...form, original_name: e.target.value })}
+              className="bg-muted/50 rounded-xl"
+            />
+            <label className="block text-sm">Оригинал клиента (фото до нейрообработки)</label>
+            <div className="flex items-start gap-4 flex-wrap">
               {form.original_url ? (
-                <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-neon-pink/60">
-                  <img src={form.original_url} alt="original" className="w-full h-full object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => setForm((p) => ({ ...p, original_url: '' }))}
-                    className="absolute top-0 right-0 p-0.5 rounded-full bg-destructive text-destructive-foreground"
+                <div className="space-y-2">
+                  <div
+                    className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-neon-pink/60"
+                    style={{ boxShadow: '0 0 18px hsl(var(--neon-pink) / 0.5)' }}
                   >
-                    <X size={10} />
-                  </button>
+                    <img
+                      src={form.original_url}
+                      alt="original"
+                      className="w-full h-full object-cover"
+                      style={{ objectPosition: form.original_position }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setForm((p) => ({ ...p, original_url: '', original_position: DEFAULT_POS }))}
+                      className="absolute top-0 right-0 p-0.5 rounded-full bg-destructive text-destructive-foreground"
+                    >
+                      <X size={10} />
+                    </button>
+                  </div>
+                  <div className="w-40">
+                    <p className="text-[11px] text-muted-foreground mb-1">Кликайте, чтобы центровать лицо:</p>
+                    <FocalPointEditor
+                      src={form.original_url}
+                      position={form.original_position}
+                      onChange={(p) => setForm((prev) => ({ ...prev, original_position: p }))}
+                    />
+                  </div>
                 </div>
               ) : (
-                <div className="w-20 h-20 rounded-full bg-card/40 border border-dashed border-border flex items-center justify-center text-[10px] text-muted-foreground text-center px-1">
+                <div className="w-28 h-28 rounded-full bg-card/40 border border-dashed border-border flex items-center justify-center text-[10px] text-muted-foreground text-center px-1">
                   нет фото
                 </div>
               )}
@@ -278,7 +332,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
                   setUploading(true);
                   const url = await uploadFile(f);
                   setUploading(false);
-                  if (url) setForm((p) => ({ ...p, original_url: url }));
+                  if (url) setForm((p) => ({ ...p, original_url: url, original_position: DEFAULT_POS }));
                   e.target.value = '';
                 }}
                 className="text-sm"
@@ -287,7 +341,7 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
           </div>
 
           <div className="flex gap-3 flex-wrap">
-            <Button onClick={() => save.mutate()} disabled={!form.title || form.image_urls.length === 0} className="neon-glow-btn rounded-full text-primary-foreground">
+            <Button onClick={() => save.mutate()} disabled={form.image_urls.length === 0} className="neon-glow-btn rounded-full text-primary-foreground">
               {editing ? 'Сохранить' : 'Добавить'}
             </Button>
             <Button
@@ -297,39 +351,18 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
               disabled={form.image_urls.length === 0}
               className="rounded-full"
             >
-              <Crop size={16} /> {showFocalEditor ? 'Скрыть сетку 3×3' : 'Кадрировать сетку 3×3'}
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              onClick={() => setPreview('card')}
-              disabled={form.image_urls.length === 0}
-              className="rounded-full"
-            >
-              <Eye size={16} /> Предварительный просмотр
+              <Crop size={16} /> {showFocalEditor ? 'Скрыть кадрирование' : 'Кадрировать фото'}
             </Button>
             <Button variant="ghost" onClick={() => { setShowForm(false); setEditing(null); }}>Отмена</Button>
           </div>
 
           {showFocalEditor && focalTiles.length > 0 && (
             <div className="mt-4 pt-6 border-t border-border/40">
-              <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                <div>
-                  <p className="text-sm font-semibold">Сетка обложки 3×3</p>
-                  <p className="text-xs text-muted-foreground">
-                    Кликайте или перетаскивайте точку на каждой плитке, чтобы выбрать видимую часть фотографии (например, лицо).
-                  </p>
-                </div>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant="ghost"
-                  onClick={() => setForm((prev) => ({ ...prev, image_positions: prev.image_urls.map(() => DEFAULT_POS) }))}
-                >
-                  Сбросить все по центру
-                </Button>
-              </div>
-              <div className="max-w-md mx-auto grid grid-cols-3 grid-rows-3 gap-1 p-1 bg-card/40 rounded-xl">
+              <p className="text-sm font-semibold mb-1">Кадрирование</p>
+              <p className="text-xs text-muted-foreground mb-3">
+                Кликайте или перетаскивайте точку на каждой плитке, чтобы выбрать видимую часть фотографии.
+              </p>
+              <div className="max-w-md mx-auto grid grid-cols-3 gap-1 p-1 bg-card/40 rounded-xl">
                 {focalTiles.map((src, idx) => (
                   <FocalPointEditor
                     key={src + idx}
@@ -338,47 +371,9 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
                     onChange={(p) => setPosition(idx, p)}
                   />
                 ))}
-                {Array.from({ length: Math.max(0, 9 - focalTiles.length) }).map((_, idx) => (
-                  <div key={`fp-empty-${idx}`} className="rounded-md bg-card/40 aspect-square" />
-                ))}
               </div>
             </div>
           )}
-
-          {preview === 'card' && (
-            <div className="mt-6 pt-6 border-t border-border/40">
-              <div className="flex items-center justify-between mb-3">
-                <p className="text-sm text-muted-foreground">
-                  Так подборка будет выглядеть на странице сайта. Нажмите на карточку, чтобы открыть галерею.
-                </p>
-                <Button size="sm" variant="ghost" onClick={() => setPreview(null)}>
-                  <X size={14} /> Скрыть
-                </Button>
-              </div>
-              <div className="max-w-sm mx-auto">
-                <PortfolioCard
-                  data={{
-                    title: form.title,
-                    description: form.description,
-                    category: form.category,
-                    images: form.image_urls,
-                    positions: form.image_positions,
-                  }}
-                  onClick={() => setPreview('lightbox')}
-                />
-              </div>
-            </div>
-          )}
-
-          <AnimatePresence>
-            {preview === 'lightbox' && (
-              <PortfolioLightbox
-                title={form.title || 'Предпросмотр'}
-                images={form.image_urls}
-                onClose={() => setPreview('card')}
-              />
-            )}
-          </AnimatePresence>
         </div>
       )}
 
@@ -389,15 +384,18 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
             return (
               <SortableItem key={item.id} id={item.id} className="glass rounded-2xl overflow-hidden">
                 <div className="relative">
-                  <img src={urls[0]} alt={item.title} className="w-full h-48 object-cover" />
+                  <img src={urls[0]} alt={item.original_name || item.category || 'фото'} className="w-full h-48 object-cover" />
                   {urls.length > 1 && (
                     <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-background/80 backdrop-blur text-xs font-semibold text-neon-cyan">
                       {urls.length} фото
                     </span>
                   )}
+                  <span className="absolute bottom-2 left-2 px-2 py-1 rounded-full bg-background/80 backdrop-blur text-[10px] font-semibold text-neon-purple">
+                    {item.display_mode === 'grid' ? 'сетка' : 'веер'}
+                  </span>
                 </div>
                 <div className="p-4">
-                  <h3 className="font-semibold">{item.title}</h3>
+                  <h3 className="font-semibold">{item.original_name || '—'}</h3>
                   {item.category && <span className="text-xs text-neon-cyan">{item.category}</span>}
                   <div className="flex gap-2 mt-3">
                     <Button size="sm" variant="ghost" onClick={() => startEdit(item)}>Ред.</Button>

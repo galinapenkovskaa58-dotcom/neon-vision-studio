@@ -1,0 +1,4 @@
+ALTER TABLE public.portfolio
+  ADD COLUMN IF NOT EXISTS original_name TEXT,
+  ADD COLUMN IF NOT EXISTS original_position TEXT DEFAULT '50% 50%',
+  ADD COLUMN IF NOT EXISTS display_mode TEXT NOT NULL DEFAULT 'fan';
