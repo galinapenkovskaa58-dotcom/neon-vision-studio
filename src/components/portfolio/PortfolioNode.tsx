@@ -1,6 +1,5 @@
 import { forwardRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User } from 'lucide-react';
 
 export type NeonTone = 'cyan' | 'purple' | 'pink' | 'blue';
 
@@ -39,27 +38,115 @@ const toneStyles: Record<
 };
 
 type Props = {
-  title: string;
   category?: string | null;
   images: string[];
   positions?: string[];
   originalUrl?: string | null;
+  originalName?: string | null;
+  originalPosition?: string | null;
   tone: NeonTone;
+  displayMode?: 'fan' | 'grid';
   onClick: () => void;
 };
 
 const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
-  { title, category, images, positions, originalUrl, tone, onClick },
+  { category, images, positions, originalUrl, originalName, originalPosition, tone, displayMode = 'fan', onClick },
   ref
 ) {
   const [hover, setHover] = useState(false);
-  const [showOriginal, setShowOriginal] = useState(false);
   const t = toneStyles[tone];
   const cover = images[0];
   const coverPos = positions?.[0] || '50% 50%';
-  const fanFront = images.slice(0, 5);
-  const fanBack = images.slice(5, 10);
 
+  // Split images: front fan up to 5, back fan rest, both adapt to count
+  const half = Math.ceil(images.length / 2);
+  const fanFront = images.slice(0, Math.min(5, half + (images.length > 5 ? 0 : 0)));
+  // simpler: first half front, second half back when >5
+  const front = images.length <= 5 ? images : images.slice(0, 5);
+  const back = images.length <= 5 ? [] : images.slice(5, 10);
+
+  const renderFan = (
+    list: string[],
+    layer: 'front' | 'back'
+  ) => {
+    const total = list.length;
+    if (total === 0) return null;
+    const mid = (total - 1) / 2;
+    const angleStep = layer === 'front' ? 18 : 22;
+    const offsetStep = layer === 'front' ? 60 : 70;
+    const yLift = layer === 'front' ? -110 : -160;
+    const baseDelay = layer === 'front' ? 0.1 : 0;
+    return list.map((src, i) => {
+      const angle = (i - mid) * angleStep;
+      const offsetX = (i - mid) * offsetStep;
+      return (
+        <motion.div
+          key={`${layer}-${src}-${i}`}
+          initial={{ opacity: 0, y: 10, rotate: 0, scale: 0.5 }}
+          animate={{ opacity: layer === 'front' ? 1 : 0.95, y: yLift, x: offsetX, rotate: angle, scale: 1 }}
+          exit={{ opacity: 0, y: 0, rotate: 0, scale: 0.6 }}
+          transition={{ duration: 0.35, delay: baseDelay + i * 0.04, ease: 'easeOut' }}
+          style={{ borderColor: t.hex, boxShadow: `0 6px 24px ${t.hex}55` }}
+          className="absolute -translate-x-1/2 w-20 h-28 rounded-xl overflow-hidden border-2 glass"
+        >
+          <img src={src} alt="" className="w-full h-full object-cover" />
+        </motion.div>
+      );
+    });
+  };
+
+  // GRID MODE — small 3x3 (or fewer) preview tile
+  if (displayMode === 'grid') {
+    const tiles = images.slice(0, 9);
+    const cols = Math.min(3, Math.max(1, Math.ceil(Math.sqrt(tiles.length))));
+    return (
+      <div ref={ref} className="relative flex flex-col items-center">
+        <motion.button
+          onClick={onClick}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.96 }}
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          aria-label={originalName || category || 'portfolio'}
+          className={`relative w-32 h-32 rounded-2xl overflow-hidden border-2 ${t.ring} ${t.bg} p-1 transition-shadow duration-300 ${
+            hover ? t.glow : ''
+          }`}
+        >
+          <div
+            className="grid gap-0.5 w-full h-full"
+            style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+          >
+            {tiles.map((src, i) => (
+              <div key={src + i} className="relative overflow-hidden rounded-sm">
+                <img
+                  src={src}
+                  alt=""
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: positions?.[i] || '50% 50%' }}
+                />
+              </div>
+            ))}
+          </div>
+          {images.length > 1 && (
+            <div className={`absolute bottom-1 right-1 px-1.5 py-0.5 rounded-full text-[9px] font-semibold glass ${t.text}`}>
+              {images.length}
+            </div>
+          )}
+        </motion.button>
+
+        <NodeLabel
+          tone={t}
+          hover={hover}
+          category={category}
+          originalUrl={originalUrl}
+          originalName={originalName}
+          originalPosition={originalPosition}
+        />
+      </div>
+    );
+  }
+
+  // FAN (default)
   return (
     <div
       ref={ref}
@@ -67,56 +154,18 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
     >
-      {/* Fan preview (back layer = images 6-10, front layer = images 1-5) */}
       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 pointer-events-none w-0 h-0">
         <AnimatePresence>
-          {hover && fanBack.length > 0 && fanBack.map((src, i) => {
-            const total = fanBack.length;
-            const mid = (total - 1) / 2;
-            const angle = (i - mid) * 22;
-            const offsetX = (i - mid) * 70;
-            return (
-              <motion.div
-                key={'back' + src + i}
-                initial={{ opacity: 0, y: 10, rotate: 0, scale: 0.5 }}
-                animate={{ opacity: 0.95, y: -160, x: offsetX, rotate: angle, scale: 1 }}
-                exit={{ opacity: 0, y: 0, rotate: 0, scale: 0.6 }}
-                transition={{ duration: 0.4, delay: i * 0.04, ease: 'easeOut' }}
-                style={{ borderColor: t.hex, boxShadow: `0 6px 24px ${t.hex}55` }}
-                className="absolute -translate-x-1/2 w-20 h-28 rounded-xl overflow-hidden border-2 glass"
-              >
-                <img src={src} alt="" className="w-full h-full object-cover" />
-              </motion.div>
-            );
-          })}
-          {hover && fanFront.length > 0 && fanFront.map((src, i) => {
-            const total = fanFront.length;
-            const mid = (total - 1) / 2;
-            const angle = (i - mid) * 18;
-            const offsetX = (i - mid) * 60;
-            return (
-              <motion.div
-                key={'front' + src + i}
-                initial={{ opacity: 0, y: 10, rotate: 0, scale: 0.5 }}
-                animate={{ opacity: 1, y: -110, x: offsetX, rotate: angle, scale: 1 }}
-                exit={{ opacity: 0, y: 0, rotate: 0, scale: 0.6 }}
-                transition={{ duration: 0.35, delay: 0.1 + i * 0.04, ease: 'easeOut' }}
-                style={{ borderColor: t.hex, boxShadow: `0 6px 24px ${t.hex}55` }}
-                className="absolute -translate-x-1/2 w-20 h-28 rounded-xl overflow-hidden border-2 glass"
-              >
-                <img src={src} alt="" className="w-full h-full object-cover" />
-              </motion.div>
-            );
-          })}
+          {hover && renderFan(back, 'back')}
+          {hover && renderFan(front, 'front')}
         </AnimatePresence>
       </div>
 
-      {/* Circle button */}
       <motion.button
         onClick={onClick}
         whileHover={{ scale: 1.06 }}
         whileTap={{ scale: 0.96 }}
-        aria-label={title}
+        aria-label={originalName || category || 'portfolio'}
         className={`relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-2 ${t.ring} ${t.bg} transition-shadow duration-300 ${
           hover ? t.glow : 'shadow-[0_0_15px_hsl(var(--neon-blue)/0.2)]'
         }`}
@@ -124,7 +173,7 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
         {cover ? (
           <img
             src={cover}
-            alt={title}
+            alt={originalName || ''}
             className="w-full h-full object-cover"
             style={{ objectPosition: coverPos }}
           />
@@ -147,25 +196,57 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
         )}
       </motion.button>
 
-      {/* Label */}
-      <div className="mt-3 text-center max-w-[160px]">
-        <div className={`font-heading font-semibold text-sm ${hover ? t.text : 'text-foreground'} transition-colors`}>
-          {title || 'Без названия'}
-        </div>
+      <NodeLabel
+        tone={t}
+        hover={hover}
+        category={category}
+        originalUrl={originalUrl}
+        originalName={originalName}
+        originalPosition={originalPosition}
+      />
+    </div>
+  );
+});
+
+function NodeLabel({
+  tone,
+  hover,
+  category,
+  originalUrl,
+  originalName,
+  originalPosition,
+}: {
+  tone: { hex: string; text: string; ring: string };
+  hover: boolean;
+  category?: string | null;
+  originalUrl?: string | null;
+  originalName?: string | null;
+  originalPosition?: string | null;
+}) {
+  const [showOriginal, setShowOriginal] = useState(false);
+  return (
+    <>
+      <div className="mt-3 text-center max-w-[180px]">
+        {originalName && (
+          <div className="neon-name text-base sm:text-lg leading-tight">
+            {originalName}
+          </div>
+        )}
         {category && (
-          <div className="text-[11px] text-muted-foreground mt-0.5">{category}</div>
+          <div className={`text-[11px] mt-0.5 ${hover ? tone.text : 'text-muted-foreground'} transition-colors`}>
+            {category}
+          </div>
         )}
       </div>
 
-      {/* Original photo button */}
       {originalUrl && (
         <div className="mt-2 relative">
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); setShowOriginal((v) => !v); }}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-medium glass border ${t.ring} ${t.text} hover:scale-105 transition`}
+            className={`px-2.5 py-1 rounded-full text-[10px] font-medium glass border ${tone.ring} ${tone.text} hover:scale-105 transition`}
           >
-            <User size={10} /> Оригинал
+            Оригинал
           </button>
           <AnimatePresence>
             {showOriginal && (
@@ -179,18 +260,23 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
               >
                 <div
                   className="w-24 h-24 rounded-full overflow-hidden border-2"
-                  style={{ borderColor: t.hex, boxShadow: `0 6px 24px ${t.hex}66` }}
+                  style={{ borderColor: tone.hex, boxShadow: `0 6px 24px ${tone.hex}66` }}
                 >
-                  <img src={originalUrl} alt="Оригинал" className="w-full h-full object-cover" />
+                  <img
+                    src={originalUrl}
+                    alt={originalName || 'Оригинал'}
+                    className="w-full h-full object-cover"
+                    style={{ objectPosition: originalPosition || '50% 50%' }}
+                  />
                 </div>
               </motion.div>
             )}
           </AnimatePresence>
         </div>
       )}
-    </div>
+    </>
   );
-});
+}
 
 export default PortfolioNode;
 export { toneStyles };
