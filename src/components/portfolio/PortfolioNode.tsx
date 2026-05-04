@@ -108,7 +108,7 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           aria-label={originalName || category || 'portfolio'}
-          className={`relative w-32 h-32 rounded-2xl overflow-hidden border-2 ${t.ring} ${t.bg} p-1 transition-shadow duration-300 ${
+          className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 ${t.ring} ${t.bg} p-0.5 transition-shadow duration-300 ${
             hover ? t.glow : ''
           }`}
         >
