@@ -15,6 +15,9 @@ type PortfolioItem = {
   image_urls?: string[] | null;
   image_positions?: string[] | null;
   original_url?: string | null;
+  original_name?: string | null;
+  original_position?: string | null;
+  display_mode?: string | null;
 };
 
 const palette: NeonTone[] = ['cyan', 'purple', 'pink', 'blue'];
@@ -101,6 +104,7 @@ export default function Portfolio() {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-y-20 gap-x-6 md:gap-x-10 relative">
             {filtered.map((item, i) => {
               const offset = i % 2 === 0 ? 'lg:translate-y-0' : 'lg:translate-y-12';
+              const mode = (item.display_mode === 'grid' ? 'grid' : 'fan') as 'fan' | 'grid';
               return (
                 <motion.div
                   key={item.id}
@@ -112,12 +116,14 @@ export default function Portfolio() {
                 >
                   <PortfolioNode
                     ref={nodeRefs[i]}
-                    title={item.title}
                     category={item.category}
                     images={getImages(item)}
                     positions={item.image_positions || []}
                     originalUrl={item.original_url || null}
+                    originalName={item.original_name || null}
+                    originalPosition={item.original_position || null}
                     tone={tones[i]}
+                    displayMode={mode}
                     onClick={() => setOpenItem(item)}
                   />
                 </motion.div>
