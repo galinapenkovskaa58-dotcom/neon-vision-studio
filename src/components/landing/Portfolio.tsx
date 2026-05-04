@@ -142,9 +142,11 @@ export default function Portfolio() {
       <AnimatePresence>
         {openItem && (
           <PortfolioLightbox
-            title={openItem.title}
+            title={openItem.original_name || openItem.category || 'Подборка'}
             images={getImages(openItem)}
             originalUrl={openItem.original_url || null}
+            originalPosition={openItem.original_position || null}
+            originalName={openItem.original_name || null}
             onClose={() => setOpenItem(null)}
           />
         )}
