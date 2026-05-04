@@ -6,11 +6,15 @@ export default function PortfolioLightbox({
   title,
   images,
   originalUrl,
+  originalPosition,
+  originalName,
   onClose,
 }: {
   title: string;
   images: string[];
   originalUrl?: string | null;
+  originalPosition?: string | null;
+  originalName?: string | null;
   onClose: () => void;
 }) {
   const [activeIdx, setActiveIdx] = useState(0);
