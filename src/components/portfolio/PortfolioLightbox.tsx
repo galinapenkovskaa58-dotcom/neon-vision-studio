@@ -105,10 +105,15 @@ export default function PortfolioLightbox({
               transition={{ type: 'spring', stiffness: 220, damping: 24 }}
               className="overflow-hidden border-2 border-neon-pink/70 shadow-[0_0_24px_hsl(var(--neon-pink)/0.5)] cursor-pointer bg-card/40"
             >
-              <img src={originalUrl} alt="Оригинал" className="w-full h-full object-cover" />
+              <img
+                src={originalUrl}
+                alt={originalName || 'Оригинал'}
+                className="w-full h-full object-cover"
+                style={{ objectPosition: originalPosition || '50% 50%' }}
+              />
             </motion.div>
-            <div className="text-[10px] mt-1 text-center text-neon-pink font-semibold tracking-wide">
-              ОРИГИНАЛ
+            <div className="text-[11px] mt-1 text-center neon-name tracking-wide">
+              {originalName || 'ОРИГИНАЛ'}
             </div>
           </div>
         )}
