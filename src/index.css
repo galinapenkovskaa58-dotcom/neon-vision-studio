@@ -170,3 +170,23 @@
 .pp-snake-1 { animation-delay: -1.5s; }
 .pp-snake-2 { animation-delay: -3s; }
 .pp-snake-3 { animation-delay: -4.5s; }
+
+.neon-name {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  background: linear-gradient(90deg, hsl(var(--neon-cyan)), hsl(var(--neon-pink)), hsl(var(--neon-purple)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow:
+    0 0 6px hsl(var(--neon-pink) / 0.55),
+    0 0 14px hsl(var(--neon-purple) / 0.45),
+    0 0 28px hsl(var(--neon-cyan) / 0.3);
+  animation: neon-flicker 3.6s ease-in-out infinite;
+}
+@keyframes neon-flicker {
+  0%, 100% { filter: brightness(1); }
+  45% { filter: brightness(1.18); }
+  55% { filter: brightness(0.92); }
+}
