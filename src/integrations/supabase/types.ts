@@ -72,10 +72,13 @@ export type Database = {
           category: string | null
           created_at: string | null
           description: string | null
+          display_mode: string
           id: string
           image_positions: string[]
           image_url: string
           image_urls: string[]
+          original_name: string | null
+          original_position: string | null
           original_url: string | null
           service: string
           sort_order: number | null
@@ -86,10 +89,13 @@ export type Database = {
           category?: string | null
           created_at?: string | null
           description?: string | null
+          display_mode?: string
           id?: string
           image_positions?: string[]
           image_url: string
           image_urls?: string[]
+          original_name?: string | null
+          original_position?: string | null
           original_url?: string | null
           service?: string
           sort_order?: number | null
@@ -100,10 +106,13 @@ export type Database = {
           category?: string | null
           created_at?: string | null
           description?: string | null
+          display_mode?: string
           id?: string
           image_positions?: string[]
           image_url?: string
           image_urls?: string[]
+          original_name?: string | null
+          original_position?: string | null
           original_url?: string | null
           service?: string
           sort_order?: number | null
