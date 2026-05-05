@@ -95,7 +95,7 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
     });
   };
 
-  // GRID MODE — small 3x3 (or fewer) preview tile
+  // GRID MODE — very compact tile (~5x smaller than fan circle)
   if (displayMode === 'grid') {
     const tiles = images.slice(0, 9);
     const cols = Math.min(3, Math.max(1, Math.ceil(Math.sqrt(tiles.length))));
@@ -103,21 +103,21 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
       <div ref={ref} className="relative flex flex-col items-center">
         <motion.button
           onClick={onClick}
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.96 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.94 }}
           onMouseEnter={() => setHover(true)}
           onMouseLeave={() => setHover(false)}
           aria-label={originalName || category || 'portfolio'}
-          className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 ${t.ring} ${t.bg} p-0.5 transition-shadow duration-300 ${
+          className={`relative w-10 h-10 sm:w-12 sm:h-12 rounded-lg overflow-hidden border ${t.ring} ${t.bg} p-[1px] transition-shadow duration-300 ${
             hover ? t.glow : ''
           }`}
         >
           <div
-            className="grid gap-0.5 w-full h-full"
+            className="grid gap-px w-full h-full"
             style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
           >
             {tiles.map((src, i) => (
-              <div key={src + i} className="relative overflow-hidden rounded-sm">
+              <div key={src + i} className="relative overflow-hidden rounded-[2px]">
                 <img
                   src={src}
                   alt=""
@@ -127,11 +127,6 @@ const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
               </div>
             ))}
           </div>
-          {images.length > 1 && (
-            <div className={`absolute bottom-1 right-1 px-1.5 py-0.5 rounded-full text-[9px] font-semibold glass ${t.text}`}>
-              {images.length}
-            </div>
-          )}
         </motion.button>
 
         <NodeLabel
