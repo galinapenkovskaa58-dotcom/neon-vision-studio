@@ -9,6 +9,7 @@ import { useReorder } from '@/hooks/useSortable';
 import SortableItem from './SortableItem';
 import SortableWrapper from './SortableWrapper';
 import FocalPointEditor from '@/components/portfolio/FocalPointEditor';
+import PortfolioNode from '@/components/portfolio/PortfolioNode';
 
 const MAX_IMAGES = 10;
 const DEFAULT_POS = '50% 50%';
