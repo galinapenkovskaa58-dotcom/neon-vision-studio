@@ -183,6 +183,8 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
     },
     onError: (err: any) => toast({ title: 'Ошибка', description: err.message, variant: 'destructive' }),
   });
+
+  const startEdit = (item: any) => {
     setEditing(item);
     const urls: string[] = (item.image_urls && item.image_urls.length ? item.image_urls : (item.image_url ? [item.image_url] : []));
     const positions: string[] = (item.image_positions && item.image_positions.length
