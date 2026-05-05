@@ -381,21 +381,41 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {items.map((item: any) => {
             const urls: string[] = (item.image_urls && item.image_urls.length ? item.image_urls : (item.image_url ? [item.image_url] : []));
+            const positions: string[] = item.image_positions || [];
+            const isGrid = item.display_mode === 'grid';
+            const tiles = urls.slice(0, 9);
+            const cols = Math.min(3, Math.max(1, Math.ceil(Math.sqrt(tiles.length))));
             return (
               <SortableItem key={item.id} id={item.id} className="glass rounded-2xl overflow-hidden">
-                <div className="relative">
-                  <img src={urls[0]} alt={item.original_name || item.category || 'фото'} className="w-full h-48 object-cover" />
+                <div className="relative h-56 flex items-center justify-center bg-gradient-to-br from-card/30 to-background/60 overflow-hidden">
+                  {isGrid ? (
+                    <div className="w-12 h-12 rounded-lg overflow-hidden border border-neon-cyan/60 p-[1px] bg-neon-cyan/10 shadow-[0_0_20px_hsl(var(--neon-cyan)/0.45)]">
+                      <div className="grid gap-px w-full h-full" style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}>
+                        {tiles.map((src, i) => (
+                          <div key={src + i} className="relative overflow-hidden rounded-[2px]">
+                            <img src={src} alt="" className="w-full h-full object-cover" style={{ objectPosition: positions[i] || DEFAULT_POS }} />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="relative w-28 h-28 rounded-full overflow-hidden border-2 border-neon-pink/60 shadow-[0_0_28px_hsl(var(--neon-pink)/0.55)]">
+                      {urls[0] && (
+                        <img src={urls[0]} alt={item.original_name || ''} className="w-full h-full object-cover" style={{ objectPosition: positions[0] || DEFAULT_POS }} />
+                      )}
+                    </div>
+                  )}
                   {urls.length > 1 && (
                     <span className="absolute top-2 right-2 px-2 py-1 rounded-full bg-background/80 backdrop-blur text-xs font-semibold text-neon-cyan">
                       {urls.length} фото
                     </span>
                   )}
                   <span className="absolute bottom-2 left-2 px-2 py-1 rounded-full bg-background/80 backdrop-blur text-[10px] font-semibold text-neon-purple">
-                    {item.display_mode === 'grid' ? 'сетка' : 'веер'}
+                    {isGrid ? 'сетка' : 'веер'}
                   </span>
                 </div>
                 <div className="p-4">
-                  <h3 className="font-semibold">{item.original_name || '—'}</h3>
+                  {item.original_name && <div className="neon-name text-base mb-1">{item.original_name}</div>}
                   {item.category && <span className="text-xs text-neon-cyan">{item.category}</span>}
                   <div className="flex gap-2 mt-3">
                     <Button size="sm" variant="ghost" onClick={() => startEdit(item)}>Ред.</Button>
