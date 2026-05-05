@@ -25,6 +25,7 @@ const palette: NeonTone[] = ['cyan', 'purple', 'pink', 'blue'];
 export default function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [openItem, setOpenItem] = useState<PortfolioItem | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { data: items = [] } = useQuery({
