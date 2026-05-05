@@ -100,7 +100,7 @@ export default function Portfolio() {
 
         {/* Path container */}
         <div ref={containerRef} className="relative max-w-5xl mx-auto">
-          <PortfolioPath containerRef={containerRef} nodeRefs={nodeRefs} tones={tones} />
+          <PortfolioPath containerRef={containerRef} nodeRefs={nodeRefs} tones={tones} hoveredIndex={hoveredIndex} />
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-y-20 gap-x-6 md:gap-x-10 relative">
             {filtered.map((item, i) => {
