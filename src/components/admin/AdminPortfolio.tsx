@@ -171,7 +171,18 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
     },
   });
 
-  const startEdit = (item: any) => {
+  const bulkSetMode = useMutation({
+    mutationFn: async (mode: DisplayMode) => {
+      const { error } = await supabase.from('portfolio').update({ display_mode: mode }).eq('service', service);
+      if (error) throw error;
+    },
+    onSuccess: (_d, mode) => {
+      queryClient.invalidateQueries({ queryKey: ['admin-portfolio', service] });
+      queryClient.invalidateQueries({ queryKey: ['portfolio'] });
+      toast({ title: 'Готово', description: `Все портфолио — ${mode === 'fan' ? 'веером' : 'сеткой'}` });
+    },
+    onError: (err: any) => toast({ title: 'Ошибка', description: err.message, variant: 'destructive' }),
+  });
     setEditing(item);
     const urls: string[] = (item.image_urls && item.image_urls.length ? item.image_urls : (item.image_url ? [item.image_url] : []));
     const positions: string[] = (item.image_positions && item.image_positions.length
