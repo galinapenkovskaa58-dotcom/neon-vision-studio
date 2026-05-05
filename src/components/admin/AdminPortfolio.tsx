@@ -207,14 +207,19 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
         <h2 className="text-xl font-heading font-bold">Портфолио ({items.length})</h2>
-        <Button
-          onClick={() => { setShowForm(true); setEditing(null); setForm(emptyForm()); }}
-          className="neon-glow-btn rounded-full text-primary-foreground"
-        >
-          <Plus size={16} /> Добавить
-        </Button>
+        <div className="flex gap-2 flex-wrap items-center">
+          <span className="text-xs text-muted-foreground mr-1">Применить ко всем:</span>
+          <Button size="sm" variant="outline" className="rounded-full" onClick={() => bulkSetMode.mutate('fan')} disabled={bulkSetMode.isPending}>Веером</Button>
+          <Button size="sm" variant="outline" className="rounded-full" onClick={() => bulkSetMode.mutate('grid')} disabled={bulkSetMode.isPending}>Сеткой</Button>
+          <Button
+            onClick={() => { setShowForm(true); setEditing(null); setForm(emptyForm()); }}
+            className="neon-glow-btn rounded-full text-primary-foreground"
+          >
+            <Plus size={16} /> Добавить
+          </Button>
+        </div>
       </div>
 
       <input
