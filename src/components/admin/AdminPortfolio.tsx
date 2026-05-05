@@ -253,6 +253,26 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
             </div>
           </div>
 
+          {/* Live preview matches public site */}
+          {form.image_urls.length > 0 && (
+            <div>
+              <label className="block text-sm mb-2">Предпросмотр (как на сайте)</label>
+              <div className="relative flex justify-center items-end py-12 bg-card/30 rounded-xl border border-border/40 overflow-visible min-h-[260px]">
+                <PortfolioNode
+                  category={form.category}
+                  images={form.image_urls}
+                  positions={form.image_positions}
+                  originalUrl={form.original_url || null}
+                  originalName={form.original_name || null}
+                  originalPosition={form.original_position}
+                  tone="pink"
+                  displayMode={form.display_mode}
+                  onClick={() => {}}
+                />
+              </div>
+            </div>
+          )}
+
           <div>
             <label className="block text-sm mb-2">
               Изображения ({form.image_urls.length}/{MAX_IMAGES}) — первое будет обложкой
