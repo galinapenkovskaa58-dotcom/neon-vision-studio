@@ -114,6 +114,8 @@ export default function Portfolio() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.06 }}
                   className={`flex justify-center ${offset}`}
+                  onMouseEnter={() => setHoveredIndex(i)}
+                  onMouseLeave={() => setHoveredIndex((h) => (h === i ? null : h))}
                 >
                   <PortfolioNode
                     ref={nodeRefs[i]}
