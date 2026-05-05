@@ -25,6 +25,7 @@ const palette: NeonTone[] = ['cyan', 'purple', 'pink', 'blue'];
 export default function Portfolio() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [openItem, setOpenItem] = useState<PortfolioItem | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { data: items = [] } = useQuery({
@@ -99,7 +100,7 @@ export default function Portfolio() {
 
         {/* Path container */}
         <div ref={containerRef} className="relative max-w-5xl mx-auto">
-          <PortfolioPath containerRef={containerRef} nodeRefs={nodeRefs} tones={tones} />
+          <PortfolioPath containerRef={containerRef} nodeRefs={nodeRefs} tones={tones} hoveredIndex={hoveredIndex} />
 
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-y-20 gap-x-6 md:gap-x-10 relative">
             {filtered.map((item, i) => {
@@ -113,6 +114,8 @@ export default function Portfolio() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.06 }}
                   className={`flex justify-center ${offset}`}
+                  onMouseEnter={() => setHoveredIndex(i)}
+                  onMouseLeave={() => setHoveredIndex((h) => (h === i ? null : h))}
                 >
                   <PortfolioNode
                     ref={nodeRefs[i]}
