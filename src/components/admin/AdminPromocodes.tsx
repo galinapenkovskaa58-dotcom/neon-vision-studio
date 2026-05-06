@@ -8,8 +8,19 @@ import { useToast } from '@/hooks/use-toast';
 type SourceFilter = 'all' | 'review' | 'portfolio';
 
 export default function AdminPromocodes() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [filter, setFilter] = useState<SourceFilter>('all');
   const [expanded, setExpanded] = useState<string | null>(null);
+
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('promocodes').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['promocodes'] }),
+    onError: (e: any) => toast({ title: 'Ошибка', description: e.message, variant: 'destructive' }),
+  });
 
   const { data: codes = [] } = useQuery({
     queryKey: ['promocodes', filter],
