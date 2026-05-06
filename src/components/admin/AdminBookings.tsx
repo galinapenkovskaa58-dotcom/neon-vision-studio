@@ -3,6 +3,8 @@ import { supabase } from '@/integrations/supabase/client';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Trash2 } from 'lucide-react';
 import { useState } from 'react';
 
 const statusLabels: Record<string, string> = {
@@ -45,6 +47,14 @@ export default function AdminBookings() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-bookings'] }),
   });
 
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('bookings').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-bookings'] }),
+  });
+
   const filtered = filter === 'all' ? bookings : bookings.filter((b) => b.status === filter);
 
   return (
@@ -77,6 +87,7 @@ export default function AdminBookings() {
               <TableHead>Стиль</TableHead>
               <TableHead>Срочность</TableHead>
               <TableHead>Статус</TableHead>
+              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -111,6 +122,18 @@ export default function AdminBookings() {
                       ))}
                     </SelectContent>
                   </Select>
+                </TableCell>
+                <TableCell>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="text-destructive hover:text-destructive h-8 w-8"
+                    onClick={() => {
+                      if (confirm(`Удалить заявку от ${b.name}?`)) remove.mutate(b.id);
+                    }}
+                  >
+                    <Trash2 size={14} />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
