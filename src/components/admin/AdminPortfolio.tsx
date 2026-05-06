@@ -257,7 +257,11 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
           {form.image_urls.length > 0 && (
             <div>
               <label className="block text-sm mb-2">Предпросмотр (как на сайте)</label>
-              <div className="relative flex justify-center items-end py-12 bg-card/30 rounded-xl border border-border/40 overflow-visible min-h-[260px]">
+              <div
+                className={`relative flex justify-center bg-card/30 rounded-xl border border-border/40 overflow-visible ${
+                  form.display_mode === 'fan' ? 'items-end pt-56 pb-12 min-h-[420px]' : 'items-center py-12 min-h-[260px]'
+                }`}
+              >
                 <PortfolioNode
                   category={form.category}
                   images={form.image_urls}
@@ -267,9 +271,15 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
                   originalPosition={form.original_position}
                   tone="pink"
                   displayMode={form.display_mode}
+                  forceOpen={form.display_mode === 'fan'}
                   onClick={() => {}}
                 />
               </div>
+              {form.display_mode === 'fan' && (
+                <p className="text-[11px] text-muted-foreground mt-2">
+                  Карточки веера зафиксированы. Для центрирования фотографий в карточках используйте «Кадрировать фото» ниже.
+                </p>
+              )}
             </div>
           )}
 
