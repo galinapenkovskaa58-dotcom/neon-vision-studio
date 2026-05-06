@@ -411,16 +411,47 @@ export default function AdminPortfolio({ service = 'neurophoto' }: { service?: s
               <p className="text-xs text-muted-foreground mb-3">
                 Кликайте или перетаскивайте точку на каждой плитке, чтобы выбрать видимую часть фотографии.
               </p>
-              <div className="max-w-md mx-auto grid grid-cols-3 gap-1 p-1 bg-card/40 rounded-xl">
-                {focalTiles.map((src, idx) => (
-                  <FocalPointEditor
-                    key={src + idx}
-                    src={src}
-                    position={form.image_positions[idx] || DEFAULT_POS}
-                    onChange={(p) => setPosition(idx, p)}
-                  />
-                ))}
-              </div>
+              {form.display_mode === 'fan' ? (
+                <div className="relative mx-auto h-64 w-full max-w-md flex items-end justify-center">
+                  {focalTiles.map((src, idx) => {
+                    const mid = (focalTiles.length - 1) / 2;
+                    const angle = (idx - mid) * 18;
+                    const offsetX = (idx - mid) * 28;
+                    const yLift = -Math.abs(idx - mid) * 6;
+                    return (
+                      <div
+                        key={src + idx}
+                        className="absolute"
+                        style={{
+                          transform: `translate(${offsetX}px, ${yLift}px) rotate(${angle}deg)`,
+                          transformOrigin: 'bottom center',
+                          width: 96,
+                          height: 128,
+                        }}
+                      >
+                        <div className="w-full h-full rounded-xl overflow-hidden border-2 border-neon-cyan/40 shadow-[0_0_20px_hsl(var(--neon-cyan)/0.35)]">
+                          <FocalPointEditor
+                            src={src}
+                            position={form.image_positions[idx] || DEFAULT_POS}
+                            onChange={(p) => setPosition(idx, p)}
+                          />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="max-w-md mx-auto grid grid-cols-3 gap-1 p-1 bg-card/40 rounded-xl">
+                  {focalTiles.map((src, idx) => (
+                    <FocalPointEditor
+                      key={src + idx}
+                      src={src}
+                      position={form.image_positions[idx] || DEFAULT_POS}
+                      onChange={(p) => setPosition(idx, p)}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           )}
         </div>
