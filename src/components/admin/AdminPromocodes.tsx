@@ -126,6 +126,18 @@ export default function AdminPromocodes() {
                   {!client && (
                     <div className="text-muted-foreground italic">Данные клиента недоступны</div>
                   )}
+                  <div className="pt-2 flex justify-end">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      className="text-destructive"
+                      onClick={() => {
+                        if (confirm(`Удалить промокод ${c.code}?`)) remove.mutate(c.id);
+                      }}
+                    >
+                      <Trash2 size={14} /> Удалить
+                    </Button>
+                  </div>
                 </div>
               )}
             </div>
