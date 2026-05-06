@@ -46,14 +46,17 @@ type Props = {
   originalPosition?: string | null;
   tone: NeonTone;
   displayMode?: 'fan' | 'grid';
+  forceOpen?: boolean;
   onClick: () => void;
 };
 
 const PortfolioNode = forwardRef<HTMLDivElement, Props>(function PortfolioNode(
-  { category, images, positions, originalUrl, originalName, originalPosition, tone, displayMode = 'fan', onClick },
+  { category, images, positions, originalUrl, originalName, originalPosition, tone, displayMode = 'fan', forceOpen = false, onClick },
   ref
 ) {
-  const [hover, setHover] = useState(false);
+  const [hoverState, setHoverState] = useState(false);
+  const hover = forceOpen || hoverState;
+  const setHover = setHoverState;
   const t = toneStyles[tone];
   const cover = images[0];
   const coverPos = positions?.[0] || '50% 50%';
