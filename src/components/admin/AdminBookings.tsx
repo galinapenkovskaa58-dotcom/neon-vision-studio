@@ -87,6 +87,7 @@ export default function AdminBookings() {
               <TableHead>Стиль</TableHead>
               <TableHead>Срочность</TableHead>
               <TableHead>Статус</TableHead>
+              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
