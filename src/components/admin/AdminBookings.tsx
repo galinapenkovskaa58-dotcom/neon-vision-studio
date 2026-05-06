@@ -123,6 +123,18 @@ export default function AdminBookings() {
                     </SelectContent>
                   </Select>
                 </TableCell>
+                <TableCell>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="text-destructive hover:text-destructive h-8 w-8"
+                    onClick={() => {
+                      if (confirm(`Удалить заявку от ${b.name}?`)) remove.mutate(b.id);
+                    }}
+                  >
+                    <Trash2 size={14} />
+                  </Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
