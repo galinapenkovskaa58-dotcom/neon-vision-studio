@@ -47,6 +47,14 @@ export default function AdminBookings() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-bookings'] }),
   });
 
+  const remove = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('bookings').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['admin-bookings'] }),
+  });
+
   const filtered = filter === 'all' ? bookings : bookings.filter((b) => b.status === filter);
 
   return (
