@@ -20,6 +20,7 @@ export default function AdminReviews({ service = 'neurophoto' }: { service?: str
   const [editing, setEditing] = useState<any>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [form, setForm] = useState({ client_name: '', text: '', rating: '5', photo_url: '' });
+  const [photoUploading, setPhotoUploading] = useState(false);
 
   const { data: reviews = [] } = useQuery({
     queryKey: ['admin-reviews', service, tab],
