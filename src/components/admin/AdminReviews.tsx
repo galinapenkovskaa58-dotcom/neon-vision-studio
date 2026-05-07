@@ -176,12 +176,66 @@ export default function AdminReviews({ service = 'neurophoto' }: { service?: str
               ))}
             </div>
           </div>
-          <Input
-            placeholder="URL фото (опционально)"
-            value={form.photo_url}
-            onChange={(e) => setForm({ ...form, photo_url: e.target.value })}
-            className="bg-muted/50 rounded-xl"
-          />
+          <div>
+            <label className="block text-sm mb-2">Фото автора (опционально)</label>
+            <div className="flex items-center gap-4 mb-2">
+              {form.photo_url ? (
+                <div className="relative">
+                  <img src={form.photo_url} alt="Превью" className="w-16 h-16 rounded-full object-cover border-2 border-neon-cyan/50" />
+                  <button
+                    type="button"
+                    onClick={() => setForm({ ...form, photo_url: '' })}
+                    className="absolute -top-1 -right-1 bg-background border border-border/60 rounded-full p-1 hover:bg-muted"
+                    aria-label="Удалить фото"
+                  >
+                    <X size={12} />
+                  </button>
+                </div>
+              ) : (
+                <div className="w-16 h-16 rounded-full bg-muted/40 border-2 border-dashed border-border/60 flex items-center justify-center text-muted-foreground">
+                  <Upload size={18} />
+                </div>
+              )}
+              <label className="cursor-pointer px-4 py-2 rounded-full border border-border/60 text-sm font-medium hover:bg-muted/50 transition-colors">
+                {photoUploading ? 'Загрузка…' : form.photo_url ? 'Заменить' : 'Загрузить фото'}
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  disabled={photoUploading}
+                  onChange={async (e) => {
+                    const file = e.target.files?.[0];
+                    if (!file) return;
+                    if (file.size > 5 * 1024 * 1024) {
+                      toast({ title: 'Фото больше 5 МБ', variant: 'destructive' });
+                      return;
+                    }
+                    setPhotoUploading(true);
+                    try {
+                      const ext = file.name.split('.').pop() ?? 'jpg';
+                      const path = `avatars/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+                      const { error } = await supabase.storage.from('review-uploads').upload(path, file, { upsert: false });
+                      if (error) {
+                        toast({ title: 'Ошибка загрузки', description: error.message, variant: 'destructive' });
+                        return;
+                      }
+                      const { data } = supabase.storage.from('review-uploads').getPublicUrl(path);
+                      setForm((prev) => ({ ...prev, photo_url: data.publicUrl }));
+                    } finally {
+                      setPhotoUploading(false);
+                      e.target.value = '';
+                    }
+                  }}
+                />
+              </label>
+            </div>
+            <Input
+              placeholder="…или вставьте URL фото"
+              value={form.photo_url}
+              onChange={(e) => setForm({ ...form, photo_url: e.target.value })}
+              className="bg-muted/50 rounded-xl"
+            />
+          </div>
           <div className="flex gap-3">
             <Button
               onClick={() => save.mutate()}
