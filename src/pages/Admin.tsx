@@ -11,10 +11,11 @@ import AdminReviews from '@/components/admin/AdminReviews';
 import AdminStyles from '@/components/admin/AdminStyles';
 import AdminPortfolioSubmissions from '@/components/admin/AdminPortfolioSubmissions';
 import AdminPromocodes from '@/components/admin/AdminPromocodes';
+import AdminVideoPortfolio from '@/components/admin/AdminVideoPortfolio';
 import {
   FileImage, CalendarCheck, Tags, MessageSquare, LogOut, Palette,
   Camera, Video, Music, Code2, ChevronDown, ChevronRight, MessageCircleQuestion,
-  Inbox, Tag,
+  Inbox, Tag, Film,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
