@@ -6,6 +6,7 @@ import videoBookingIcon from '@/assets/booking-icon-video.png';
 import { motion } from 'framer-motion';
 import { Film, Sparkles, Zap, Clock } from 'lucide-react';
 import aiVideoHero from '@/assets/ai-video-hero.png';
+import VideoPortfolio from '@/components/landing/VideoPortfolio';
 
 const features = [
   { icon: Film, title: 'AI Видеоролики', desc: 'Создание видео с помощью нейросетей — от концепта до финального монтажа.' },
