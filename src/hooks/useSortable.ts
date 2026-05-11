@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { arrayMove } from '@dnd-kit/sortable';
 
-type SortableTable = 'styles' | 'portfolio' | 'tariffs' | 'reviews';
+type SortableTable = 'styles' | 'portfolio' | 'tariffs' | 'reviews' | 'video_portfolio';
 
 export function useReorder(table: SortableTable, queryKeys: string[]) {
   const queryClient = useQueryClient();
