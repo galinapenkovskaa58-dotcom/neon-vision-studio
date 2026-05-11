@@ -175,6 +175,8 @@ const AiVideo = () => {
         </div>
       </section>
 
+      <VideoPortfolio />
+
       <Reviews service="ai-video" />
 
       <BookingForm
