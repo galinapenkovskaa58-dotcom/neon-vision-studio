@@ -1,0 +1,1 @@
+ALTER TABLE public.video_portfolio ADD COLUMN aspect_ratio TEXT NOT NULL DEFAULT '16:9';

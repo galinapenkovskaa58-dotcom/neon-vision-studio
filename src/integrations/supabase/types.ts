@@ -429,6 +429,7 @@ export type Database = {
       }
       video_portfolio: {
         Row: {
+          aspect_ratio: string
           category: string
           cover_url: string
           created_at: string
@@ -441,6 +442,7 @@ export type Database = {
           video_url: string
         }
         Insert: {
+          aspect_ratio?: string
           category: string
           cover_url: string
           created_at?: string
@@ -453,6 +455,7 @@ export type Database = {
           video_url: string
         }
         Update: {
+          aspect_ratio?: string
           category?: string
           cover_url?: string
           created_at?: string
