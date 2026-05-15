@@ -75,9 +75,9 @@ export default function Admin() {
     if (active === 'questions') return <AdminQuestions />;
     if (active === 'submissions') return <AdminPortfolioSubmissions />;
     if (active === 'promocodes') return <AdminPromocodes />;
-    if (active === 'video-portfolio') return <AdminVideoPortfolio />;
     const [serviceId, sectionId] = active.split(':') as [string, Section];
     if (!serviceId || !sectionId) return null;
+    if (sectionId === 'portfolio' && serviceId === 'ai-video') return <AdminVideoPortfolio />;
     if (sectionId === 'portfolio') return <AdminPortfolio service={serviceId} />;
     if (sectionId === 'styles') return <AdminStyles service={serviceId} />;
     if (sectionId === 'tariffs') return <AdminTariffs service={serviceId} />;
