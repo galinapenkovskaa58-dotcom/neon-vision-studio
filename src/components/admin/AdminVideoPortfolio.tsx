@@ -204,6 +204,21 @@ export default function AdminVideoPortfolio() {
           </div>
 
           <div>
+            <label className="block text-sm mb-2">Формат видео *</label>
+            <select
+              value={form.aspect_ratio}
+              onChange={(e) => setForm({ ...form, aspect_ratio: e.target.value })}
+              className="w-full bg-muted/50 rounded-xl px-3 py-2 border border-border/50 text-sm"
+            >
+              {VIDEO_ASPECT_RATIOS.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
             <label className="block text-sm mb-2">Обложка *</label>
             <input
               ref={fileRef}
