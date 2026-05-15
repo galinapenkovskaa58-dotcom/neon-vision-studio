@@ -21,6 +21,7 @@ type VideoRow = {
   video_url: string;
   sort_order: number;
   is_active: boolean;
+  aspect_ratio: string;
 };
 
 const emptyForm = {
@@ -30,6 +31,7 @@ const emptyForm = {
   cover_url: '',
   video_url: '',
   is_active: true,
+  aspect_ratio: '16:9' as string,
 };
 
 export default function AdminVideoPortfolio() {
