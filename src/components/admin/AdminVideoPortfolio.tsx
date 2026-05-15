@@ -10,7 +10,7 @@ import { Plus, Trash2, Upload, X, Pencil } from 'lucide-react';
 import { useReorder } from '@/hooks/useSortable';
 import SortableItem from './SortableItem';
 import SortableWrapper from './SortableWrapper';
-import { VIDEO_CATEGORIES } from '@/components/landing/VideoPortfolio';
+import { VIDEO_CATEGORIES, VIDEO_ASPECT_RATIOS } from '@/components/landing/VideoPortfolio';
 
 type VideoRow = {
   id: string;
