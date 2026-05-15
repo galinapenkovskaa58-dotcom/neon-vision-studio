@@ -12,6 +12,18 @@ type VideoItem = {
   category: string;
   cover_url: string;
   video_url: string;
+  aspect_ratio?: string | null;
+};
+
+export const VIDEO_ASPECT_RATIOS = ['16:9', '9:16', '21:9', '4:3', '3:4', '1:1'] as const;
+
+const aspectClass: Record<string, string> = {
+  '16:9': 'aspect-video',
+  '9:16': 'aspect-[9/16]',
+  '21:9': 'aspect-[21/9]',
+  '4:3': 'aspect-[4/3]',
+  '3:4': 'aspect-[3/4]',
+  '1:1': 'aspect-square',
 };
 
 export const VIDEO_CATEGORIES = [
