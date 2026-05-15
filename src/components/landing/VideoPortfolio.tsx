@@ -12,6 +12,18 @@ type VideoItem = {
   category: string;
   cover_url: string;
   video_url: string;
+  aspect_ratio?: string | null;
+};
+
+export const VIDEO_ASPECT_RATIOS = ['16:9', '9:16', '21:9', '4:3', '3:4', '1:1'] as const;
+
+const aspectClass: Record<string, string> = {
+  '16:9': 'aspect-video',
+  '9:16': 'aspect-[9/16]',
+  '21:9': 'aspect-[21/9]',
+  '4:3': 'aspect-[4/3]',
+  '3:4': 'aspect-[3/4]',
+  '1:1': 'aspect-square',
 };
 
 export const VIDEO_CATEGORIES = [
@@ -56,7 +68,7 @@ export default function VideoPortfolio() {
     queryFn: async () => {
       const { data } = await supabase
         .from('video_portfolio')
-        .select('id, title, description, category, cover_url, video_url')
+        .select('id, title, description, category, cover_url, video_url, aspect_ratio')
         .eq('is_active', true)
         .order('sort_order', { ascending: true });
       return (data || []) as VideoItem[];
@@ -120,10 +132,11 @@ export default function VideoPortfolio() {
             <p className="text-base sm:text-lg">Видео-работы скоро появятся</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="columns-1 sm:columns-2 lg:columns-3 gap-6 md:gap-8 [column-fill:_balance]">
             {filtered.map((item, i) => {
               const tone = tones[i % tones.length];
               const ts = toneStyles[tone];
+              const ar = item.aspect_ratio && aspectClass[item.aspect_ratio] ? aspectClass[item.aspect_ratio] : 'aspect-video';
               return (
                 <motion.button
                   key={item.id}
@@ -134,11 +147,11 @@ export default function VideoPortfolio() {
                   viewport={{ once: true, margin: '-50px' }}
                   transition={{ delay: i * 0.06, duration: 0.5 }}
                   whileHover={{ y: -6 }}
-                  className={`group relative text-left rounded-2xl overflow-hidden glass border ${ts.ring} transition-all duration-300`}
+                  className={`group relative text-left w-full mb-6 md:mb-8 break-inside-avoid rounded-2xl overflow-hidden glass border ${ts.ring} transition-all duration-300`}
                   style={{ boxShadow: ts.glow }}
                 >
                   {/* Cover */}
-                  <div className="relative aspect-video overflow-hidden bg-muted/30">
+                  <div className={`relative ${ar} overflow-hidden bg-muted/30`}>
                     <img
                       src={item.cover_url}
                       alt={item.title}

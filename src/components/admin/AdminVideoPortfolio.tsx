@@ -10,7 +10,7 @@ import { Plus, Trash2, Upload, X, Pencil } from 'lucide-react';
 import { useReorder } from '@/hooks/useSortable';
 import SortableItem from './SortableItem';
 import SortableWrapper from './SortableWrapper';
-import { VIDEO_CATEGORIES } from '@/components/landing/VideoPortfolio';
+import { VIDEO_CATEGORIES, VIDEO_ASPECT_RATIOS } from '@/components/landing/VideoPortfolio';
 
 type VideoRow = {
   id: string;
@@ -21,6 +21,7 @@ type VideoRow = {
   video_url: string;
   sort_order: number;
   is_active: boolean;
+  aspect_ratio: string;
 };
 
 const emptyForm = {
@@ -30,6 +31,7 @@ const emptyForm = {
   cover_url: '',
   video_url: '',
   is_active: true,
+  aspect_ratio: '16:9' as string,
 };
 
 export default function AdminVideoPortfolio() {
@@ -87,6 +89,7 @@ export default function AdminVideoPortfolio() {
         cover_url: form.cover_url,
         video_url: form.video_url.trim(),
         is_active: form.is_active,
+        aspect_ratio: form.aspect_ratio,
       };
       if (editing) {
         const { error } = await supabase.from('video_portfolio').update(payload).eq('id', editing.id);
@@ -144,6 +147,7 @@ export default function AdminVideoPortfolio() {
       cover_url: v.cover_url,
       video_url: v.video_url,
       is_active: v.is_active,
+      aspect_ratio: v.aspect_ratio || '16:9',
     });
     setShowForm(true);
   };
@@ -194,6 +198,21 @@ export default function AdminVideoPortfolio() {
               {VIDEO_CATEGORIES.map((c) => (
                 <option key={c} value={c}>
                   {c}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm mb-2">Формат видео *</label>
+            <select
+              value={form.aspect_ratio}
+              onChange={(e) => setForm({ ...form, aspect_ratio: e.target.value })}
+              className="w-full bg-muted/50 rounded-xl px-3 py-2 border border-border/50 text-sm"
+            >
+              {VIDEO_ASPECT_RATIOS.map((r) => (
+                <option key={r} value={r}>
+                  {r}
                 </option>
               ))}
             </select>
