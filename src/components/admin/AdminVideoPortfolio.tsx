@@ -147,6 +147,7 @@ export default function AdminVideoPortfolio() {
       cover_url: v.cover_url,
       video_url: v.video_url,
       is_active: v.is_active,
+      aspect_ratio: v.aspect_ratio || '16:9',
     });
     setShowForm(true);
   };
