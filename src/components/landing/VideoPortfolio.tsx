@@ -68,7 +68,7 @@ export default function VideoPortfolio() {
     queryFn: async () => {
       const { data } = await supabase
         .from('video_portfolio')
-        .select('id, title, description, category, cover_url, video_url')
+        .select('id, title, description, category, cover_url, video_url, aspect_ratio')
         .eq('is_active', true)
         .order('sort_order', { ascending: true });
       return (data || []) as VideoItem[];
