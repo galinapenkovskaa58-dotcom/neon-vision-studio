@@ -89,6 +89,7 @@ export default function AdminVideoPortfolio() {
         cover_url: form.cover_url,
         video_url: form.video_url.trim(),
         is_active: form.is_active,
+        aspect_ratio: form.aspect_ratio,
       };
       if (editing) {
         const { error } = await supabase.from('video_portfolio').update(payload).eq('id', editing.id);
